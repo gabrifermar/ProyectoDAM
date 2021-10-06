@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#366F85"
-    tools:context=".MainActivity">
+    tools:context=".Splashscreen">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/logotxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logotxt"
@@ -21,14 +21,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/logotxt"
+        android:id="@+id/cloud"
         android:contentDescription="@string/logotxt"
         android:layout_width="153dp"
         android:layout_height="166dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/logotxt"
         app:srcCompat="@drawable/cloud" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
