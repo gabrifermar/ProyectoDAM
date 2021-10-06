@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
+            android:name=".Home"
+            android:exported="true"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
+        <activity
             android:name=".Splashscreen"
             android:exported="true">
             <intent-filter>

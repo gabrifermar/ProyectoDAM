@@ -23,11 +23,9 @@ class Splashscreen : AppCompatActivity() {
         logotxt.startAnimation(ttb)
         cloud.startAnimation(btt)
 
-        /*
         Handler().postDelayed({
-            startActivity(Intent(this,))
+            startActivity(Intent(this,Home::class.java))
         },delay)
-        */
 
     }
 }
