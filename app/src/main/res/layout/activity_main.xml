@@ -21,7 +21,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logotxt"
+        android:contentDescription="@string/logotxt"
         android:layout_width="153dp"
         android:layout_height="166dp"
         app:layout_constraintBottom_toBottomOf="parent"
