@@ -18,6 +18,10 @@
             android:id="@+id/action_nav_home_to_nav_slideshow"
             app:destination="@id/nav_slideshow"
             app:popUpTo="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_home_to_login2"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/nav_home" />
     </fragment>
 
     <fragment
@@ -31,4 +35,9 @@
         android:name="com.gabrifermar.proyectodam.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.gabrifermar.proyectodam.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>
