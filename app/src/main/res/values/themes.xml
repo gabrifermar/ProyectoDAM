@@ -12,12 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="Theme.ProyectoDAM.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
+
+    <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.NoActionBar"/>
 
     <style name="Theme.ProyectoDAM.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
