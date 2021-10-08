@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gabrifermar.proyectodam">
+    package="com.gabrifermar.proyectodam" >
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ProyectoDAM">
+        android:theme="@style/Theme.ProyectoDAM" >
+        <activity
+            android:name=".Usermain"
+            android:exported="true"
+            android:label="@string/title_activity_usermain"
+            android:theme="@style/Theme.ProyectoDAM" />
         <activity
             android:name=".Admin"
             android:exported="true" />
@@ -20,10 +25,11 @@
             android:name=".Home"
             android:exported="true"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.ProyectoDAM" />
+            android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
         <activity
             android:name=".Splashscreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.ProyectoDAM.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

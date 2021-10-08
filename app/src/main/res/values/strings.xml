@@ -20,4 +20,8 @@
     <string name="pass">Password</string>
     <string name="user">Username</string>
     <string name="account">Account</string>
+    <string name="title_activity_usermain">Usermain</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

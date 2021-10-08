@@ -2,11 +2,11 @@ package com.gabrifermar.proyectodam
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,15 +15,22 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.gabrifermar.proyectodam.databinding.ActivityHomeBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.io.File
 
 class Home : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storage:FirebaseStorage
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,17 +65,17 @@ class Home : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
-            R.id.action_settings ->{
+        return when (item.itemId) {
+            R.id.action_settings -> {
                 settings()
                 true
             }
-            else ->super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun settings() {
-        startActivity(Intent(this,Settings::class.java))
+        startActivity(Intent(this, Settings::class.java))
     }
 
 
@@ -77,14 +84,38 @@ class Home : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun login (view: View){
+    fun login(view: View) {
 
-        //admin acces
-        if(username.text.toString()=="admin"&&password.text.toString()=="admin"){
-            startActivity(Intent(this,Admin::class.java))
-        }else{
-            Toast.makeText(this, "incorrecto",Toast.LENGTH_LONG).show()
-        }
+        auth = Firebase.auth
+        storage=Firebase.storage
+        val storageref=storage.reference
+        var ref=storageref.child("Certificado.pdf")
+
+        //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
+
+        auth.signInWithEmailAndPassword(
+            username.text.toString() + "@hola.com",
+            password.text.toString()
+        )
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    startActivity(Intent(this, Usermain::class.java))
+
+                    //admin access
+                } else if (username.text.toString() == "admin" && password.text.toString() == "admin") {
+                    startActivity(Intent(this, Usermain::class.java))
+
+                    val localfile= File("Android","Certificado.pdf")
+
+                    ref.getFile(localfile).addOnSuccessListener {
+                        Toast.makeText(this,"descargado",Toast.LENGTH_LONG).show()
+                    }
+
+                    //error
+                } else {
+                    Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
+                }
+            }
     }
 
 }
