@@ -1,5 +1,6 @@
 package com.gabrifermar.proyectodam
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.gabrifermar.proyectodam.databinding.ActivityHomeBinding
+import kotlinx.android.synthetic.main.fragment_login.*
 
 class Home : AppCompatActivity() {
 
@@ -66,13 +68,23 @@ class Home : AppCompatActivity() {
     }
 
     private fun settings() {
-        Toast.makeText(this,"hola",Toast.LENGTH_LONG).show()
+        startActivity(Intent(this,Settings::class.java))
     }
 
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun login (view: View){
+
+        //admin acces
+        if(username.text.toString()=="admin"&&password.text.toString()=="admin"){
+            startActivity(Intent(this,Admin::class.java))
+        }else{
+            Toast.makeText(this, "incorrecto",Toast.LENGTH_LONG).show()
+        }
     }
 
 }
