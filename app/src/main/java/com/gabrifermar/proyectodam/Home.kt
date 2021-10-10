@@ -29,7 +29,6 @@ class Home : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var storage:FirebaseStorage
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,9 +86,6 @@ class Home : AppCompatActivity() {
     fun login(view: View) {
 
         auth = Firebase.auth
-        storage=Firebase.storage
-        val storageref=storage.reference
-        var ref=storageref.child("Certificado.pdf")
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
 
@@ -103,13 +99,8 @@ class Home : AppCompatActivity() {
 
                     //admin access
                 } else if (username.text.toString() == "admin" && password.text.toString() == "admin") {
-                    startActivity(Intent(this, Usermain::class.java))
+                    startActivity(Intent(this, Admin::class.java))
 
-                    val localfile= File("Android","Certificado.pdf")
-
-                    ref.getFile(localfile).addOnSuccessListener {
-                        Toast.makeText(this,"descargado",Toast.LENGTH_LONG).show()
-                    }
 
                     //error
                 } else {
