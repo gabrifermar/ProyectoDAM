@@ -20,7 +20,7 @@
         android:id="@+id/userFragment"
         android:name="com.gabrifermar.proyectodam.ui.user.UserFragment"
         android:label="user_fragment"
-        tools:layout="@layout/user_fragment" >
+        tools:layout="@layout/fragment_usermain" >
         <action
             android:id="@+id/action_userFragment_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard"
@@ -29,5 +29,14 @@
             android:id="@+id/action_userFragment_to_navigation_notifications"
             app:destination="@id/navigation_notifications"
             app:popUpTo="@id/userFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_vuelo"
+            app:destination="@id/vuelo"
+            app:popUpTo="@id/userFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/vuelo"
+        android:name="com.gabrifermar.proyectodam.ui.vuelo.Vuelo"
+        android:label="fragment_vuelo"
+        tools:layout="@layout/fragment_vuelo" />
 </navigation>

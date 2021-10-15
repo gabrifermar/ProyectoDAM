@@ -24,6 +24,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="vuelo">Vuelo</string>
 
 
     <!--Admin-->
@@ -34,7 +35,10 @@
     <string name="P28R">P28R</string>
     <string name="P06T">P06T</string>
     <string name="createuser">Create User</string>
-    
+
+    <!--User-->
+    <string name="welcome">Welcome back %s</string>
+
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>
     <string name="errornewuser">Error creating user</string>

@@ -1,4 +1,4 @@
-package com.gabrifermar.proyectodam.ui.user
+package com.gabrifermar.proyectodam.ui.vuelo
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.gabrifermar.proyectodam.R
 
-class UserFragment : Fragment() {
+class Vuelo : Fragment() {
 
     companion object {
-        fun newInstance() = UserFragment()
+        fun newInstance() = Vuelo()
     }
 
-    private lateinit var viewModel: UserViewModel
+    private lateinit var viewModel: VueloViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_usermain, container, false)
+        return inflater.inflate(R.layout.fragment_vuelo, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(VueloViewModel::class.java)
     }
 
 }
