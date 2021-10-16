@@ -20,12 +20,20 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_usermain.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class Usermain : AppCompatActivity() {
 
     private lateinit var binding: ActivityUsermainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val metarlist = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +68,10 @@ class Usermain : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
+        //call metarapi
+        loadmetar("LEVS")
+
+
         //check user
 
 /*
@@ -78,8 +90,9 @@ class Usermain : AppCompatActivity() {
 
 
                     //TODO: posible gestion de bienvenida en background o pantalla de carga hasta que carge todo ok
-                    user_txt_username.text= getString(R.string.welcome, document.getString("username"))
-                    user_txt_username.visibility=VISIBLE
+                    user_txt_username.text =
+                        getString(R.string.welcome, document.getString("username"))
+                    user_txt_username.visibility = VISIBLE
 
                     //check user settings
                     if (document.getBoolean("subjects") == true) {
@@ -95,5 +108,37 @@ class Usermain : AppCompatActivity() {
 
 
             }
+
+        user_cv_subjects.setOnClickListener {
+            Toast.makeText(this,"asignaturas", Toast.LENGTH_SHORT).show()
+        }
+
+        user_cv_flights.setOnClickListener {
+            Toast.makeText(this,"Vuelos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getmetarcall(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.checkwx.com/metar/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun loadmetar(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getmetarcall().create(API::class.java)
+                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+            val levs = call.body()
+            runOnUiThread {
+                if (call.isSuccessful) {
+                    val metars = levs?.data ?: emptyList()
+                    metarlist.clear()
+                    metarlist.addAll(metars)
+                    //TODO finalizar implementar API de metar
+                    user_txt_metar.text = metarlist[0]
+                }
+            }
+        }
     }
 }

@@ -38,6 +38,7 @@
 
     <!--User-->
     <string name="welcome">Welcome back %s</string>
+    <string name="progress">%s %</string>
 
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>
