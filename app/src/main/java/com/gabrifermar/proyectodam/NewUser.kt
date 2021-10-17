@@ -3,9 +3,12 @@ package com.gabrifermar.proyectodam
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_new_user.*
@@ -26,6 +29,11 @@ class NewUser : AppCompatActivity() {
 
         btncreateuser.setOnClickListener {
 
+            Log.d("hola", cbnewuser1.isChecked.toString())
+            Log.d("hola", cbnewuser2.isChecked.toString())
+            Log.d("hola", cbnewuser3.isChecked.toString())
+            Log.d("hola", cbnewuser4.isChecked.toString())
+
             //Try catch for sign up errors
             try {
                 auth.createUserWithEmailAndPassword(
@@ -38,16 +46,18 @@ class NewUser : AppCompatActivity() {
                             //Write user config on db if sign up ok
                             val user = hashMapOf(
                                 "username" to txtnewuser.text.toString(),
-                                "subjects" to rbnewuser1.isChecked,
-                                "C172" to rbnewuser2.isChecked,
-                                "P28R" to rbnewuser3.isChecked,
-                                "P06T" to rbnewuser4.isChecked
+                                "subjects" to cbnewuser1.isChecked,
+                                "C172" to cbnewuser2.isChecked,
+                                "P28R" to cbnewuser3.isChecked,
+                                "P06T" to cbnewuser4.isChecked
                             )
 
-                            db.collection("users").document(auth.currentUser!!.uid)
-                                .set(user)
 
-                            startActivity(Intent(this, Home::class.java))
+                            db.collection("users").document(auth.currentUser!!.uid)
+                                .set(user, SetOptions.merge())
+
+                            startActivity(Intent(this, Admin::class.java))
+                            finish()
                         } else {
                             //pass less than 6 characters
                             Toast.makeText(this, "error", Toast.LENGTH_LONG).show()

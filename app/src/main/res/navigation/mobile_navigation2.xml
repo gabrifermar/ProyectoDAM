@@ -6,10 +6,10 @@
     app:startDestination="@id/userFragment">
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.gabrifermar.proyectodam.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/fragment_user_tools"
+        android:name="com.gabrifermar.proyectodam.ui.tools.ToolsFragment"
+        android:label="@string/title_tools"
+        tools:layout="@layout/fragment_user_tools" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -23,7 +23,7 @@
         tools:layout="@layout/fragment_usermain" >
         <action
             android:id="@+id/action_userFragment_to_navigation_dashboard"
-            app:destination="@id/navigation_dashboard"
+            app:destination="@id/fragment_user_tools"
             app:popUpTo="@id/userFragment" />
         <action
             android:id="@+id/action_userFragment_to_navigation_notifications"

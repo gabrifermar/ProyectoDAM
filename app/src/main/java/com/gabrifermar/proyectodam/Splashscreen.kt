@@ -25,6 +25,7 @@ class Splashscreen : AppCompatActivity() {
 
         Handler().postDelayed({
             startActivity(Intent(this,Home::class.java))
+            finish()
         },delay)
 
     }

@@ -1,13 +1,9 @@
 package com.gabrifermar.proyectodam
 
 import android.content.ContentValues.TAG
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.View.VISIBLE
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -23,25 +19,17 @@ import kotlinx.android.synthetic.main.fragment_usermain.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class Usermain : AppCompatActivity() {
 
     private lateinit var binding: ActivityUsermainBinding
-    private lateinit var auth: FirebaseAuth
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val metarlist = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //Declare variable
-        auth = Firebase.auth
-        val db = Firebase.firestore
-
 
         binding = ActivityUsermainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -55,7 +43,7 @@ class Usermain : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.userFragment,
-                R.id.navigation_dashboard,
+                R.id.fragment_user_tools,
                 R.id.navigation_notifications,
                 R.id.vuelo
             )
@@ -68,9 +56,6 @@ class Usermain : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
-        //call metarapi
-        loadmetar("LEVS")
-
 
         //check user
 
@@ -82,40 +67,8 @@ class Usermain : AppCompatActivity() {
         startActivity(mapIntent)*/
 
 
-        //TODO: pte recoger datos de Firestore para crear distinto user interface
-        //get inside Firestore database
-        db.collection("users").document(auth.currentUser!!.uid).get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
 
 
-                    //TODO: posible gestion de bienvenida en background o pantalla de carga hasta que carge todo ok
-                    user_txt_username.text =
-                        getString(R.string.welcome, document.getString("username"))
-                    user_txt_username.visibility = VISIBLE
-
-                    //check user settings
-                    if (document.getBoolean("subjects") == true) {
-                        Log.d(TAG, "true")
-                    } else {
-                        Log.d(TAG, "false")
-                    }
-
-
-                    Log.d(TAG, document.data.toString())
-                    //C172=true, subjects=true, P28R=true, P06T=true, username=hola
-                }
-
-
-            }
-
-        user_cv_subjects.setOnClickListener {
-            Toast.makeText(this,"asignaturas", Toast.LENGTH_SHORT).show()
-        }
-
-        user_cv_flights.setOnClickListener {
-            Toast.makeText(this,"Vuelos", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun getmetarcall(): Retrofit {
@@ -125,7 +78,7 @@ class Usermain : AppCompatActivity() {
             .build()
     }
 
-    private fun loadmetar(query: String) {
+    internal fun loadmetar(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val call = getmetarcall().create(API::class.java)
                 .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")

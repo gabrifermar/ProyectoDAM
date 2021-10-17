@@ -55,16 +55,16 @@
             >
 
 
-        <RadioButton
-            android:id="@+id/rbnewuser1"
+        <CheckBox
+            android:id="@+id/cbnewuser1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/subjects"
             tools:layout_editor_absoluteX="49dp"
             tools:layout_editor_absoluteY="449dp" />
 
-        <RadioButton
-            android:id="@+id/rbnewuser2"
+        <CheckBox
+            android:id="@+id/cbnewuser2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -72,8 +72,8 @@
             tools:layout_editor_absoluteX="208dp"
             tools:layout_editor_absoluteY="446dp" />
 
-        <RadioButton
-            android:id="@+id/rbnewuser3"
+        <CheckBox
+            android:id="@+id/cbnewuser3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -81,8 +81,8 @@
             tools:layout_editor_absoluteX="99dp"
             tools:layout_editor_absoluteY="537dp" />
 
-        <RadioButton
-            android:id="@+id/rbnewuser4"
+        <CheckBox
+            android:id="@+id/cbnewuser4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

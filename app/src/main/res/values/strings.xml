@@ -22,7 +22,7 @@
     <string name="account">Account</string>
     <string name="title_activity_usermain">Usermain</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_tools">Tools</string>
     <string name="title_notifications">Notifications</string>
     <string name="vuelo">Vuelo</string>
 
@@ -38,7 +38,8 @@
 
     <!--User-->
     <string name="welcome">Welcome back %s</string>
-    <string name="progress">%s %</string>
+    <string name="progress">%s %%</string>
+    <string name="flights">Flights</string>
 
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>
