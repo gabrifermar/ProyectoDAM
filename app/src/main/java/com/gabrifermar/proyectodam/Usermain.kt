@@ -1,6 +1,7 @@
 package com.gabrifermar.proyectodam
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View.VISIBLE
@@ -26,7 +27,7 @@ class Usermain : AppCompatActivity() {
 
     private lateinit var binding: ActivityUsermainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val metarlist = mutableListOf<String>()
+    //private val metarlist = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +57,6 @@ class Usermain : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
-
-        //check user
-
 /*
         val gmmIntentUri =
             Uri.parse("geo:0,0?q=Aerotec, Madrid, España")
@@ -70,7 +68,7 @@ class Usermain : AppCompatActivity() {
 
 
     }
-
+/*
     private fun getmetarcall(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.checkwx.com/metar/")
@@ -88,10 +86,16 @@ class Usermain : AppCompatActivity() {
                     val metars = levs?.data ?: emptyList()
                     metarlist.clear()
                     metarlist.addAll(metars)
-                    //TODO finalizar implementar API de metar
-                    user_txt_metar.text = metarlist[0]
+
+                    val sharedPref = this@Usermain.getSharedPreferences("user",Context.MODE_PRIVATE)
+                    sharedPref.edit().putString("metar",metarlist[0]).apply()
+                    Log.d("metar", metarlist[0])
+
+
+                    //user_txt_metar.text = metarlist[0]
                 }
             }
         }
     }
+    */
 }

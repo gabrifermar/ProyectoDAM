@@ -22,11 +22,6 @@ class Login : Fragment() {
         super.onCreate(savedInstanceState)
 
 
-        /*
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
     }
 
     override fun onCreateView(

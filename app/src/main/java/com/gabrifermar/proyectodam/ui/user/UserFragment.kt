@@ -3,6 +3,7 @@ package com.gabrifermar.proyectodam.ui.user
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.net.sip.SipSession
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.animation.addPauseListener
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.Usermain
 import com.google.common.base.MoreObjects
@@ -31,6 +33,8 @@ class UserFragment : Fragment() {
 
     private lateinit var viewModel: UserViewModel
     private lateinit var auth: FirebaseAuth
+    private lateinit var flightpb: ObjectAnimator
+    private lateinit var subjectpb:ObjectAnimator
 
 
     override fun onCreateView(
@@ -49,9 +53,15 @@ class UserFragment : Fragment() {
         auth = Firebase.auth
 
 
-        //call metar api
-        (activity as Usermain).loadmetar("LEVS")
 
+
+        //write welcome msg
+        val sharedPref= (activity as Usermain).getSharedPreferences("user",Context.MODE_PRIVATE)
+        user_txt_username.text= (activity as Usermain).getString(R.string.welcome, sharedPref.getString("username",""))
+
+
+
+        /*
         //get inside Firestore database
         db.collection("users").document(auth.currentUser!!.uid).get()
             .addOnSuccessListener { document ->
@@ -76,32 +86,36 @@ class UserFragment : Fragment() {
                 }
 
 
-            }
+            }*/
 
 
         //progress bar animation
         //TODO: cuando tenga variables con progreso añadirlas
-        ObjectAnimator.ofInt(user_progress_subject, "progress", 75)
+        subjectpb=ObjectAnimator.ofInt(user_progress_subject, "progress", 75)
             .apply {
                 duration = 1500
                 start()
                 addUpdateListener { updatedAnimation ->
                     user_txt_subjectsprogress.text =
-                        getString(R.string.progress, updatedAnimation.animatedValue.toString())
+                        (activity as Usermain).getString(R.string.progress, updatedAnimation.animatedValue.toString())
                 }
             }
 
 
-        ObjectAnimator.ofInt(user_progress_flights, "progress", 50)
+        flightpb=ObjectAnimator.ofInt(user_progress_flights, "progress", 50)
             .apply {
                 duration = 1500
                 start()
                 addUpdateListener { updatedAnimation ->
                     user_txt_flightsprogress.text =
-                        getString(R.string.progress, updatedAnimation.animatedValue.toString())
+                        (activity as Usermain).getString(R.string.progress, updatedAnimation.animatedValue.toString())
                 }
             }
 
+
+        //write metar
+        Log.d("metar2", sharedPref.getString("metar", "no hay").toString())
+        user_txt_metar.text=sharedPref.getString("metar","no hay").toString()
 
 
 
@@ -114,6 +128,18 @@ class UserFragment : Fragment() {
         user_cv_flights.setOnClickListener {
             Toast.makeText(activity, "Vuelos", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onPause() {
+        flightpb.end()
+        subjectpb.end()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        flightpb.end()
+        subjectpb.end()
+        super.onStop()
     }
 
 

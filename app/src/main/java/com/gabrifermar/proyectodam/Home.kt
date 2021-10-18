@@ -1,8 +1,8 @@
 package com.gabrifermar.proyectodam
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,17 +18,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gabrifermar.proyectodam.databinding.ActivityHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.fragment_login.*
-import java.io.File
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import com.gabrifermar.proyectodam.Usermain as Usermain
 
 class Home : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
+    private val metarlist = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +59,8 @@ class Home : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        loadmetar("LEVS")
 
     }
 
@@ -85,7 +92,9 @@ class Home : AppCompatActivity() {
 
     fun login(view: View) {
 
+        //variable
         auth = Firebase.auth
+        val db =Firebase.firestore
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
 
@@ -95,6 +104,27 @@ class Home : AppCompatActivity() {
         )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
+                    db.collection("users").document(auth.currentUser!!.uid).get()
+                        .addOnSuccessListener { document ->
+                            if (document != null) {
+
+                                val sharedPref=this.getSharedPreferences("user",Context.MODE_PRIVATE)
+                                sharedPref.edit().putString("username",document.getString("username")).apply()
+
+
+                                //check user settings
+                                if (document.getBoolean("subjects") == true) {
+                                    //check fields
+                                }
+
+                            }
+
+
+                        }
+
+
+
                     startActivity(Intent(this, Usermain::class.java))
 
                     //admin access
@@ -108,4 +138,34 @@ class Home : AppCompatActivity() {
                 }
             }
     }
+    private fun getmetarcall(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.checkwx.com/metar/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+
+    //TODO: pte implementar escritura en db para historico posible fav en local
+    internal fun loadmetar(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getmetarcall().create(API::class.java)
+                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+            val levs = call.body()
+            runOnUiThread {
+                if (call.isSuccessful) {
+                    val metars = levs?.data ?: emptyList()
+                    metarlist.clear()
+                    metarlist.addAll(metars)
+
+                    val sharedPref = this@Home.getSharedPreferences("user",Context.MODE_PRIVATE)
+                    sharedPref.edit().putString("metar",metarlist[0]).apply()
+
+
+                    //user_txt_metar.text = metarlist[0]
+                }
+            }
+        }
+    }
+
 }
