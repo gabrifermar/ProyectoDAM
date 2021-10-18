@@ -4,4 +4,44 @@
     <!-- Buenas -->
 
     <string name="logotxt">IFlyNow</string>
+
+    <!-- Navigation -->
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="login">Login</string>
+    <string name="pass">Password</string>
+    <string name="user">Username</string>
+    <string name="account">Account</string>
+    <string name="title_activity_usermain">Usermain</string>
+    <string name="title_home">Home</string>
+    <string name="title_tools">Tools</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="vuelo">Vuelo</string>
+
+
+    <!--Admin-->
+    <string name="newuser">New User</string>
+    <string name="usermail">Mail (Optional)</string>
+    <string name="subjects">Subjects</string>
+    <string name="C172">C172</string>
+    <string name="P28R">P28R</string>
+    <string name="P06T">P06T</string>
+    <string name="createuser">Create User</string>
+
+    <!--User-->
+    <string name="welcome">Welcome back %s</string>
+    <string name="progress">%s %%</string>
+    <string name="flights">Flights</string>
+
+    <!--Code-->
+    <string name="fillfields">Fill in the fields</string>
+    <string name="errornewuser">Error creating user</string>
 </resources>

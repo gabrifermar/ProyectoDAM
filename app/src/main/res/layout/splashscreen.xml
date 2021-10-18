@@ -22,9 +22,9 @@
 
     <ImageView
         android:id="@+id/cloud"
-        android:contentDescription="@string/logotxt"
         android:layout_width="153dp"
         android:layout_height="166dp"
+        android:contentDescription="@string/logotxt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
