@@ -60,7 +60,10 @@ class Home : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //TODO: cuando carga directo la activity de User al estar logado, no carga el nuevo metar y no actualiza
         loadmetar("LEVS")
+
+
 
     }
 
@@ -94,7 +97,7 @@ class Home : AppCompatActivity() {
 
         //variable
         auth = Firebase.auth
-        val db =Firebase.firestore
+        val db = Firebase.firestore
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
 
@@ -109,8 +112,10 @@ class Home : AppCompatActivity() {
                         .addOnSuccessListener { document ->
                             if (document != null) {
 
-                                val sharedPref=this.getSharedPreferences("user",Context.MODE_PRIVATE)
-                                sharedPref.edit().putString("username",document.getString("username")).apply()
+                                val sharedPref =
+                                    this.getSharedPreferences("user", Context.MODE_PRIVATE)
+                                sharedPref.edit()
+                                    .putString("username", document.getString("username")).apply()
 
 
                                 //check user settings
@@ -119,11 +124,7 @@ class Home : AppCompatActivity() {
                                 }
 
                             }
-
-
                         }
-
-
 
                     startActivity(Intent(this, Usermain::class.java))
 
@@ -138,6 +139,7 @@ class Home : AppCompatActivity() {
                 }
             }
     }
+
     private fun getmetarcall(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.checkwx.com/metar/")
@@ -158,8 +160,8 @@ class Home : AppCompatActivity() {
                     metarlist.clear()
                     metarlist.addAll(metars)
 
-                    val sharedPref = this@Home.getSharedPreferences("user",Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("metar",metarlist[0]).apply()
+                    val sharedPref = this@Home.getSharedPreferences("user", Context.MODE_PRIVATE)
+                    sharedPref.edit().putString("metar", metarlist[0]).apply()
 
 
                     //user_txt_metar.text = metarlist[0]
