@@ -7,12 +7,11 @@
     tools:context=".WeatherReports">
 
     <LinearLayout
-        android:id="@+id/top"
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="2"
         android:divider="@color/black"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -21,40 +20,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
             android:ems="10"
+            android:gravity="center_horizontal"
+            android:hint="@string/weatherinfo"
+            android:importantForAutofill="no"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="29dp" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteX="76dp"
-            tools:layout_editor_absoluteY="102dp" />
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
+
+            <Button
+                android:id="@+id/weather_btn_metar"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:text="@string/metar"
+                tools:layout_editor_absoluteX="76dp"
+                tools:layout_editor_absoluteY="102dp" />
+
+            <Button
+                android:id="@+id/weather_btn_taf"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taf"
+                tools:layout_editor_absoluteX="222dp"
+                tools:layout_editor_absoluteY="102dp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteX="222dp"
-            tools:layout_editor_absoluteY="102dp" />
+            android:layout_marginTop="25dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
 
     </LinearLayout>
 
-
-    <ScrollView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/weather_btn_near"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/top">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        android:layout_marginBottom="10dp"
+        android:text="@string/near"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

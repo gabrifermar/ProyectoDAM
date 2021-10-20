@@ -47,8 +47,14 @@
     <!--Settings-->
     <string name="daynight">Dark mode</string>
 
+    <!--Weather-->
+    <string name="metar">METAR</string>
+    <string name="taf">TAF</string>
+    <string name="weatherinfo">ICAO</string>
+    <string name="near">Search near</string>
 
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>
     <string name="errornewuser">Error creating user</string>
+    <string name="locationerror">For near stations you need to accept location permission</string>
 </resources>
