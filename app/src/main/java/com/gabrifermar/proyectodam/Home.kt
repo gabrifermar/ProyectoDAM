@@ -108,6 +108,7 @@ class Home : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
 
+                    /*
                     db.collection("users").document(auth.currentUser!!.uid).get()
                         .addOnSuccessListener { document ->
                             if (document != null) {
@@ -124,7 +125,7 @@ class Home : AppCompatActivity() {
                                 }
 
                             }
-                        }
+                        }*/
 
                     startActivity(Intent(this, Usermain::class.java))
 

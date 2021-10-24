@@ -2,40 +2,87 @@ package com.gabrifermar.proyectodam
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
+import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.gabrifermar.proyectodam.databinding.ActivityWeatherReportsBinding
 import com.google.android.gms.location.*
-import kotlinx.android.synthetic.main.activity_weather_reports.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class WeatherReports : AppCompatActivity() {
 
+    private lateinit var binding: ActivityWeatherReportsBinding
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var adapter: MetarAdapter
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
+    private var metarlist = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_weather_reports)
+        binding = ActivityWeatherReportsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initRecycler()
+
 
         //variable
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
 
-        weather_btn_near.setOnClickListener {
+        binding.weatherBtnNear.setOnClickListener {
             getLastLocation()
+            loadmetar("", 2)
         }
+
+        binding.weatherBtnMetar.setOnClickListener {
+            hideKeyboard(this, binding.weatherTxtInput)
+            binding.weatherTxtInput.clearFocus()
+            loadmetar(binding.weatherTxtInput.text.toString(), 1)
+        }
+
+        binding.weatherBtnTaf.setOnClickListener {
+            hideKeyboard(this, binding.weatherTxtInput)
+            binding.weatherTxtInput.clearFocus()
+            loadtaf(binding.weatherTxtInput.text.toString())
+        }
+
+        locationRequest = LocationRequest.create().apply {
+            interval = 5000
+            fastestInterval = 20000
+            smallestDisplacement = 100f
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            isWaitForAccurateLocation = true
+        }
+
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                p0 ?: return
+                if (p0.locations.isNotEmpty()) {
+                    lat = String.format("%.2f", p0.lastLocation.latitude).toDouble()
+                    lon = String.format("%.2f", p0.lastLocation.longitude).toDouble()
+                }
+            }
+        }
+
+        startLocationUpdates()
+
 
     }
 
@@ -68,15 +115,10 @@ class WeatherReports : AppCompatActivity() {
     private fun getLastLocation() {
         if (checkPermission()) {
             if (isLocationEnabled()) {
-                Log.d("hola", "ok enabled")
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener {
                     val location = it.result
                     if (location == null) {
                         getLocation()
-                    } else {
-                        //TODO: call api close stations and reclycler view adapter and update pos
-                        Log.d("location", location.latitude.toString())
-                        Log.d("location", location.longitude.toString())
                     }
                 }
             } else {
@@ -91,51 +133,112 @@ class WeatherReports : AppCompatActivity() {
         startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
     }
 
-/*
-    private fun checkPermission(permission: String, name: String, requestCode: Int) {
-        Log.d("permission","ok")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                ContextCompat.checkSelfPermission(
-                    this,
-                    permission
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    Log.d("permission","granted")
-                    locationinfo()
-                    //ok
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun getmetarcall(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.checkwx.com/metar/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    internal fun loadmetar(query: String, mode: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            //mode 1 = search stations
+            if (mode == 1) {
+                val call = getmetarcall().create(API::class.java)
+                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                val metarcall = call.body()
+                runOnUiThread {
+                    if (call.isSuccessful) {
+                        val metars = metarcall?.data ?: emptyList()
+                        metarlist.clear()
+                        metarlist.addAll(metars)
+                        adapter.notifyDataSetChanged()
+                    }
                 }
-                shouldShowRequestPermissionRationale(permission) -> showDialog(
-                    permission,
-                    name,
-                    requestCode
-                )
 
-                else -> ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(permission),
-                    requestCode
-                )
+                //mode 2 = near stations
+            } else if (mode == 2) {
+                val call = getmetarcall().create(API::class.java)
+                    .getMetar("lat/$lat/lon/$lon/?x-api-key=d49660ce845e4f3db1fc469256")
+                val levs = call.body()
+                runOnUiThread {
+                    if (call.isSuccessful) {
+                        val metars = levs?.data ?: emptyList()
+                        metarlist.clear()
+                        metarlist.addAll(metars)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
             }
         }
-    }*/
+    }
 
+    private fun gettafcall(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.checkwx.com/taf/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 
-    /*
-    private fun showDialog(permission: String, name: String, requestCode: Int) {
-        val builder = AlertDialog.Builder(this)
-
-        builder.apply {
-            setMessage(R.string.locationerror)
-            setTitle("Permision required")
-            setPositiveButton("ok") { dialog, which ->
-                ActivityCompat.requestPermissions(
-                    this@WeatherReports,
-                    arrayOf(permission),
-                    requestCode
-                )
+    internal fun loadtaf(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = gettafcall().create(API::class.java)
+                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+            val tafcall = call.body()
+            runOnUiThread {
+                if (call.isSuccessful) {
+                    val tafs = tafcall?.data ?: emptyList()
+                    metarlist.clear()
+                    metarlist.addAll(tafs)
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
-        val dialog = builder.create()
-        dialog.show()
-    }*/
+    }
+
+    private fun initRecycler() {
+        binding.weatherRvReports.layoutManager = LinearLayoutManager(this)
+        adapter = MetarAdapter(metarlist)
+        binding.weatherRvReports.adapter = adapter
+    }
+
+    private fun hideKeyboard(context: Context, v: View) {
+        val inputMethodManager =
+            applicationContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopLocationUpdates()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        startLocationUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
 }

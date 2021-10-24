@@ -15,6 +15,7 @@
         android:theme="@style/Theme.ProyectoDAM">
         <activity
             android:name=".WeatherReports"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:exported="false" />
         <activity
             android:name=".NewUser"
