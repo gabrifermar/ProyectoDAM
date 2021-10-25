@@ -50,6 +50,8 @@ class WeatherReports : AppCompatActivity() {
             loadmetar("", 2)
         }
 
+// TODO: Crashea cuando le das al botón y el campo está vacío
+
         binding.weatherBtnMetar.setOnClickListener {
             hideKeyboard(this, binding.weatherTxtInput)
             binding.weatherTxtInput.clearFocus()
