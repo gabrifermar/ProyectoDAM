@@ -14,9 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
-            android:name=".WeatherReports"
-            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:name=".Charts"
             android:exported="false" />
+        <activity
+            android:name=".WeatherReports"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".NewUser"
             android:exported="true" />

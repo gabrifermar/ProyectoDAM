@@ -43,6 +43,7 @@
     <string name="flights">Flights</string>
     <string name="weather">Weather reports</string>
     <string name="logout">Log out</string>
+    <string name="charts">Charts</string>
 
     <!--Settings-->
     <string name="daynight">Dark mode</string>
@@ -57,4 +58,6 @@
     <string name="fillfields">Fill in the fields</string>
     <string name="errornewuser">Error creating user</string>
     <string name="locationerror">For near stations you need to accept location permission</string>
+    <string name="emptyfield">Empty field</string>
+    <string name="wrongicao">Wrong ICAO</string>
 </resources>

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,18 +49,28 @@ class WeatherReports : AppCompatActivity() {
             loadmetar("", 2)
         }
 
-// TODO: Crashea cuando le das al botón y el campo está vacío
-
         binding.weatherBtnMetar.setOnClickListener {
-            hideKeyboard(this, binding.weatherTxtInput)
-            binding.weatherTxtInput.clearFocus()
-            loadmetar(binding.weatherTxtInput.text.toString(), 1)
+            //Check empty edit text
+            if (binding.weatherTxtInput.text.isEmpty()) {
+                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                binding.weatherTxtInput.requestFocus()
+            } else {
+                hideKeyboard(this, binding.weatherTxtInput)
+                binding.weatherTxtInput.clearFocus()
+                loadmetar(binding.weatherTxtInput.text.toString(), 1)
+            }
         }
 
         binding.weatherBtnTaf.setOnClickListener {
-            hideKeyboard(this, binding.weatherTxtInput)
-            binding.weatherTxtInput.clearFocus()
-            loadtaf(binding.weatherTxtInput.text.toString())
+            if (binding.weatherTxtInput.text.isEmpty()) {
+                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                binding.weatherTxtInput.requestFocus()
+            } else {
+                hideKeyboard(this, binding.weatherTxtInput)
+                binding.weatherTxtInput.clearFocus()
+                loadtaf(binding.weatherTxtInput.text.toString())
+            }
+
         }
 
         locationRequest = LocationRequest.create().apply {
@@ -73,6 +82,7 @@ class WeatherReports : AppCompatActivity() {
         }
 
 
+        //update pos
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 p0 ?: return
@@ -84,8 +94,6 @@ class WeatherReports : AppCompatActivity() {
         }
 
         startLocationUpdates()
-
-
     }
 
     private fun checkPermission(): Boolean {
@@ -163,7 +171,10 @@ class WeatherReports : AppCompatActivity() {
                     .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
                 val metarcall = call.body()
                 runOnUiThread {
-                    if (call.isSuccessful) {
+                    if(metarcall?.results==0){
+                        binding.weatherTxtInput.error=resources.getString(R.string.wrongicao)
+                        binding.weatherTxtInput.requestFocus()
+                    }else if (call.isSuccessful) {
                         val metars = metarcall?.data ?: emptyList()
                         metarlist.clear()
                         metarlist.addAll(metars)
@@ -241,6 +252,11 @@ class WeatherReports : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 }

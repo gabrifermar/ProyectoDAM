@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.gabrifermar.proyectodam.Charts
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.Usermain
 import com.gabrifermar.proyectodam.WeatherReports
@@ -46,6 +47,10 @@ class ToolsFragment : Fragment() {
 
         user_tools_cv_weather.setOnClickListener {
             startActivity(Intent(activity, WeatherReports::class.java))
+        }
+
+        user_tools_cv_charts.setOnClickListener {
+            startActivity(Intent(activity, Charts::class.java))
         }
 
     }

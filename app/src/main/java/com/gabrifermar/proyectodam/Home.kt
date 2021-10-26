@@ -132,6 +132,7 @@ class Home : AppCompatActivity() {
                     //admin access
                 } else if (username.text.toString() == "admin" && password.text.toString() == "admin") {
                     startActivity(Intent(this, Admin::class.java))
+                    finish()
 
 
                     //error
