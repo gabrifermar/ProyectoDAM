@@ -58,57 +58,55 @@ class Login : Fragment() {
         val db = Firebase.firestore
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
+        if(binding.username.text.isNotEmpty() || binding.password.text.isNotEmpty() ) {
+
+            auth.signInWithEmailAndPassword(
+                binding.username.text.toString() + "@hola.com",
+                binding.password.text.toString()
+            )
+                .addOnCompleteListener(activity as Home) { task ->
+                    if (task.isSuccessful) {
+
+                        db.collection("users").document(auth.currentUser!!.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document != null) {
+
+                                    val sharedPref =
+                                        (activity as Home).getSharedPreferences(
+                                            "user",
+                                            Context.MODE_PRIVATE
+                                        )
+                                    sharedPref.edit()
+                                        .putString("username", document.getString("username"))
+                                        .putBoolean("C172", document.getBoolean("C172")!!)
+                                        .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                        .putBoolean("P06T", document.getBoolean("P06T")!!)
+                                        .putBoolean("subjects", document.getBoolean("subjects")!!)
+                                        .apply()
 
 
-if(binding.username.text.isNotEmpty() || binding.password.text.isNotEmpty() ){
+                                    //check user settings
+                                    if (document.getBoolean("subjects") == true) {
+                                        //check fields
+                                    }
 
-
-
-}
-
-
-        auth.signInWithEmailAndPassword(
-            binding.username.text.toString() + "@hola.com",
-            binding.password.text.toString()
-        )
-            .addOnCompleteListener(activity as Home) { task ->
-                if (task.isSuccessful) {
-
-                    db.collection("users").document(auth.currentUser!!.uid).get()
-                        .addOnSuccessListener { document ->
-                            if (document != null) {
-
-                                val sharedPref =
-                                    (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
-                                sharedPref.edit()
-                                    .putString("username", document.getString("username"))
-                                    .putBoolean("C172", document.getBoolean("C172")!!)
-                                    .putBoolean("P28R", document.getBoolean("P28R")!!)
-                                    .putBoolean("P06T",document.getBoolean("P06T")!!)
-                                    .putBoolean("subjects" , document.getBoolean("subjects")!!)
-                                    .apply()
-
-
-
-                                //check user settings
-                                if (document.getBoolean("subjects") == true) {
-                                    //check fields
                                 }
-
                             }
-                        }
 
-                    startActivity(Intent(activity, Usermain::class.java))
+                        startActivity(Intent(activity, Usermain::class.java))
 
-                    //admin access
-                } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
-                    startActivity(Intent(activity, Admin::class.java))
+                        //admin access
+                    } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
+                        startActivity(Intent(activity, Admin::class.java))
 
-                    //error
-                } else {
-                    Toast.makeText(activity, "error", Toast.LENGTH_LONG).show()
+                        //error
+                    } else {
+                        Toast.makeText(activity, "error", Toast.LENGTH_LONG).show()
+                    }
                 }
-            }
+        }else{
+            Toast.makeText(activity,getString(R.string.errornewuser),Toast.LENGTH_LONG).show()
+        }
     }
 
 
