@@ -59,6 +59,14 @@ class Login : Fragment() {
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
 
+
+if(binding.username.text.isNotEmpty() || binding.password.text.isNotEmpty() ){
+
+
+
+}
+
+
         auth.signInWithEmailAndPassword(
             binding.username.text.toString() + "@hola.com",
             binding.password.text.toString()
