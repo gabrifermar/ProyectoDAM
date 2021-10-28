@@ -1,56 +1,109 @@
 package com.gabrifermar.proyectodam
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.gabrifermar.proyectodam.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Login.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Login : Fragment() {
 
+    private var _binding: FragmentLoginBinding? = null
+    private lateinit var auth: FirebaseAuth
+
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        binding.btnlogin.setOnClickListener {
+            login()
+        }
+
+
+
+
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_login, container, false)
+
     }
-/*
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Login.
-         */
-        // Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Login().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    //TODO crashea cuando strings vacias para login, falta un if
+    private fun login() {
+
+        //variable
+        auth = Firebase.auth
+        val db = Firebase.firestore
+
+        //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
+
+        auth.signInWithEmailAndPassword(
+            binding.username.text.toString() + "@hola.com",
+            binding.password.text.toString()
+        )
+            .addOnCompleteListener(activity as Home) { task ->
+                if (task.isSuccessful) {
+
+                    db.collection("users").document(auth.currentUser!!.uid).get()
+                        .addOnSuccessListener { document ->
+                            if (document != null) {
+
+                                val sharedPref =
+                                    (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
+                                sharedPref.edit()
+                                    .putString("username", document.getString("username"))
+                                    .putBoolean("C172", document.getBoolean("C172")!!)
+                                    .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                    .putBoolean("P06T",document.getBoolean("P06T")!!)
+                                    .putBoolean("subjects" , document.getBoolean("subjects")!!)
+                                    .apply()
+
+
+
+                                //check user settings
+                                if (document.getBoolean("subjects") == true) {
+                                    //check fields
+                                }
+
+                            }
+                        }
+
+                    startActivity(Intent(activity, Usermain::class.java))
+
+                    //admin access
+                } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
+                    startActivity(Intent(activity, Admin::class.java))
+
+                    //error
+                } else {
+                    Toast.makeText(activity, "error", Toast.LENGTH_LONG).show()
                 }
             }
-    }*/
+    }
+
+
 /*
     if(username.toString()=="admin"&&password.toString()=="admin"){
         startActivity(Intent(activity,Admin::class.java))

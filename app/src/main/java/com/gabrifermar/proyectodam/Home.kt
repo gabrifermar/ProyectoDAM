@@ -38,12 +38,10 @@ class Home : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        //supportFragmentManager.beginTransaction().add(R.id.nav_host_fragment_container, Settings.newInstance())
-
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //supportFragmentManager.beginTransaction().add(R.id.nav_host_fragment_container, Settings.newInstance())
 
         setSupportActionBar(binding.appBarHome.toolbar)
 
@@ -62,8 +60,6 @@ class Home : AppCompatActivity() {
 
         //TODO: cuando carga directo la activity de User al estar logado, no carga el nuevo metar y no actualiza
         loadmetar("LEVS")
-
-
 
     }
 
@@ -164,9 +160,6 @@ class Home : AppCompatActivity() {
 
                     val sharedPref = this@Home.getSharedPreferences("user", Context.MODE_PRIVATE)
                     sharedPref.edit().putString("metar", metarlist[0]).apply()
-
-
-                    //user_txt_metar.text = metarlist[0]
                 }
             }
         }

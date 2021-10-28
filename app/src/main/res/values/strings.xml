@@ -60,4 +60,12 @@
     <string name="locationerror">For near stations you need to accept location permission</string>
     <string name="emptyfield">Empty field</string>
     <string name="wrongicao">Wrong ICAO</string>
+    <string name="writepermission">Required permission to save file</string>
+    <string name="writepermissiontitle">Grant write permission</string>
+    <string name="cancel">Cancel</string>
+    <string name="usercreated">User created</string>
+    
+    <!--Flights-->
+    <string name="lock">Lock</string>
+
 </resources>

@@ -29,11 +29,6 @@ class NewUser : AppCompatActivity() {
 
         btncreateuser.setOnClickListener {
 
-            Log.d("hola", cbnewuser1.isChecked.toString())
-            Log.d("hola", cbnewuser2.isChecked.toString())
-            Log.d("hola", cbnewuser3.isChecked.toString())
-            Log.d("hola", cbnewuser4.isChecked.toString())
-
             //Try catch for sign up errors
             try {
                 auth.createUserWithEmailAndPassword(
@@ -52,11 +47,11 @@ class NewUser : AppCompatActivity() {
                                 "P06T" to cbnewuser4.isChecked
                             )
 
-
                             db.collection("users").document(auth.currentUser!!.uid)
                                 .set(user, SetOptions.merge())
 
-                            startActivity(Intent(this, Admin::class.java))
+                            Toast.makeText(this,getString(R.string.usercreated),Toast.LENGTH_SHORT).show()
+
                             finish()
                         } else {
                             //pass less than 6 characters

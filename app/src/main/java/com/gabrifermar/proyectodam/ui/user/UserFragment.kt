@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.net.sip.SipSession
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,8 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.animation.addPauseListener
+import com.gabrifermar.proyectodam.FlightMenu
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.Usermain
+import com.gabrifermar.proyectodam.databinding.FragmentUsermainBinding
 import com.google.common.base.MoreObjects
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,13 +38,17 @@ class UserFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var flightpb: ObjectAnimator
     private lateinit var subjectpb:ObjectAnimator
+    private var _binding: FragmentUsermainBinding?=null
 
+    private val binding get()=_binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_usermain, container, false)
+    ): View {
+        _binding= FragmentUsermainBinding.inflate(inflater,container,false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_usermain, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,6 +59,11 @@ class UserFragment : Fragment() {
         val db = Firebase.firestore
         auth = Firebase.auth
 
+
+        //listeners
+        binding.userCvFlights.setOnClickListener {
+            startActivity(Intent(activity,FlightMenu::class.java))
+        }
 
 
 
@@ -117,17 +129,6 @@ class UserFragment : Fragment() {
         Log.d("metar2", sharedPref.getString("metar", "no hay").toString())
         user_txt_metar.text=sharedPref.getString("metar","no hay").toString()
 
-
-
-
-
-        user_cv_subjects.setOnClickListener {
-            Toast.makeText(activity, "asignaturas", Toast.LENGTH_SHORT).show()
-        }
-
-        user_cv_flights.setOnClickListener {
-            Toast.makeText(activity, "Vuelos", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onPause() {
@@ -142,5 +143,10 @@ class UserFragment : Fragment() {
         super.onStop()
     }
 
+    override fun onResume() {
+        flightpb.start()
+        subjectpb.start()
+        super.onResume()
+    }
 
 }
