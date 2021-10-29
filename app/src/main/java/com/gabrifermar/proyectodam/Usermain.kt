@@ -2,8 +2,11 @@ package com.gabrifermar.proyectodam
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.VISIBLE
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +30,16 @@ class Usermain : AppCompatActivity() {
 
     private lateinit var binding: ActivityUsermainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var auth: FirebaseAuth
     //private val metarlist = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //variable
+        auth= FirebaseAuth.getInstance()
+
+        //bindings
         binding = ActivityUsermainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -50,6 +58,7 @@ class Usermain : AppCompatActivity() {
             )
         )
 
+
         //Añadir opciones al nav navigator
         //navView.menu.findItem(R.id.vuelo).isVisible = true
 
@@ -63,8 +72,6 @@ class Usermain : AppCompatActivity() {
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         startActivity(mapIntent)*/
-
-
 
 
     }
@@ -98,4 +105,27 @@ class Usermain : AppCompatActivity() {
         }
     }
     */
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.user_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.action_settings -> {
+                startActivity(Intent(this, Settings::class.java))
+                true
+            }
+            R.id.logout -> {
+                auth.signOut()
+                startActivity(Intent(this,Home::class.java))
+                finish()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

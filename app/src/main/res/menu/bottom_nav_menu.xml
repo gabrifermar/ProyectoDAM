@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/fragment_user_tools"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_user_tools"
         android:title="@string/title_tools"/>
 
     <item

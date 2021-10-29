@@ -18,7 +18,7 @@
 
     <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
 
-    <style name="Theme.ProyectoDAM.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.ProyectoDAM.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight.ActionBar" />
 
-    <style name="Theme.ProyectoDAM.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.ProyectoDAM.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
 </resources>

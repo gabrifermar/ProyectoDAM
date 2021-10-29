@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_menu_login.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout-v23/fragment_user_tools.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_admin.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_home.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_main.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_new_user.xml" value="0.3625" />
-        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_settings.xml" value="0.3625" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_settings.xml" value="0.2781065088757396" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_usermain.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_weather_reports.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/app_bar_home.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/content_home.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_dashboard.xml" value="0.20260416666666667" />
@@ -21,16 +24,20 @@
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_notifications.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_settings.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_slideshow.xml" value="0.27870370370370373" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_user_tools.xml" value="0.1" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_usermain.xml" value="0.33611111111111114" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_vuelo.xml" value="0.1875" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/item_weather.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/nav_header_home.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/user_fragment.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/user_home_activity.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/user_main_fragment.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/user_menu.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layouts/home/fragment_login.xml" value="0.2740740740740741" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/menu/activity_main_drawer.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/menu/home.xml" value="0.3625" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/menu/user_menu.xml" value="0.3625" />
       </map>
     </option>
   </component>
