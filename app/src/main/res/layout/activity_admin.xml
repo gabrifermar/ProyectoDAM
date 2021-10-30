@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/btnnewuser"
+            android:id="@+id/admin_btn_newuser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/newuser"
@@ -25,7 +25,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="newuser"/>
+            />
+
+        <Button
+            android:id="@+id/admin_btn_addwaypoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newwaypoint"
+            />
 
     </LinearLayout>
 

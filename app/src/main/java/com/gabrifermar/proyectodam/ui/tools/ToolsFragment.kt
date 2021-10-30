@@ -15,16 +15,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.gabrifermar.proyectodam.Charts
-import com.gabrifermar.proyectodam.R
-import com.gabrifermar.proyectodam.Usermain
-import com.gabrifermar.proyectodam.WeatherReports
+import com.gabrifermar.proyectodam.*
 import com.gabrifermar.proyectodam.databinding.FragmentUserToolsBinding
 import com.google.firebase.firestore.auth.User
 import kotlinx.android.synthetic.main.fragment_user_tools.*
 import java.util.jar.Manifest
 
 class ToolsFragment : Fragment() {
+
+    //TODO: flight planner
 
     private var _binding: FragmentUserToolsBinding? = null
     private lateinit var viewModel: ToolsViewModel
@@ -37,20 +36,27 @@ class ToolsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_user_tools, container, false)
+    ): View {
+        _binding = FragmentUserToolsBinding.inflate(layoutInflater)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_user_tools, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ToolsViewModel::class.java)
 
-        user_tools_cv_weather.setOnClickListener {
+        //listeners
+        binding.userToolsCvWeather.setOnClickListener {
             startActivity(Intent(activity, WeatherReports::class.java))
         }
 
-        user_tools_cv_charts.setOnClickListener {
+        binding.userToolsCvWeather.setOnClickListener {
             startActivity(Intent(activity, Charts::class.java))
+        }
+
+        binding.userToolsCvFlightplanner.setOnClickListener {
+            startActivity(Intent(activity, NewWaypoint::class.java))
         }
 
     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.gabrifermar.proyectodam.databinding.ActivityNewUserBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,33 +19,35 @@ import java.lang.IllegalArgumentException
 class NewUser : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityNewUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_user)
+        binding= ActivityNewUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Declare variable and start them
         auth = Firebase.auth
         val db = Firebase.firestore
 
-        btncreateuser.setOnClickListener {
+        binding.btncreateuser.setOnClickListener {
 
             //Try catch for sign up errors
             try {
                 auth.createUserWithEmailAndPassword(
-                    txtnewuser.text.toString() + "@hola.com",
-                    txtnewpass.text.toString()
+                    binding.txtnewuser.text.toString() + "@hola.com",
+                    binding.txtnewpass.text.toString()
                 )
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
 
                             //Write user config on db if sign up ok
                             val user = hashMapOf(
-                                "username" to txtnewuser.text.toString(),
-                                "subjects" to cbnewuser1.isChecked,
-                                "C172" to cbnewuser2.isChecked,
-                                "P28R" to cbnewuser3.isChecked,
-                                "P06T" to cbnewuser4.isChecked
+                                "username" to binding.txtnewuser.text.toString(),
+                                "subjects" to binding.cbnewuser1.isChecked,
+                                "C172" to binding.cbnewuser2.isChecked,
+                                "P28R" to binding.cbnewuser3.isChecked,
+                                "P06T" to binding.cbnewuser4.isChecked
                             )
 
                             db.collection("users").document(auth.currentUser!!.uid)

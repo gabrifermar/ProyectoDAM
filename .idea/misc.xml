@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Gabriel/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_admin.xml" value="0.18432971014492755" />
+        <entry key="..\:/Users/Gabriel/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/activity_new_waypoint.xml" value="0.18432971014492755" />
+        <entry key="..\:/Users/Gabriel/AndroidStudioProjects/ProyectoDAM/app/src/main/res/layout/fragment_user_tools.xml" value="0.18432971014492755" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/ProyectoDAM/app/src/main/res/drawable/ic_menu_login.xml" value="0.37864583333333335" />

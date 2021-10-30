@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
+            android:name=".NewWaypoint"
+            android:exported="false" />
+        <activity
             android:name=".FlightMenu"
             android:exported="false" />
         <activity
