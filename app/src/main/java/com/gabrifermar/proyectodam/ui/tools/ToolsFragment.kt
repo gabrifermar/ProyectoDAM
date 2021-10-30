@@ -39,7 +39,6 @@ class ToolsFragment : Fragment() {
     ): View {
         _binding = FragmentUserToolsBinding.inflate(layoutInflater)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_user_tools, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,7 +55,7 @@ class ToolsFragment : Fragment() {
         }
 
         binding.userToolsCvFlightplanner.setOnClickListener {
-            startActivity(Intent(activity, NewWaypoint::class.java))
+            startActivity(Intent(activity, FlightPlanner::class.java))
         }
 
     }

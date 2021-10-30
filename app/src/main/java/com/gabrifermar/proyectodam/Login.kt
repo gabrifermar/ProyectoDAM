@@ -97,6 +97,7 @@ class Login : Fragment() {
 
                         //admin access
                     } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
+                        auth.signInAnonymously()
                         startActivity(Intent(activity, Admin::class.java))
 
                         //error

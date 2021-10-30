@@ -20,6 +20,7 @@ class NewWaypoint : AppCompatActivity() {
 
         //variables
 
+
         binding.waypointBtnAdd.setOnClickListener {
             addwaypoint()
         }
@@ -29,22 +30,25 @@ class NewWaypoint : AppCompatActivity() {
 
         //variables
         val db = Firebase.firestore
+        var index = 0
 
         //check fields not empty
         if (binding.waypointEtName.text.isNotEmpty() && binding.waypointEtLat.text.isNotEmpty() && binding.waypointEtLon.text.isNotEmpty()) {
-
             //try catch for writing errors
             try {
-
                 val waypoint = hashMapOf(
+                    "name" to binding.waypointEtName.text.toString(),
                     "lat" to binding.waypointEtLat.text.toString().toDouble(),
                     "lon" to binding.waypointEtLon.text.toString().toDouble()
                 )
 
-                db.collection("waypoints").document(binding.waypointEtName.text.toString())
-                    .set(waypoint)
+                db.collection("waypoints").get().addOnSuccessListener { document ->
+                    index = document.size()
+                    db.collection("waypoints").document((index+1).toString())
+                        .set(waypoint)
+                }
 
-                Toast.makeText(this,getString(R.string.writesuccess),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.writesuccess), Toast.LENGTH_SHORT).show()
 
                 finish()
 
