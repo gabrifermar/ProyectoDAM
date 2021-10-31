@@ -70,9 +70,11 @@
     <string name="usercreated">User created</string>
     <string name="error">Error</string>
     <string name="writesuccess">Successful added</string>
+    <string name="lockedcontent">Locked content</string>
 
     <!--Flights-->
     <string name="lock">Lock</string>
+    <string name="c712poh"><u>C172 POH</u></string>
 
     <!--Flight planner-->
     <string name="create">Create</string>

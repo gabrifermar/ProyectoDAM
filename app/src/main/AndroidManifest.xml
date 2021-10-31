@@ -15,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
+            android:name=".P06T"
+            android:exported="false" />
+        <activity
+            android:name=".P28R"
+            android:exported="false" />
+        <activity
+            android:name=".C172"
+            android:exported="false" />
+        <activity
             android:name=".FlightPlanner"
             android:exported="false" />
         <activity
