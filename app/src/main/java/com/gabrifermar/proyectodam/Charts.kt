@@ -63,7 +63,7 @@ class Charts : AppCompatActivity() {
 
 
         //binding.chartsWvWebview.loadUrl("https://aip.enaire.es/AIP/contenido_AIP/AD/AD2/LEMD/LE_AD_2_LEMD_PDC_2_en.pdf")
-        binding.chartsWvWebview.loadUrl("https://aip.enaire.es/AIP/")
+        binding.chartsWvWebview.loadUrl("https://aip.enaire.es/AIP")
     }
 
     //TODO https://vlemon.com/blog/android/android-webview-how-to-download-a-file-using-kotlin download files

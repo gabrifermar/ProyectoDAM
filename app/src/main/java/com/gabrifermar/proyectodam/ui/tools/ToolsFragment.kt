@@ -50,7 +50,7 @@ class ToolsFragment : Fragment() {
             startActivity(Intent(activity, WeatherReports::class.java))
         }
 
-        binding.userToolsCvWeather.setOnClickListener {
+        binding.userToolsCvCharts.setOnClickListener {
             startActivity(Intent(activity, Charts::class.java))
         }
 

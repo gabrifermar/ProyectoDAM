@@ -50,7 +50,6 @@ class Login : Fragment() {
         _binding = null
     }
 
-    //TODO crashea cuando strings vacias para login, falta un if
     private fun login() {
 
         //variable
