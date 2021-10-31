@@ -1,29 +1,18 @@
 package com.gabrifermar.proyectodam.ui.tools
 
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.gabrifermar.proyectodam.*
+import com.gabrifermar.proyectodam.Charts
+import com.gabrifermar.proyectodam.FlightPlanner
+import com.gabrifermar.proyectodam.WeatherReports
 import com.gabrifermar.proyectodam.databinding.FragmentUserToolsBinding
-import com.google.firebase.firestore.auth.User
-import kotlinx.android.synthetic.main.fragment_user_tools.*
-import java.util.jar.Manifest
 
 class ToolsFragment : Fragment() {
-
-    //TODO: flight planner
 
     private var _binding: FragmentUserToolsBinding? = null
     private lateinit var viewModel: ToolsViewModel

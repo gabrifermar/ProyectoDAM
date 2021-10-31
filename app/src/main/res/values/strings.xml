@@ -74,4 +74,8 @@
     <!--Flights-->
     <string name="lock">Lock</string>
 
+    <!--Flight planner-->
+    <string name="create">Create</string>
+    <string name="search">Search</string>
+
 </resources>

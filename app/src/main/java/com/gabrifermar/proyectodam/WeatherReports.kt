@@ -163,7 +163,7 @@ class WeatherReports : AppCompatActivity() {
             .build()
     }
 
-    internal fun loadmetar(query: String, mode: Int) {
+    private fun loadmetar(query: String, mode: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             //mode 1 = search stations
             if (mode == 1) {
@@ -206,7 +206,7 @@ class WeatherReports : AppCompatActivity() {
             .build()
     }
 
-    internal fun loadtaf(query: String) {
+    private fun loadtaf(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val call = gettafcall().create(API::class.java)
                 .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")

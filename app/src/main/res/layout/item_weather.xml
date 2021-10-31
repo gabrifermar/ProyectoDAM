@@ -3,21 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="3dp"
+    android:layout_marginRight="5dp"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="2dp"
-        android:background="?attr/colorOnSecondary"/>
+        android:background="?attr/colorOnSecondary" />
+
     <TextView
         android:id="@+id/weather_item_metar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="RAW metar/taf"
-        />
+        tools:text="RAW metar/taf" />
 
 </LinearLayout>
