@@ -22,27 +22,18 @@ class Login : Fragment() {
 
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        //listeners
         binding.btnlogin.setOnClickListener {
             login()
         }
 
-
-
-
         return binding.root
-        //return inflater.inflate(R.layout.fragment_login, container, false)
-
     }
 
     override fun onDestroy() {
@@ -57,7 +48,7 @@ class Login : Fragment() {
         val db = Firebase.firestore
 
         //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
-        if(binding.username.text.isNotEmpty() || binding.password.text.isNotEmpty() ) {
+        if (binding.username.text.isNotEmpty() || binding.password.text.isNotEmpty()) {
 
             auth.signInWithEmailAndPassword(
                 binding.username.text.toString() + "@hola.com",
@@ -83,12 +74,6 @@ class Login : Fragment() {
                                         .putBoolean("subjects", document.getBoolean("subjects")!!)
                                         .apply()
 
-
-                                    //check user settings
-                                    if (document.getBoolean("subjects") == true) {
-                                        //check fields
-                                    }
-
                                 }
                             }
 
@@ -104,15 +89,8 @@ class Login : Fragment() {
                         Toast.makeText(activity, "error", Toast.LENGTH_LONG).show()
                     }
                 }
-        }else{
-            Toast.makeText(activity,getString(R.string.errornewuser),Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(activity, getString(R.string.errornewuser), Toast.LENGTH_LONG).show()
         }
     }
-
-
-/*
-    if(username.toString()=="admin"&&password.toString()=="admin"){
-        startActivity(Intent(activity,Admin::class.java))
-    }
-*/
 }

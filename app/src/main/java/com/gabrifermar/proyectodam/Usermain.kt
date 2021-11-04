@@ -35,13 +35,13 @@ class Usermain : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityUsermainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //variable
         auth= FirebaseAuth.getInstance()
 
-        //bindings
-        binding = ActivityUsermainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
 
         val navView: BottomNavigationView = binding.navView
 

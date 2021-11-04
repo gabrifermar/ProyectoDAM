@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+    <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 
     <style name="Theme.ProyectoDAM.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight.ActionBar" />
 

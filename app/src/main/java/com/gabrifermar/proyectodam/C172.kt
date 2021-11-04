@@ -34,7 +34,7 @@ class C172 : AppCompatActivity() {
 
 
         //listeners
-        binding.c172TvPoh.setOnClickListener {
+        binding.c172BtnPoh.setOnClickListener {
             //check for permission
             if (checkPermission()) {
                 val dn: DownloadManager =

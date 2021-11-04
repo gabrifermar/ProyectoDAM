@@ -17,8 +17,6 @@ class ToolsFragment : Fragment() {
     private var _binding: FragmentUserToolsBinding? = null
     private lateinit var viewModel: ToolsViewModel
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -30,8 +28,8 @@ class ToolsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ToolsViewModel::class.java)
 
         //listeners
@@ -46,8 +44,8 @@ class ToolsFragment : Fragment() {
         binding.userToolsCvFlightplanner.setOnClickListener {
             startActivity(Intent(activity, FlightPlanner::class.java))
         }
-
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

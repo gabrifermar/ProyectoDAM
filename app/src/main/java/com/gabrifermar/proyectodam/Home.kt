@@ -32,7 +32,6 @@ class Home : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var auth: FirebaseAuth
     private val metarlist = mutableListOf<String>()
 
 
@@ -87,55 +86,6 @@ class Home : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    fun login(view: View) {
-
-        //variable
-        auth = Firebase.auth
-        val db = Firebase.firestore
-
-        //val gsReference = storage.getReferenceFromUrl("gs://proyectoaep-d6bc6.appspot.com/Certificado.pdf")
-
-        auth.signInWithEmailAndPassword(
-            username.text.toString() + "@hola.com",
-            password.text.toString()
-        )
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-
-                    /*
-                    db.collection("users").document(auth.currentUser!!.uid).get()
-                        .addOnSuccessListener { document ->
-                            if (document != null) {
-
-                                val sharedPref =
-                                    this.getSharedPreferences("user", Context.MODE_PRIVATE)
-                                sharedPref.edit()
-                                    .putString("username", document.getString("username")).apply()
-
-
-                                //check user settings
-                                if (document.getBoolean("subjects") == true) {
-                                    //check fields
-                                }
-
-                            }
-                        }*/
-
-                    startActivity(Intent(this, Usermain::class.java))
-
-                    //admin access
-                } else if (username.text.toString() == "admin" && password.text.toString() == "admin") {
-                    startActivity(Intent(this, Admin::class.java))
-                    finish()
-
-
-                    //error
-                } else {
-                    Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
-                }
-            }
     }
 
     private fun getmetarcall(): Retrofit {

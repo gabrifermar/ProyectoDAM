@@ -30,8 +30,6 @@ class Admin : AppCompatActivity() {
         binding.adminBtnAddwaypoint.setOnClickListener {
             startActivity(Intent(this,NewWaypoint::class.java))
         }
-
-
     }
 
     override fun onBackPressed() {

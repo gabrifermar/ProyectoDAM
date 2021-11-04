@@ -13,9 +13,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="settings">Settings</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_gallery">News</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="login">Login</string>
+    <string name="menu_login">Login</string>
     <string name="pass">Password</string>
     <string name="user">Username</string>
     <string name="account">Account</string>
@@ -74,7 +74,12 @@
 
     <!--Flights-->
     <string name="lock">Lock</string>
-    <string name="c712poh"><u>C172 POH</u></string>
+    <string name="c712poh">C172 POH</string>
+    <string name="download">Download</string>
+    <string name="manuals">Manuals</string>
+    <string name="tests">Tests</string>
+    <string name="start">Start</string>
+    <string name="c172test">C172 Test</string>
 
     <!--Flight planner-->
     <string name="create">Create</string>
