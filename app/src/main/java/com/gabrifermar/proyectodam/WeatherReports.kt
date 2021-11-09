@@ -10,12 +10,18 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherReportsBinding
 import com.google.android.gms.location.*
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,40 +43,65 @@ class WeatherReports : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherReportsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initRecycler()
 
+        //load chips
+        //TODO:arreglar la carga de chips, se repite LEMD
+        loadIcao()
+
+        //start reclycerview
+        initRecycler()
 
         //variable
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        //listeners
+        binding.weatherCgIcao.setOnCheckedChangeListener { _, checkedId ->
+            val chip = binding.weatherCgIcao.findViewById<Chip>(checkedId)
+            binding.weatherCgIcao.removeView(chip)
+        }
+
+        binding.weatherBtnAdd.setOnClickListener {
+
+            //TODO: posible comprobacion de ICAO antes de añadir, llamando a la API
+
+            if (binding.weatherTxtInput.text.length == 4) {
+                addChip(binding.weatherTxtInput.text.toString().uppercase())
+                binding.weatherTxtInput.text.clear()
+            } else {
+                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                binding.weatherTxtInput.requestFocus()
+            }
+        }
+
+        binding.weatherTxtInput.setOnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                if (binding.weatherTxtInput.text.length == 4) {
+                    addChip(binding.weatherTxtInput.text.toString().uppercase())
+                    binding.weatherTxtInput.text.clear()
+                } else {
+                    binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                    binding.weatherTxtInput.requestFocus()
+                }
+                return@setOnKeyListener true
+            }
+            false
+        }
 
         binding.weatherBtnNear.setOnClickListener {
+            binding.weatherTxtInput.clearFocus()
             getLastLocation()
             loadmetar("", 2)
         }
 
         binding.weatherBtnMetar.setOnClickListener {
-            //Check empty edit text
-            if (binding.weatherTxtInput.text.isEmpty()) {
-                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
-                binding.weatherTxtInput.requestFocus()
-            } else {
-                hideKeyboard(this, binding.weatherTxtInput)
-                binding.weatherTxtInput.clearFocus()
-                loadmetar(binding.weatherTxtInput.text.toString(), 1)
-            }
+            binding.weatherTxtInput.clearFocus()
+            hideKeyboard(this, binding.weatherTxtInput)
+            loadmetar(icaolist().joinToString(separator = ","), 1)
         }
 
         binding.weatherBtnTaf.setOnClickListener {
-            if (binding.weatherTxtInput.text.isEmpty()) {
-                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
-                binding.weatherTxtInput.requestFocus()
-            } else {
-                hideKeyboard(this, binding.weatherTxtInput)
-                binding.weatherTxtInput.clearFocus()
-                loadtaf(binding.weatherTxtInput.text.toString())
-            }
-
+            hideKeyboard(this, binding.weatherTxtInput)
+            loadtaf(icaolist().joinToString(separator = ","))
         }
 
         locationRequest = LocationRequest.create().apply {
@@ -94,7 +125,31 @@ class WeatherReports : AppCompatActivity() {
         }
 
         startLocationUpdates()
+
     }
+
+    private fun icaolist(): List<String> {
+        val list = mutableListOf<String>()
+        for (i in 0 until binding.weatherCgIcao.size) {
+            val chip =
+                binding.weatherCgIcao.findViewById<Chip>(binding.weatherCgIcao.getChildAt(i).id)
+            list.add(chip.text.toString())
+        }
+        return list
+    }
+
+    private fun addChip(text: String) {
+        //variables
+        val chip = Chip(this)
+        val drawable = ChipDrawable.createFromAttributes(this, null, 0, R.style.Metarchip)
+
+        //setup chip
+        chip.setChipDrawable(drawable)
+        chip.text = text
+        chip.isCloseIconVisible = true
+        binding.weatherCgIcao.addView(chip)
+    }
+
 
     private fun checkPermission(): Boolean {
         if (ActivityCompat.checkSelfPermission(
@@ -171,10 +226,10 @@ class WeatherReports : AppCompatActivity() {
                     .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
                 val metarcall = call.body()
                 runOnUiThread {
-                    if(metarcall?.results==0){
-                        binding.weatherTxtInput.error=resources.getString(R.string.wrongicao)
+                    if (metarcall?.results == 0) {
+                        binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
                         binding.weatherTxtInput.requestFocus()
-                    }else if (call.isSuccessful) {
+                    } else if (call.isSuccessful) {
                         val metars = metarcall?.data ?: emptyList()
                         metarlist.clear()
                         metarlist.addAll(metars)
@@ -234,6 +289,23 @@ class WeatherReports : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
+    private fun saveIcao() {
+        val sharedPref = this.getSharedPreferences("weather", Context.MODE_PRIVATE)
+        sharedPref.edit().putString("ICAO", icaolist().joinToString(separator = ",")).apply()
+    }
+
+    private fun loadIcao() {
+        val sharedPref = this.getSharedPreferences("weather", Context.MODE_PRIVATE)
+        val icaos = sharedPref.getString("ICAO", null)
+
+        //check for empty values
+        if (icaos != null) {
+            if (icaos.isNotEmpty()) {
+                icaos.split(",").map { it.trim() }.forEach { addChip(it) }
+            }
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
@@ -256,6 +328,7 @@ class WeatherReports : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        saveIcao()
         finish()
     }
 
