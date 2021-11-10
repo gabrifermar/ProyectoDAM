@@ -14,11 +14,18 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class Login : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private lateinit var auth: FirebaseAuth
+    private val metarlist = mutableListOf<String>()
+
 
     private val binding get() = _binding!!
 
@@ -77,6 +84,7 @@ class Login : Fragment() {
                                 }
                             }
 
+                        loadmetar("LEVS")
                         startActivity(Intent(activity, Usermain::class.java))
 
                         //admin access
@@ -91,6 +99,31 @@ class Login : Fragment() {
                 }
         } else {
             Toast.makeText(activity, getString(R.string.errornewuser), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun getmetarcall(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.checkwx.com/metar/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+
+    internal fun loadmetar(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getmetarcall().create(API::class.java)
+                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+            val levs = call.body()
+            (activity as Home).runOnUiThread {
+                if (call.isSuccessful) {
+                    val metars = levs?.data ?: emptyList()
+                    metarlist.clear()
+                    metarlist.addAll(metars)
+                    val sharedPref = (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
+                    sharedPref.edit().putString("metar", metarlist[0]).apply()
+                }
+            }
         }
     }
 }

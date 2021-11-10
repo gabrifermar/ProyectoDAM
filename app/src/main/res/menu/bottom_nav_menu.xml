@@ -16,10 +16,4 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
 
-    <item
-        android:id="@+id/vuelo"
-        android:icon="@drawable/ic_menu_login"
-        android:title="@string/vuelo"
-        android:visible="false"/>
-
 </menu>

@@ -54,7 +54,6 @@ class Usermain : AppCompatActivity() {
                 R.id.userFragment,
                 R.id.fragment_user_tools,
                 R.id.navigation_notifications,
-                R.id.vuelo
             )
         )
 

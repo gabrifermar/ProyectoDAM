@@ -39,13 +39,15 @@ class WeatherReports : AppCompatActivity() {
     private var lon: Double = 0.0
     private var metarlist = mutableListOf<String>()
 
+    //TODO: pte implementar escritura en db para historico posible fav en local
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherReportsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //load chips
-        //TODO:arreglar la carga de chips, se repite LEMD
         loadIcao()
 
         //start reclycerview

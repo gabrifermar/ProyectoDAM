@@ -5,34 +5,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.gabrifermar.proyectodam.databinding.ActivityHomeBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.gabrifermar.proyectodam.Usermain as Usermain
 
 class Home : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-    private val metarlist = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +48,6 @@ class Home : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        //TODO: cuando carga directo la activity de User al estar logado, no carga el nuevo metar y no actualiza
-        loadmetar("LEVS")
 
     }
 
@@ -88,31 +77,6 @@ class Home : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun getmetarcall(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://api.checkwx.com/metar/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
 
-
-    //TODO: pte implementar escritura en db para historico posible fav en local
-    internal fun loadmetar(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getmetarcall().create(API::class.java)
-                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-            val levs = call.body()
-            runOnUiThread {
-                if (call.isSuccessful) {
-                    val metars = levs?.data ?: emptyList()
-                    metarlist.clear()
-                    metarlist.addAll(metars)
-
-                    val sharedPref = this@Home.getSharedPreferences("user", Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("metar", metarlist[0]).apply()
-                }
-            }
-        }
-    }
 
 }

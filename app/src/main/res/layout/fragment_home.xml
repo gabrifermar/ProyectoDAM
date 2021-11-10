@@ -7,13 +7,90 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
+        android:id="@+id/home_tv_logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/mapsimg" />
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/logotxt"
+        android:textSize="50sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/home_tv_logo">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/home_tv_madrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/madrid"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/madriddir"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/madridtlf"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/home_ib_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/call"
+                    android:minHeight="48dp"
+                    android:src="@drawable/ic_home_call_24" />
+
+                <ImageButton
+                    android:id="@+id/home_ib_maps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/maps"
+                    android:minHeight="48dp"
+                    android:src="@drawable/ic_home_map_24" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/mapsimg"
+            android:contentDescription="@string/hall"/>
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

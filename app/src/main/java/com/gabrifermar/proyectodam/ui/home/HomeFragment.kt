@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return  binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,11 +40,19 @@ class HomeFragment : Fragment() {
 
 
         //listeners
+        binding.homeIbCall.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data=Uri.parse("tel:+34651593430")
+            startActivity(intent)
+        }
 
-        val gmmIntentUri = Uri.parse("geo:0, 0?q=Edificio AEROTEC, Aeropuerto de Cuatro Vientos, 28054 Madrid")
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.maps")
+        binding.homeIbMaps.setOnClickListener {
+            val gmmIntentUri =
+                Uri.parse("geo:40.36746735588252, -3.7782723982146504?q=Edificio AEROTEC, Aeropuerto de, 28054 Madrid")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
+        }
     }
 
     override fun onDestroyView() {
