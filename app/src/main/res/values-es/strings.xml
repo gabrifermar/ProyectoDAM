@@ -50,4 +50,7 @@
     <string name="call">Realizar llamada</string>
     <string name="hall">Recibidor</string>
     <string name="languange">Idioma</string>
+    <string name="select">Seleccione</string>
+    <string name="lon">Longitud</string>
+    <string name="lat">Latitud</string>
 </resources>

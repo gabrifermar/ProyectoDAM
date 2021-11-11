@@ -39,6 +39,7 @@
 
         <Button
             android:id="@+id/flightplanner_btn_generate"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -46,29 +47,28 @@
             android:layout_weight="1"
             android:text="@string/create"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            style="?android:attr/buttonBarButtonStyle" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/flightplanner_btn_search"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="25dp"
             android:layout_weight="1"
-            android:text="@string/search"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/search" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flightplanner_rv_flightplan"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearlayout"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearlayout"
+        app:layout_constraintVertical_bias="0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

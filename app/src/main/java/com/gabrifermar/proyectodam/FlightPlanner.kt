@@ -1,5 +1,6 @@
 package com.gabrifermar.proyectodam
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,11 +8,10 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityFlightPlannerBinding
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.math.*
 
 class FlightPlanner : AppCompatActivity() {
@@ -22,6 +22,7 @@ class FlightPlanner : AppCompatActivity() {
     private var wpnames = mutableListOf<String>()
     private var distances = mutableListOf<Double>()
     private var headings = mutableListOf<Int>()
+    private var name1 = mutableListOf<String>()
 
 
     //TODO: pte como implementar introducir el ultimo punto en el recycler puesto que la lista se modifica dentro del listener
@@ -35,9 +36,6 @@ class FlightPlanner : AppCompatActivity() {
 
         //variables
         random = emptyList()
-        val db = Firebase.firestore
-        var name1: String
-        var name2: String
         binding.flightplannerTvSeekbarvalue.text = 2.toString()
 
         binding.flightplannerSbLegselector.setOnSeekBarChangeListener(object :
@@ -55,75 +53,106 @@ class FlightPlanner : AppCompatActivity() {
         })
 
         binding.flightplannerBtnGenerate.setOnClickListener {
-            //clear list
-            wpnames.clear()
-            distances.clear()
-            headings.clear()
+            flightplan()
+        }
+    }
 
-            //enter db to get waypoints data to calculate
-            db.collection("waypoints").get().addOnSuccessListener { document ->
-                if (document != null) {
-                    //background task for calculations
-                    CoroutineScope(Dispatchers.IO).launch {
-                        //get random numbers not repeated
-                        do {
-                            random =
-                                (1..binding.flightplannerSbLegselector.progress + 2).map { (1..document.size()).random() }
-                        } while (random.distinct().count() != random.size)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun flightplan() {
 
-                        /*
-                        //No funciona puesto que sale size 4 y solo hay 3 size de distancia y hdg
-                        //get names of locations and storing them
-                        for (element in random) {
-                            db.collection("waypoints").document(element.toString()).get()
-                                .addOnSuccessListener {
-                                    wpnames.add(it.getString("name")!!)
-                                }
-                        }*/
+        //variables
+        val db = Firebase.firestore
+        var name1 = ""
+        var name2 = ""
+        var lat1 = 0.0
+        var lat2 = 0.0
+        var lon1 = 0.0
+        var lon2 = 0.0
 
-                        //loop to get calculations between waypoints
-                        for (i in 0..binding.flightplannerSbLegselector.progress) {
-                            db.collection("waypoints").document(random[i].toString()).get()
-                                .addOnSuccessListener { document1 ->
-                                    db.collection("waypoints").document(random[i + 1].toString())
-                                        .get()
-                                        .addOnSuccessListener { document2 ->
-                                            name1 = document1.getString("name")!!
-                                            name2 = document2.getString("name")!!
+        //clear list
+        wpnames.clear()
+        distances.clear()
+        headings.clear()
+        adapter.notifyDataSetChanged()
 
-                                            val d = distance(
-                                                toRadians(document1.getDouble("lat")!!),
-                                                toRadians(document1.getDouble("lon")!!),
-                                                toRadians(document2.getDouble("lat")!!),
-                                                toRadians(document2.getDouble("lon")!!)
-                                            )
+        //enter db to get waypoints data to calculate
+        db.collection("waypoints").get().addOnSuccessListener() { document ->
+            if (document != null) {
+                //background task for calculations
+                CoroutineScope(Dispatchers.IO).launch {
+                    //get random numbers not repeated
+                    do {
+                        random =
+                            (1..binding.flightplannerSbLegselector.progress + 2).map { (1..document.size()).random() }
+                    } while (random.distinct().count() != random.size)
 
-                                            var hdg = heading(
-                                                toRadians(document1.getDouble("lat")!!),
-                                                toRadians(document1.getDouble("lon")!!),
-                                                toRadians(document2.getDouble("lat")!!),
-                                                toRadians(document2.getDouble("lon")!!)
-                                            )
+                    //loop to get calculations between waypoints
+                    for (i in 0..binding.flightplannerSbLegselector.progress) {
+                        db.collection("waypoints").whereEqualTo("ID", random[i]).get()
+                            .addOnSuccessListener { document1 ->
+                                db.collection("waypoints").whereEqualTo("ID", random[i + 1])
+                                    .get()
+                                    .addOnSuccessListener { document2 ->
 
-                                            if (hdg < 0) {
-                                                hdg += 360
-                                            }
+                                        for (a in document1) {
+                                            lat1 = a.getDouble("lat")!!
+                                            lon1 = a.getDouble("lon")!!
+                                            name1 = a.id
+                                        }
 
-                                            wpnames.add(document1.getString("name")!!)
+                                        for (b in document2) {
+                                            lat2 = b.getDouble("lat")!!
+                                            lon2 = b.getDouble("lon")!!
+                                            name2 = b.id
+                                        }
+
+                                        val d = distance(
+                                            toRadians(lat1),
+                                            toRadians(lon1),
+                                            toRadians(lat2),
+                                            toRadians(lon2)
+                                        )
+
+                                        var hdg = heading(
+                                            toRadians(lat1),
+                                            toRadians(lon1),
+                                            toRadians(lat2),
+                                            toRadians(lon2)
+                                        )
+
+                                        if (hdg < 0) {
+                                            hdg += 360
+                                        }
+
+
+                                        if (i == random.size - 2) {
+
+                                            wpnames.add(name1)
                                             distances.add(String.format("%.1f", d).toDouble())
                                             headings.add(hdg.roundToInt())
+                                            wpnames.add(name2)
+                                            distances.add(0.0)
+                                            headings.add(0)
+                                            adapter.notifyDataSetChanged()
 
+                                        } else {
 
+                                            wpnames.add(name1)
+                                            distances.add(String.format("%.1f", d).toDouble())
+                                            headings.add(hdg.roundToInt())
                                             adapter.notifyDataSetChanged()
 
                                         }
-                                }
-                        }
+                                    }
+                            }
+                        //insert delay to let it retrieve data from firebase
+                        delay(100)
                     }
                 }
             }
         }
     }
+
 
     //calculate hdg between 2 coordinates
     private fun heading(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
@@ -154,8 +183,9 @@ class FlightPlanner : AppCompatActivity() {
 
     private fun initRecycler() {
         binding.flightplannerRvFlightplan.layoutManager = LinearLayoutManager(this)
-        adapter = FlightPlannerAdapter(wpnames, distances, headings)
+        adapter = FlightPlannerAdapter(this,wpnames, distances, headings)
         binding.flightplannerRvFlightplan.adapter = adapter
     }
 }
+
 

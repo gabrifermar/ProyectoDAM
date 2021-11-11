@@ -35,8 +35,8 @@
     <string name="createuser">Create User</string>
     <string name="newwaypoint">New Waypoint</string>
     <string name="waypointname">Name</string>
-    <string name="lat" translatable="false">Latitude</string>
-    <string name="lon" translatable="false">Longitude</string>
+    <string name="lat">Latitude</string>
+    <string name="lon">Longitude</string>
     <string name="add">Add</string>
 
     <!--User-->
@@ -72,6 +72,8 @@
     <string name="error">Error</string>
     <string name="writesuccess">Successful added</string>
     <string name="lockedcontent">Locked content</string>
+    <string name="distance" translatable="false">%.1f NM</string>
+    <string name="heading" translatable="false">%s º</string>
 
     <!--Flights-->
     <string name="lock" translatable="false">Lock</string>
