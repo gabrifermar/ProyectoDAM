@@ -2,18 +2,20 @@ package com.gabrifermar.proyectodam
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.gabrifermar.proyectodam.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,19 +70,38 @@ class Login : Fragment() {
                             .addOnSuccessListener { document ->
                                 if (document != null) {
 
-                                    val sharedPref =
-                                        (activity as Home).getSharedPreferences(
-                                            "user",
-                                            Context.MODE_PRIVATE
+                                    //check system version to encrypt data, if SDK below 23, it wont encrypt it
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        //create masterkey
+                                        val masterKey= MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+                                        val encryptedSharedPreferences= EncryptedSharedPreferences.create(
+                                            "user_encrypted",
+                                            masterKey,
+                                            activity as Home,
+                                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                                         )
-                                    sharedPref.edit()
-                                        .putString("username", document.getString("username"))
-                                        .putBoolean("C172", document.getBoolean("C172")!!)
-                                        .putBoolean("P28R", document.getBoolean("P28R")!!)
-                                        .putBoolean("P06T", document.getBoolean("P06T")!!)
-                                        .putBoolean("subjects", document.getBoolean("subjects")!!)
-                                        .apply()
-
+                                        encryptedSharedPreferences.edit()
+                                            .putString("username", document.getString("username"))
+                                            .putBoolean("C172", document.getBoolean("C172")!!)
+                                            .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                            .putBoolean("P06T", document.getBoolean("P06T")!!)
+                                            .putBoolean("subjects", document.getBoolean("subjects")!!)
+                                            .apply()
+                                    } else {
+                                        val sharedPref =
+                                            (activity as Home).getSharedPreferences(
+                                                "user",
+                                                Context.MODE_PRIVATE
+                                            )
+                                        sharedPref.edit()
+                                            .putString("username", document.getString("username"))
+                                            .putBoolean("C172", document.getBoolean("C172")!!)
+                                            .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                            .putBoolean("P06T", document.getBoolean("P06T")!!)
+                                            .putBoolean("subjects", document.getBoolean("subjects")!!)
+                                            .apply()
+                                    }
                                 }
                             }
 
