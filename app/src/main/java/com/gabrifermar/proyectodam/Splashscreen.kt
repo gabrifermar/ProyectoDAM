@@ -53,11 +53,14 @@ class Splashscreen : AppCompatActivity() {
         //check language
         setLanguage(this, sharedPref.getString("language", "en")!!)
 
+        //precharge metar into sharedpref for later use
+        if (auth.currentUser != null) {
+            loadmetar("LEVS")
+        }
 
         Handler().postDelayed({
             //check if user already logged
             if (auth.currentUser != null) {
-                loadmetar("LEVS")
                 startActivity(Intent(this, Usermain::class.java))
                 finish()
             } else {

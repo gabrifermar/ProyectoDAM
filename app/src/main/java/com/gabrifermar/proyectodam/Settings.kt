@@ -20,7 +20,9 @@ import android.content.res.Resources
 
 class Settings : AppCompatActivity() {
 
+
     private lateinit var binding: ActivitySettingsBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,8 @@ class Settings : AppCompatActivity() {
         }
 
         //Language
-        val languages = listOf(getString(R.string.select), "Español", "English")
+        val languages =
+            listOf(getString(R.string.select), getString(R.string.en), getString(R.string.es))
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
 
@@ -59,14 +62,14 @@ class Settings : AppCompatActivity() {
             ) {
                 when (position) {
                     1 -> {
-                        setLanguage(this@Settings, "es")
-                        sharedPref.edit().putString("language","es").apply()
+                        setLanguage(this@Settings, "en")
+                        sharedPref.edit().putString("language", "en").apply()
                         startActivity(Intent(this@Settings, Splashscreen::class.java))
                         finishAffinity()
                     }
                     2 -> {
-                        setLanguage(this@Settings, "en")
-                        sharedPref.edit().putString("language","en").apply()
+                        setLanguage(this@Settings, "es")
+                        sharedPref.edit().putString("language", "es").apply()
                         startActivity(Intent(this@Settings, Splashscreen::class.java))
                         finishAffinity()
                     }

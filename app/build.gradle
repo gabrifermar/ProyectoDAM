@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
+    id 'org.jetbrains.dokka'
 }
 
 android {
@@ -41,6 +42,13 @@ android {
             }
         }
     }
+
+}
+
+tasks.withType(dokkaHtml.getClass()).configureEach {
+    pluginsMapConfiguration.set(
+            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+    )
 }
 
 dependencies {
@@ -60,6 +68,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"

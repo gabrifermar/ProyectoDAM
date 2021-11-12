@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.gabrifermar.proyectodam.ui.user.UserFragment"
-        android:label="user_fragment"
+        android:label="@string/title_user"
         tools:layout="@layout/fragment_usermain" >
         <action
             android:id="@+id/action_userFragment_to_navigation_dashboard"

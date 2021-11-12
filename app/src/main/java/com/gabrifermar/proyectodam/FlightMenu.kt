@@ -1,13 +1,18 @@
 package com.gabrifermar.proyectodam
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKeys.*
 import com.gabrifermar.proyectodam.databinding.ActivityFlightMenuBinding
 
 class FlightMenu : AppCompatActivity() {
@@ -22,27 +27,12 @@ class FlightMenu : AppCompatActivity() {
         binding = ActivityFlightMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPref = this.getSharedPreferences("user", Context.MODE_PRIVATE)
-
-
-        if (!sharedPref.getBoolean("C172", false)) {
-            binding.flightmenuTxtC172progress.visibility = View.INVISIBLE
-            binding.flightmenuIvLockC172.visibility = View.VISIBLE
-            binding.flightmenuPbC172.visibility = View.INVISIBLE
+        //read content from sharedpref
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            encrypted()
+        }else{
+            nonencrypted()
         }
-
-        if (!sharedPref.getBoolean("P28R", false)) {
-            binding.flightmenuTxtP28Rprogress.visibility = View.INVISIBLE
-            binding.flightmenuIvLockP28R.visibility = View.VISIBLE
-            binding.flightmenuPbP28R.visibility = View.INVISIBLE
-        }
-
-        if (!sharedPref.getBoolean("P06T", false)) {
-            binding.flightmenuTxtP06Tprogress.visibility = View.INVISIBLE
-            binding.flightmenuIvLockP06T.visibility = View.VISIBLE
-            binding.flightmenuPbP06T.visibility = View.INVISIBLE
-        }
-
 
         //listeners
         binding.flightmenuCvC172.setOnClickListener {
@@ -99,6 +89,61 @@ class FlightMenu : AppCompatActivity() {
                         getString(R.string.progress,updatedAnimation.animatedValue.toString())
                 }
             }
+    }
+
+    @SuppressLint("NewApi")
+    private fun encrypted(){
+        val masterKey = getOrCreate(AES256_GCM_SPEC)
+        val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+            "user_encrypted",
+            masterKey,
+            this,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        if (!encryptedSharedPreferences.getBoolean("C172", false)) {
+            binding.flightmenuTxtC172progress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockC172.visibility = View.VISIBLE
+            binding.flightmenuPbC172.visibility = View.INVISIBLE
+        }
+
+        if (!encryptedSharedPreferences.getBoolean("P28R", false)) {
+            binding.flightmenuTxtP28Rprogress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockP28R.visibility = View.VISIBLE
+            binding.flightmenuPbP28R.visibility = View.INVISIBLE
+        }
+
+        if (!encryptedSharedPreferences.getBoolean("P06T", false)) {
+            binding.flightmenuTxtP06Tprogress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockP06T.visibility = View.VISIBLE
+            binding.flightmenuPbP06T.visibility = View.INVISIBLE
+        }
+
+    }
+
+    //retrieve data from SDK < 23, non encrypted
+    private fun nonencrypted(){
+
+        val sharedPref = this.getSharedPreferences("user", Context.MODE_PRIVATE)
+
+        if (!sharedPref.getBoolean("C172", false)) {
+            binding.flightmenuTxtC172progress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockC172.visibility = View.VISIBLE
+            binding.flightmenuPbC172.visibility = View.INVISIBLE
+        }
+
+        if (!sharedPref.getBoolean("P28R", false)) {
+            binding.flightmenuTxtP28Rprogress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockP28R.visibility = View.VISIBLE
+            binding.flightmenuPbP28R.visibility = View.INVISIBLE
+        }
+
+        if (!sharedPref.getBoolean("P06T", false)) {
+            binding.flightmenuTxtP06Tprogress.visibility = View.INVISIBLE
+            binding.flightmenuIvLockP06T.visibility = View.VISIBLE
+            binding.flightmenuPbP06T.visibility = View.INVISIBLE
+        }
     }
 
     override fun onPause() {

@@ -1,16 +1,18 @@
 package com.gabrifermar.proyectodam
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKeys.*
 import com.gabrifermar.proyectodam.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -21,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class Login : Fragment() {
 
@@ -39,8 +42,11 @@ class Login : Fragment() {
 
         //listeners
         binding.btnlogin.setOnClickListener {
+            binding.username.clearFocus()
+            binding.password.clearFocus()
             login()
         }
+
 
         return binding.root
     }
@@ -73,20 +79,25 @@ class Login : Fragment() {
                                     //check system version to encrypt data, if SDK below 23, it wont encrypt it
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         //create masterkey
-                                        val masterKey= MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-                                        val encryptedSharedPreferences= EncryptedSharedPreferences.create(
-                                            "user_encrypted",
-                                            masterKey,
-                                            activity as Home,
-                                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                                        )
+                                        val masterKey =
+                                            getOrCreate(AES256_GCM_SPEC)
+                                        val encryptedSharedPreferences =
+                                            EncryptedSharedPreferences.create(
+                                                "user_encrypted",
+                                                masterKey,
+                                                activity as Home,
+                                                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                                            )
                                         encryptedSharedPreferences.edit()
                                             .putString("username", document.getString("username"))
                                             .putBoolean("C172", document.getBoolean("C172")!!)
                                             .putBoolean("P28R", document.getBoolean("P28R")!!)
                                             .putBoolean("P06T", document.getBoolean("P06T")!!)
-                                            .putBoolean("subjects", document.getBoolean("subjects")!!)
+                                            .putBoolean(
+                                                "subjects",
+                                                document.getBoolean("subjects")!!
+                                            )
                                             .apply()
                                     } else {
                                         val sharedPref =
@@ -99,14 +110,28 @@ class Login : Fragment() {
                                             .putBoolean("C172", document.getBoolean("C172")!!)
                                             .putBoolean("P28R", document.getBoolean("P28R")!!)
                                             .putBoolean("P06T", document.getBoolean("P06T")!!)
-                                            .putBoolean("subjects", document.getBoolean("subjects")!!)
+                                            .putBoolean(
+                                                "subjects",
+                                                document.getBoolean("subjects")!!
+                                            )
                                             .apply()
                                     }
                                 }
                             }
 
                         loadmetar("LEVS")
-                        startActivity(Intent(activity, Usermain::class.java))
+
+                        //show loading progress bar
+                        binding.btnlogin.visibility=View.INVISIBLE
+                        binding.customPbLoading.visibility=View.VISIBLE
+
+                        //wait time to set shared pref and be able to retrieve it at userfragment start
+                        Handler().postDelayed({
+                            startActivity(Intent(activity, Usermain::class.java))
+                            binding.btnlogin.visibility=View.VISIBLE
+                            binding.customPbLoading.visibility=View.INVISIBLE
+                        }, 1000)
+
 
                         //admin access
                     } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
@@ -115,7 +140,7 @@ class Login : Fragment() {
 
                         //error
                     } else {
-                        Toast.makeText(activity, "error", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show()
                     }
                 }
         } else {
@@ -141,10 +166,12 @@ class Login : Fragment() {
                     val metars = levs?.data ?: emptyList()
                     metarlist.clear()
                     metarlist.addAll(metars)
-                    val sharedPref = (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
+                    val sharedPref =
+                        (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
                     sharedPref.edit().putString("metar", metarlist[0]).apply()
                 }
             }
         }
     }
+
 }

@@ -53,4 +53,7 @@
     <string name="select">Seleccione</string>
     <string name="lon">Longitud</string>
     <string name="lat">Latitud</string>
+    <string name="title_user">Inicio</string>
+    <string name="es">Español</string>
+    <string name="en">Inglés</string>
 </resources>
