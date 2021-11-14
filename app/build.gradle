@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\gabri\\Desktop\\Gabriel\\Aplicaciones\\ProyectoDAM\\Key.jks')
+            storePassword 'G@briel1.2357:10=12.357'
+            keyPassword 'G@briel1.2357:10=12.357'
+            keyAlias 'ProyectoDAM'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
@@ -15,13 +23,23 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        archivesBaseName = "$applicationId-v$versionCode"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+        }
+        getByName("debug") {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        getByName("release") {
+            debuggable false
+            versionNameSuffix ""
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

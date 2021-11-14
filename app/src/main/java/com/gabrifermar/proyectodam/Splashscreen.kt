@@ -65,12 +65,7 @@ class Splashscreen : AppCompatActivity() {
 
         //precharge metar into sharedpref for later use
         if (auth.currentUser != null) {
-            try {
                 loadmetar()
-            } catch (e: IOException) {
-                Log.d("hola", e.toString())
-            }
-
         }
 
         Handler().postDelayed({
@@ -120,7 +115,6 @@ class Splashscreen : AppCompatActivity() {
                 }
             } catch (e: UnknownHostException) {
                 //No internet
-                Log.e("error", e.toString())
             }
 
         }

@@ -81,6 +81,9 @@
     <string name="endtest">End test?</string>
     <string name="testdialog">Confirm you have finished answering all questions. Not answered questions would count as a wrong answer</string>
     <string name="checkinternet">Check internet connection</string>
+    <string name="filealreadydownloaded">File has already been downloaded into download directory</string>
+    <string name="timesup">Time has finished</string>
+    <string name="timesupdialog">The time is over for this test</string>
 
     <!--Flights-->
     <string name="lock" translatable="false">Lock</string>
@@ -107,6 +110,7 @@
     <string name="counter" translatable="false">%s:%s</string>
     <string name="submit">Submit</string>
     <string name="anscounter" translatable="false">%d/15</string>
+    <string name="grade" translatable="false">%s/10</string>
 
 
 </resources>

@@ -61,4 +61,5 @@
     <string name="endtest">¿Terminar el examen?</string>
     <string name="testdialog">Confirme que ha respondido a todas las preguntas. Aquellas no respondidas puntuaran como una errónea</string>
     <string name="checkinternet">Compruebe la conexión a internet</string>
+    <string name="filealreadydownloaded">Archivo ya ha sido descargado en la carpeta de descargas</string>
 </resources>

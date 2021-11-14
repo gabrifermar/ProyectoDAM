@@ -10,11 +10,18 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.*
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.*
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,12 +29,20 @@ import com.gabrifermar.proyectodam.databinding.ActivityC172Binding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
-import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.webkit.DownloadListener
+import android.widget.CursorAdapter
+import android.widget.LinearLayout
 import android.widget.RemoteViews
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
+import androidx.core.view.marginEnd
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import java.lang.Exception
+import java.net.InetAddress
+import kotlin.reflect.typeOf
 
 class C172 : AppCompatActivity() {
 
@@ -47,14 +62,24 @@ class C172 : AppCompatActivity() {
         setContentView(binding.root)
 
         //variables
+        val db = Firebase.firestore
+        val auth = Firebase.auth
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        //check for grade
+        db.collection("users").document(auth.currentUser!!.uid).get().addOnSuccessListener {
+            if (it.getDouble("C172grade") != null) {
+                binding.c172BtnTest.text =
+                    this.getString(R.string.grade, it.getDouble("C172grade")!!.toInt().toString())
+                binding.c172BtnTest.isClickable = false
+            }
+        }
 
         //listeners
         binding.c172BtnPoh.setOnClickListener {
             //check for permission
-            if (checkPermission()) {
-                download()
+            if (checkPermission() && isInternetAvailable()) {
+                checkFile()
             }
         }
 
@@ -64,42 +89,19 @@ class C172 : AppCompatActivity() {
     }
 
     private fun notification() {
-/*
-        val builder = NotificationCompat.Builder(this, "HOLA").apply {
-            setContentTitle("Picture Download")
-            setContentText("Download in progress")
-            setSmallIcon(R.drawable.cloud)
-            setPriority(NotificationCompat.PRIORITY_LOW)
-        }
-        val PROGRESS_MAX = 100
-        val PROGRESS_CURRENT = 0
-        NotificationManagerCompat.from(this).apply {
-            // Issue the initial notification with zero progress
-            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
-            notify(notificationId, builder.build())
-
-            // Do the job here that tracks the progress.
-            // Usually, this should be in a
-            // worker thread
-            // To show progress, update PROGRESS_CURRENT and update the notification with:
-            // builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-            // notificationManager.notify(notificationId, builder.build());
-
-            // When done, update the notification one more time to remove the progress bar
-            builder.setContentText("Download complete")
-                .setProgress(0, 0, false)
-            notify(notificationId, builder.build())
-        }
-*/
-
 
         val pendingIntent =
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getActivity(
+                this,
+                0,
+                Intent(DownloadManager.ACTION_VIEW_DOWNLOADS),
+                PendingIntent.FLAG_ONE_SHOT
+            )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = NotificationChannel(
-                "com.gabrifermar.proyectodam",
-                "prueba",
+                "Open download directory",
+                "Download",
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationChannel.enableLights(true)
@@ -107,29 +109,38 @@ class C172 : AppCompatActivity() {
             notificationChannel.enableVibration(false)
             notificationManager.createNotificationChannel(notificationChannel)
 
-            builder = Notification.Builder(this, "com.gabrifermar.proyectodam")
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                .setContentText("buenas tardes")
+            builder = Notification.Builder(this, "Open download directory")
+                .setSmallIcon(R.drawable.cloudicon)
+                .setContentText("Click to open download directory")
                 .setContentIntent(pendingIntent)
         } else {
 
             builder = Notification.Builder(this)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.cloudicon)
                 .setContentIntent(pendingIntent)
         }
         notificationManager.notify(1234, builder.build())
 
     }
 
+    private fun checkFile() {
+        val file =
+            File("${getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
+        if (file.exists()) {
+            Toast.makeText(this, R.string.filealreadydownloaded, Toast.LENGTH_SHORT).show()
+            notification()
+        } else {
+            download()
+        }
+    }
+
+    @SuppressLint("Range")
     private fun download() {
         val dn: DownloadManager =
             getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val uri =
             Uri.parse("https://firebasestorage.googleapis.com/v0/b/proyectoaep-d6bc6.appspot.com/o/Cessna-172N-POH.pdf?alt=media&token=30bc84a6-ee3c-4e6c-9ce6-0061ed5ddc11")
         val request = DownloadManager.Request(uri)
-
-        val query: DownloadManager.Query = DownloadManager.Query()
-
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDestinationInExternalFilesDir(
             this,
@@ -144,47 +155,43 @@ class C172 : AppCompatActivity() {
         //start download
         dn.enqueue(request)
 
-
         //check when dowload finish to show notification
         val broadcastReceiver = object : BroadcastReceiver() {
             @SuppressLint("Range")
             override fun onReceive(p0: Context?, p1: Intent?) {
-
-                /*
-                val id= p1?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,0)
-
-                val query=DownloadManager.Query()
-
-                query.setFilterById(enq)
-
-                val dowloadmanager=getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-
-                val cursor=dowloadmanager.query(query)
-
-
-                if(cursor.moveToFirst()){
-                    val colindex=cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
-                    if(DownloadManager.STATUS_SUCCESSFUL==cursor.getInt(colindex)){
-                        val uristring=cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
-                        val type=cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIA_TYPE))
-
-                        val intent=Intent()
-                        intent.action=Intent.ACTION_VIEW
-                        intent.setDataAndType(uristring.toUri(),type)
-                        intent.flags=Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        startActivity(intent)
-                    }
-                }
-*/
-                //startActivity(Intent(this@C172,dowloadmanager.openDownloadedFile(id!!)::class.java))
-
-                notification()
+                //File downloaded
             }
         }
 
-
         registerReceiver(broadcastReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
+
+    private fun isInternetAvailable(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var result = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nc = cm.activeNetwork ?: return false
+            val active = cm.getNetworkCapabilities(nc)
+            result = when {
+                active!!.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                active.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                active.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            cm.run {
+                cm.activeNetworkInfo?.run {
+                    if (type == TYPE_WIFI) {
+                        result = true
+                    } else if (type == TYPE_MOBILE) {
+                        result = true
+                    }
+                }
+            }
+        }
+        return result
+    }
+
 
     private fun checkPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -1,6 +1,7 @@
 package com.gabrifermar.proyectodam
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -47,6 +48,8 @@ class C172Test : AppCompatActivity() {
         val timer = object : CountDownTimer(300000, 1000) {
             override fun onTick(p0: Long) {
 
+                binding.c172testPbTimer.progress= p0.toInt()
+
                 binding.c172testTvCounter.text = getString(
                     R.string.counter,
                     min.toString().padStart(2, '0'),
@@ -62,17 +65,17 @@ class C172Test : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                //TODO: se acaba tiempo para examen
-                Toast.makeText(this@C172Test, "hola", Toast.LENGTH_SHORT).show()
+                binding.c172testTvCounter.text =
+                    getString(R.string.counter, 0.toString(), 0.toString())
+                timeEnd()
             }
         }
 
         //start test
         loadTest()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            timer.start()
-        }
+        //start timer
+        timer.start()
 
         //listeners
         binding.c172testBtnSubmit.setOnClickListener {
@@ -83,6 +86,7 @@ class C172Test : AppCompatActivity() {
     private fun loadTest() {
         //variables
         val sharedPreferences = this.getSharedPreferences("C172Test", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
         var random: List<Int>
         val db = Firebase.firestore
         try {
@@ -126,6 +130,23 @@ class C172Test : AppCompatActivity() {
         }
     }
 
+    private fun showGrade(){
+
+    }
+
+    private fun timeEnd() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle(R.string.timesup)
+            .setMessage(R.string.timesupdialog)
+            .setPositiveButton(R.string.submit) { _, _ ->
+                checkTestResults()
+            }
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+    }
+
     private fun confirmSubmit() {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle(R.string.endtest)
@@ -166,15 +187,23 @@ class C172Test : AppCompatActivity() {
                 )
                 db.collection("users").document(auth.currentUser!!.uid)
                     .set(data, SetOptions.merge())
+                val sharedPref=getSharedPreferences("user",Context.MODE_PRIVATE)
+                sharedPref.edit().putInt("C172grade",((correctcount * 10) / index.size)).apply()
             }
         }
 
-        finish()
+        val intent=Intent(this,Usermain::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun initRecycler() {
         binding.c172RvQuestions.layoutManager = LinearLayoutManager(this)
         adapter = FlightTestAdapter(this, statement, ans1, ans2, ans3, ans4)
         binding.c172RvQuestions.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        confirmSubmit()
     }
 }

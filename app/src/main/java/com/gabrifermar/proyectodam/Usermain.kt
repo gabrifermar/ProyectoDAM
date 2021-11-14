@@ -1,5 +1,6 @@
 package com.gabrifermar.proyectodam
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.gabrifermar.proyectodam.databinding.ActivityUsermainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class Usermain : AppCompatActivity() {
 
@@ -29,13 +32,14 @@ class Usermain : AppCompatActivity() {
         auth= FirebaseAuth.getInstance()
 
 
+        //write test grades to sharedPref
+        flightprogress()
 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_usermain)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.userFragment,
@@ -44,46 +48,22 @@ class Usermain : AppCompatActivity() {
             )
         )
 
-
-        //Añadir opciones al nav navigator
-        //navView.menu.findItem(R.id.vuelo).isVisible = true
-
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
 
 
     }
-/*
-    private fun getmetarcall(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://api.checkwx.com/metar/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
 
-    internal fun loadmetar(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getmetarcall().create(API::class.java)
-                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-            val levs = call.body()
-            runOnUiThread {
-                if (call.isSuccessful) {
-                    val metars = levs?.data ?: emptyList()
-                    metarlist.clear()
-                    metarlist.addAll(metars)
-
-                    val sharedPref = this@Usermain.getSharedPreferences("user",Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("metar",metarlist[0]).apply()
-                    Log.d("metar", metarlist[0])
-
-
-                    //user_txt_metar.text = metarlist[0]
-                }
+    private fun flightprogress(){
+        val sharedPref=getSharedPreferences("user",Context.MODE_PRIVATE)
+        val db= Firebase.firestore
+        db.collection("users").document(auth.currentUser!!.uid).get().addOnSuccessListener {
+            if (it.getDouble("C172grade") != null) {
+                sharedPref.edit().putInt("C172grade",it.getDouble("C172grade")!!.toInt()).apply()
             }
         }
     }
-    */
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.user_menu, menu)
@@ -106,5 +86,10 @@ class Usermain : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        flightprogress()
+        super.onResume()
     }
 }

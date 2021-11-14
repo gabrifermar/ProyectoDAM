@@ -40,6 +40,7 @@
                 android:id="@+id/c172_tv_poh"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="@string/c712poh"
@@ -52,6 +53,7 @@
                 android:id="@+id/c172_btn_poh"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="0.5"
                 android:backgroundTint="@color/grey"
@@ -83,6 +85,7 @@
                 android:id="@+id/c172_tv_pohtest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="@string/c172test"
@@ -92,13 +95,13 @@
                 android:id="@+id/c172_btn_test"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="0.5"
                 android:backgroundTint="@color/grey"
                 android:text="@string/start"
                 android:textColor="#000000"
                 tools:ignore="TextContrastCheck" />
-
 
         </LinearLayout>
 

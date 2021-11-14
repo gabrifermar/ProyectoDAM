@@ -224,6 +224,7 @@ class WeatherReports : AppCompatActivity() {
 
     private fun loadmetar(query: String, mode: Int) {
         CoroutineScope(Dispatchers.IO).launch {
+            //try catch for errors
             try {
                 //mode 1 = search stations
                 if (mode == 1) {
@@ -257,10 +258,11 @@ class WeatherReports : AppCompatActivity() {
                     }
                 }
             } catch (e: UnknownHostException) {
-                //TODO:averiguar pq crashea cuando hay que enseñar el toast, y pq en taf no funciona el catch
-                //Toast.makeText(this@WeatherReports, e.toString(), Toast.LENGTH_SHORT)
-                  //  .show()
-                Log.e("error",e.toString())
+                //host error (no internet) and show outside coroutine
+                runOnUiThread {
+                    Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
@@ -274,6 +276,7 @@ class WeatherReports : AppCompatActivity() {
 
     private fun loadtaf(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
+            //try catch for errors
             try {
                 val call = gettafcall().create(API::class.java)
                     .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
@@ -287,8 +290,12 @@ class WeatherReports : AppCompatActivity() {
                     }
                 }
             } catch (e: UnknownHostException) {
-                Toast.makeText(this@WeatherReports, "hola", Toast.LENGTH_SHORT).show()
-                Log.e("error",e.toString())
+                //host error (no internet) and show outside coroutine
+                runOnUiThread {
+                    Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
+                        .show()
+                    Log.e("error", e.toString())
+                }
             }
         }
     }

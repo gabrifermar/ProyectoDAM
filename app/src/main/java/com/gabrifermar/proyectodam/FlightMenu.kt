@@ -8,31 +8,45 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.*
 import com.gabrifermar.proyectodam.databinding.ActivityFlightMenuBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class FlightMenu : AppCompatActivity() {
 
     private lateinit var binding: ActivityFlightMenuBinding
-    private lateinit var C172pb:ObjectAnimator
-    private lateinit var P28Rpb:ObjectAnimator
-    private lateinit var P06Tpb:ObjectAnimator
+    private lateinit var C172pb: ObjectAnimator
+    private lateinit var P28Rpb: ObjectAnimator
+    private lateinit var P06Tpb: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFlightMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //read content from sharedpref
+        //variables
+        var c172progress = 0
+        val sharedPref = getSharedPreferences("user", Context.MODE_PRIVATE)
+
+        //read content from sharedpref to setup locked content
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             encrypted()
-        }else{
+        } else {
             nonencrypted()
         }
+
+        //C172 progress
+        c172progress = sharedPref.getInt("C172grade", 0)
 
         //listeners
         binding.flightmenuCvC172.setOnClickListener {
@@ -60,39 +74,39 @@ class FlightMenu : AppCompatActivity() {
         }
 
         //Progress bar
-        C172pb=ObjectAnimator.ofInt(binding.flightmenuPbC172,"progress",50)
+        C172pb = ObjectAnimator.ofInt(binding.flightmenuPbC172, "progress", c172progress*10)
             .apply {
-                duration=1500
+                duration = 1500
                 start()
                 addUpdateListener { updatedAnimation ->
-                    binding.flightmenuTxtC172progress.text=
-                        getString(R.string.progress,updatedAnimation.animatedValue.toString())
+                    binding.flightmenuTxtC172progress.text =
+                        getString(R.string.progress, updatedAnimation.animatedValue.toString())
                 }
             }
 
-        P28Rpb=ObjectAnimator.ofInt(binding.flightmenuPbP28R,"progress",50)
+        P28Rpb = ObjectAnimator.ofInt(binding.flightmenuPbP28R, "progress", 50)
             .apply {
-                duration=1500
+                duration = 1500
                 start()
                 addUpdateListener { updatedAnimation ->
-                    binding.flightmenuTxtP28Rprogress.text=
-                        getString(R.string.progress,updatedAnimation.animatedValue.toString())
+                    binding.flightmenuTxtP28Rprogress.text =
+                        getString(R.string.progress, updatedAnimation.animatedValue.toString())
                 }
             }
 
-        P06Tpb=ObjectAnimator.ofInt(binding.flightmenuPbP06T,"progress",50)
+        P06Tpb = ObjectAnimator.ofInt(binding.flightmenuPbP06T, "progress", 50)
             .apply {
-                duration=1500
+                duration = 1500
                 start()
                 addUpdateListener { updatedAnimation ->
-                    binding.flightmenuTxtP06Tprogress.text=
-                        getString(R.string.progress,updatedAnimation.animatedValue.toString())
+                    binding.flightmenuTxtP06Tprogress.text =
+                        getString(R.string.progress, updatedAnimation.animatedValue.toString())
                 }
             }
     }
 
     @SuppressLint("NewApi")
-    private fun encrypted(){
+    private fun encrypted() {
         val masterKey = getOrCreate(AES256_GCM_SPEC)
         val encryptedSharedPreferences = EncryptedSharedPreferences.create(
             "user_encrypted",
@@ -123,7 +137,7 @@ class FlightMenu : AppCompatActivity() {
     }
 
     //retrieve data from SDK < 23, non encrypted
-    private fun nonencrypted(){
+    private fun nonencrypted() {
 
         val sharedPref = this.getSharedPreferences("user", Context.MODE_PRIVATE)
 

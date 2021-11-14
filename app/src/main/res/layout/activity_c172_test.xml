@@ -13,30 +13,31 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/c172_tv_anscounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:textSize="25sp"
-            tools:text="1/15" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="start"
             android:text="@string/C172"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/c172test_pb_timer"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:background="@drawable/circle_shape"
+            android:indeterminate="false"
+            android:max="300000"
+            android:progressDrawable="@drawable/circular_progress_bar" />
 
         <TextView
             android:id="@+id/c172test_tv_counter"
@@ -54,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="?attr/colorOnSecondary"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/linearlayout" />
 
     <androidx.recyclerview.widget.RecyclerView
