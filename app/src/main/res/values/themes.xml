@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
+    <style name="Theme.ProyectoDAM.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/blue2</item>
         <item name="colorPrimaryVariant">@color/blue1</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -35,4 +35,5 @@
         <item name="chipStrokeColor">@color/black</item>
         <item name="chipStrokeWidth">1dp</item>
     </style>
+
 </resources>

@@ -130,7 +130,7 @@ class Login : Fragment() {
                             startActivity(Intent(activity, Usermain::class.java))
                             binding.btnlogin.visibility=View.VISIBLE
                             binding.customPbLoading.visibility=View.INVISIBLE
-                        }, 1000)
+                        }, 2000)
 
 
                         //admin access

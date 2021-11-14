@@ -77,6 +77,10 @@
     <string name="lockedcontent">Locked content</string>
     <string name="distance" translatable="false">%.1f NM</string>
     <string name="heading" translatable="false">%s º</string>
+    <string name="metarerror">Metar not found</string>
+    <string name="endtest">End test?</string>
+    <string name="testdialog">Confirm you have finished answering all questions. Not answered questions would count as a wrong answer</string>
+    <string name="checkinternet">Check internet connection</string>
 
     <!--Flights-->
     <string name="lock" translatable="false">Lock</string>
@@ -85,7 +89,6 @@
     <string name="manuals">Manuals</string>
     <string name="tests">Tests</string>
     <string name="start">Start</string>
-    <string name="c172test">C172 Test</string>
 
     <!--Flight planner-->
     <string name="create">Create</string>
@@ -98,5 +101,12 @@
     <string name="maps">Open google maps</string>
     <string name="call">Make phone call</string>
     <string name="hall">Hall</string>
+
+    <!--C172-->
+    <string name="c172test">C172 Test</string>
+    <string name="counter" translatable="false">%s:%s</string>
+    <string name="submit">Submit</string>
+    <string name="anscounter" translatable="false">%d/15</string>
+
 
 </resources>

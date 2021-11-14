@@ -38,8 +38,8 @@ class C172 : AppCompatActivity() {
      */
     private lateinit var binding: ActivityC172Binding
     private lateinit var builder: Notification.Builder
-    private lateinit var notificationManager : NotificationManager
-    private lateinit var notificationChannel : NotificationChannel
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationChannel: NotificationChannel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class C172 : AppCompatActivity() {
         setContentView(binding.root)
 
         //variables
-        notificationManager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
         //listeners
@@ -56,6 +56,10 @@ class C172 : AppCompatActivity() {
             if (checkPermission()) {
                 download()
             }
+        }
+
+        binding.c172BtnTest.setOnClickListener {
+            startActivity(Intent(this, C172Test::class.java))
         }
     }
 
@@ -89,26 +93,31 @@ class C172 : AppCompatActivity() {
 */
 
 
-        val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel("com.gabrifermar.proyectodam","prueba",NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel = NotificationChannel(
+                "com.gabrifermar.proyectodam",
+                "prueba",
+                NotificationManager.IMPORTANCE_HIGH
+            )
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.GREEN
             notificationChannel.enableVibration(false)
             notificationManager.createNotificationChannel(notificationChannel)
 
-            builder = Notification.Builder(this,"com.gabrifermar.proyectodam")
+            builder = Notification.Builder(this, "com.gabrifermar.proyectodam")
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentText("buenas tardes")
                 .setContentIntent(pendingIntent)
-        }else{
+        } else {
 
             builder = Notification.Builder(this)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent)
         }
-        notificationManager.notify(1234,builder.build())
+        notificationManager.notify(1234, builder.build())
 
     }
 
@@ -137,7 +146,7 @@ class C172 : AppCompatActivity() {
 
 
         //check when dowload finish to show notification
-        val broadcastReceiver=object :BroadcastReceiver(){
+        val broadcastReceiver = object : BroadcastReceiver() {
             @SuppressLint("Range")
             override fun onReceive(p0: Context?, p1: Intent?) {
 

@@ -5,8 +5,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import com.gabrifermar.proyectodam.databinding.SplashscreenBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.splashscreen.*
@@ -15,6 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.lang.Exception
+import java.net.UnknownHostException
 import java.util.*
 
 class Splashscreen : AppCompatActivity() {
@@ -22,11 +28,15 @@ class Splashscreen : AppCompatActivity() {
     private val delay: Long = 2000
     private lateinit var auth: FirebaseAuth
     private val metarlist = mutableListOf<String>()
+    private lateinit var binding: SplashscreenBinding
 
+
+    //TODO:arreglar no carga cuando no hay conexion por loadmetarr()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splashscreen)
+        binding = SplashscreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //variable
         auth = FirebaseAuth.getInstance()
@@ -55,7 +65,12 @@ class Splashscreen : AppCompatActivity() {
 
         //precharge metar into sharedpref for later use
         if (auth.currentUser != null) {
-            loadmetar("LEVS")
+            try {
+                loadmetar()
+            } catch (e: IOException) {
+                Log.d("hola", e.toString())
+            }
+
         }
 
         Handler().postDelayed({
@@ -87,21 +102,27 @@ class Splashscreen : AppCompatActivity() {
     }
 
 
-    internal fun loadmetar(query: String) {
+    private fun loadmetar() {
         CoroutineScope(Dispatchers.IO).launch {
-            val call = getmetarcall().create(API::class.java)
-                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-            val levs = call.body()
-            runOnUiThread {
-                if (call.isSuccessful) {
-                    val metars = levs?.data ?: emptyList()
-                    metarlist.clear()
-                    metarlist.addAll(metars)
-                    val sharedPref = this@Splashscreen.getSharedPreferences("user", Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("metar", metarlist[0]).apply()
+            try {
+                val call = getmetarcall().create(API::class.java)
+                    .getMetar("LEVS/?x-api-key=d49660ce845e4f3db1fc469256")
+                val levs = call.body()
+                runOnUiThread {
+                    if (call.isSuccessful) {
+                        val metars = levs?.data ?: emptyList()
+                        metarlist.clear()
+                        metarlist.addAll(metars)
+                        val sharedPref =
+                            this@Splashscreen.getSharedPreferences("user", Context.MODE_PRIVATE)
+                        sharedPref.edit().putString("metar", metarlist[0]).apply()
+                    }
                 }
+            } catch (e: UnknownHostException) {
+                //No internet
+                Log.e("error", e.toString())
             }
+
         }
     }
-
 }

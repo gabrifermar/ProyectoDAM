@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.gabrifermar.proyectodam.databinding.ActivityNewWaypointBinding
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
@@ -29,6 +30,7 @@ class NewWaypoint : AppCompatActivity() {
     private fun addwaypoint() {
 
         //variables
+        val auth=Firebase.auth
         val db = Firebase.firestore
 
         //check fields not empty
@@ -51,6 +53,8 @@ class NewWaypoint : AppCompatActivity() {
 
                     Toast.makeText(this, getString(R.string.writesuccess), Toast.LENGTH_SHORT)
                         .show()
+
+                    auth.currentUser?.delete()
 
                     finish()
                 }

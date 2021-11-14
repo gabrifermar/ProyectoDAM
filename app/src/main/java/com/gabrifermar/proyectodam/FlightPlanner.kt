@@ -22,7 +22,6 @@ class FlightPlanner : AppCompatActivity() {
     private var wpnames = mutableListOf<String>()
     private var distances = mutableListOf<Double>()
     private var headings = mutableListOf<Int>()
-    private var name1 = mutableListOf<String>()
 
 
     //TODO: pte como implementar introducir el ultimo punto en el recycler puesto que la lista se modifica dentro del listener
@@ -32,6 +31,8 @@ class FlightPlanner : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFlightPlannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //recycler
         initRecycler()
 
         //variables

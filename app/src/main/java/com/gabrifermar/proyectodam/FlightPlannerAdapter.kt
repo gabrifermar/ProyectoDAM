@@ -16,10 +16,12 @@ class FlightPlannerAdapter(
 
     class FlightPlannerHolder(val view: View) :
         RecyclerView.ViewHolder(view) {
+
         fun show(context: Context, waypoint: String, distance: Double, hdg: Int) {
             view.item_flight_planner_name.text = waypoint
             view.item_flight_planner_distance.text = context.getString(R.string.distance, distance)
-            view.item_flight_planner_hdg.text = context.getString(R.string.heading, hdg.toString().padStart(3, '0'))
+            view.item_flight_planner_hdg.text =
+                context.getString(R.string.heading, hdg.toString().padStart(3, '0'))
             view.item_flight_planner_distance.visibility = View.VISIBLE
             view.item_flight_planner_hdg.visibility = View.VISIBLE
             view.view1.visibility = View.VISIBLE

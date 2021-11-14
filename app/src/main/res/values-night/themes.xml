@@ -31,4 +31,10 @@
 
     <style name="Theme.ProyectoDAM.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
 
+    <style name="Metarchip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="android:textSize">15sp</item>
+        <item name="chipStrokeColor">@color/grey</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
 </resources>

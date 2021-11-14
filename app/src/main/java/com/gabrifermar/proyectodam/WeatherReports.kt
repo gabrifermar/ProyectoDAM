@@ -27,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
+import java.net.UnknownHostException
 
 class WeatherReports : AppCompatActivity() {
 
@@ -222,36 +224,43 @@ class WeatherReports : AppCompatActivity() {
 
     private fun loadmetar(query: String, mode: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            //mode 1 = search stations
-            if (mode == 1) {
-                val call = getmetarcall().create(API::class.java)
-                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-                val metarcall = call.body()
-                runOnUiThread {
-                    if (metarcall?.results == 0) {
-                        binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
-                        binding.weatherTxtInput.requestFocus()
-                    } else if (call.isSuccessful) {
-                        val metars = metarcall?.data ?: emptyList()
-                        metarlist.clear()
-                        metarlist.addAll(metars)
-                        adapter.notifyDataSetChanged()
+            try {
+                //mode 1 = search stations
+                if (mode == 1) {
+                    val call = getmetarcall().create(API::class.java)
+                        .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                    val metarcall = call.body()
+                    runOnUiThread {
+                        if (metarcall?.results == 0) {
+                            binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
+                            binding.weatherTxtInput.requestFocus()
+                        } else if (call.isSuccessful) {
+                            val metars = metarcall?.data ?: emptyList()
+                            metarlist.clear()
+                            metarlist.addAll(metars)
+                            adapter.notifyDataSetChanged()
+                        }
                     }
-                }
 
-                //mode 2 = near stations
-            } else if (mode == 2) {
-                val call = getmetarcall().create(API::class.java)
-                    .getMetar("lat/$lat/lon/$lon/?x-api-key=d49660ce845e4f3db1fc469256")
-                val levs = call.body()
-                runOnUiThread {
-                    if (call.isSuccessful) {
-                        val metars = levs?.data ?: emptyList()
-                        metarlist.clear()
-                        metarlist.addAll(metars)
-                        adapter.notifyDataSetChanged()
+                    //mode 2 = near stations
+                } else if (mode == 2) {
+                    val call = getmetarcall().create(API::class.java)
+                        .getMetar("lat/$lat/lon/$lon/?x-api-key=d49660ce845e4f3db1fc469256")
+                    val levs = call.body()
+                    runOnUiThread {
+                        if (call.isSuccessful) {
+                            val metars = levs?.data ?: emptyList()
+                            metarlist.clear()
+                            metarlist.addAll(metars)
+                            adapter.notifyDataSetChanged()
+                        }
                     }
                 }
+            } catch (e: UnknownHostException) {
+                //TODO:averiguar pq crashea cuando hay que enseñar el toast, y pq en taf no funciona el catch
+                //Toast.makeText(this@WeatherReports, e.toString(), Toast.LENGTH_SHORT)
+                  //  .show()
+                Log.e("error",e.toString())
             }
         }
     }
@@ -265,16 +274,21 @@ class WeatherReports : AppCompatActivity() {
 
     private fun loadtaf(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val call = gettafcall().create(API::class.java)
-                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-            val tafcall = call.body()
-            runOnUiThread {
-                if (call.isSuccessful) {
-                    val tafs = tafcall?.data ?: emptyList()
-                    metarlist.clear()
-                    metarlist.addAll(tafs)
-                    adapter.notifyDataSetChanged()
+            try {
+                val call = gettafcall().create(API::class.java)
+                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                val tafcall = call.body()
+                runOnUiThread {
+                    if (call.isSuccessful) {
+                        val tafs = tafcall?.data ?: emptyList()
+                        metarlist.clear()
+                        metarlist.addAll(tafs)
+                        adapter.notifyDataSetChanged()
+                    }
                 }
+            } catch (e: UnknownHostException) {
+                Toast.makeText(this@WeatherReports, "hola", Toast.LENGTH_SHORT).show()
+                Log.e("error",e.toString())
             }
         }
     }

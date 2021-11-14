@@ -12,6 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_new_user.*
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -53,6 +54,11 @@ class NewUser : AppCompatActivity() {
                             db.collection("users").document(auth.currentUser!!.uid)
                                 .set(user, SetOptions.merge())
 
+                            when{ binding.cbnewuser1.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("subjects")}
+                            when{ binding.cbnewuser2.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("C172")}
+                            when{ binding.cbnewuser3.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("P28R")}
+                            when{ binding.cbnewuser4.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("P06T")}
+
                             Toast.makeText(this,getString(R.string.usercreated),Toast.LENGTH_SHORT).show()
 
                             finish()
@@ -61,6 +67,7 @@ class NewUser : AppCompatActivity() {
                             Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
                         }
                     }
+                auth.signOut()
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(this, R.string.fillfields, Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {

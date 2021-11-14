@@ -56,4 +56,9 @@
     <string name="title_user">Inicio</string>
     <string name="es">Español</string>
     <string name="en">Inglés</string>
+    <string name="metarerror">Metar no encontrado</string>
+    <string name="submit">Entregar</string>
+    <string name="endtest">¿Terminar el examen?</string>
+    <string name="testdialog">Confirme que ha respondido a todas las preguntas. Aquellas no respondidas puntuaran como una errónea</string>
+    <string name="checkinternet">Compruebe la conexión a internet</string>
 </resources>

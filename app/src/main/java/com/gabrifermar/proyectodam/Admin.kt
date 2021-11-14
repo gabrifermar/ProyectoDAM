@@ -24,6 +24,7 @@ class Admin : AppCompatActivity() {
 
         //listeners
         binding.adminBtnNewuser.setOnClickListener {
+            auth.currentUser?.delete()
             startActivity(Intent(this,NewUser::class.java))
         }
 
@@ -32,8 +33,13 @@ class Admin : AppCompatActivity() {
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        auth.signInAnonymously()
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
-        auth.signOut()
+        auth.currentUser?.delete()
     }
 }

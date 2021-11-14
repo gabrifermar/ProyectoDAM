@@ -89,6 +89,7 @@
                 android:textSize="20sp" />
 
             <Button
+                android:id="@+id/c172_btn_test"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
