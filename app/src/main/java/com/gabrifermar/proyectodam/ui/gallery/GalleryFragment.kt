@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.FragmentGalleryBinding
+import com.gabrifermar.proyectodam.ui.tools.ToolsViewModel
+import com.google.android.gms.ads.AdRequest
 
 class GalleryFragment : Fragment() {
 
@@ -24,18 +26,20 @@ class GalleryFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
-
+    ): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        galleryViewModel = ViewModelProvider(this)[GalleryViewModel::class.java]
+
+        val adRequest=AdRequest.Builder().build()
+        binding.add.loadAd(adRequest)
+
+
     }
 
     override fun onDestroyView() {

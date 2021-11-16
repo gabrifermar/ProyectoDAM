@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
 
 
 class Login : Fragment() {
@@ -122,14 +123,17 @@ class Login : Fragment() {
                         loadmetar("LEVS")
 
                         //show loading progress bar
-                        binding.btnlogin.visibility=View.INVISIBLE
-                        binding.customPbLoading.visibility=View.VISIBLE
+                        binding.btnlogin.visibility = View.INVISIBLE
+                        binding.customPbLoading.visibility = View.VISIBLE
 
                         //wait time to set shared pref and be able to retrieve it at userfragment start
                         Handler().postDelayed({
-                            startActivity(Intent(activity, Usermain::class.java))
-                            binding.btnlogin.visibility=View.VISIBLE
-                            binding.customPbLoading.visibility=View.INVISIBLE
+                            val intent = Intent(activity, Usermain::class.java)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            binding.btnlogin.visibility = View.VISIBLE
+                            binding.customPbLoading.visibility = View.INVISIBLE
                         }, 2000)
 
 
@@ -157,20 +161,24 @@ class Login : Fragment() {
 
 
     internal fun loadmetar(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getmetarcall().create(API::class.java)
-                .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
-            val levs = call.body()
-            (activity as Home).runOnUiThread {
-                if (call.isSuccessful) {
-                    val metars = levs?.data ?: emptyList()
-                    metarlist.clear()
-                    metarlist.addAll(metars)
-                    val sharedPref =
-                        (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("metar", metarlist[0]).apply()
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                val call = getmetarcall().create(API::class.java)
+                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                val levs = call.body()
+                (activity as Home).runOnUiThread {
+                    if (call.isSuccessful) {
+                        val metars = levs?.data ?: emptyList()
+                        metarlist.clear()
+                        metarlist.addAll(metars)
+                        val sharedPref =
+                            (activity as Home).getSharedPreferences("user", Context.MODE_PRIVATE)
+                        sharedPref.edit().putString("metar", metarlist[0]).apply()
+                    }
                 }
             }
+        } catch (e: UnknownHostException) {
+            //no internet
         }
     }
 

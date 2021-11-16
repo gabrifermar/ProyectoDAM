@@ -24,7 +24,6 @@ class FlightPlanner : AppCompatActivity() {
     private var headings = mutableListOf<Int>()
 
 
-    //TODO: pte como implementar introducir el ultimo punto en el recycler puesto que la lista se modifica dentro del listener
     //TODO: pte añadir favoritos y guardar en local para tener base de datos SQL, para poder implementar boton de busqueda
 
     override fun onCreate(savedInstanceState: Bundle?) {

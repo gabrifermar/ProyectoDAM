@@ -1,12 +1,9 @@
 package com.gabrifermar.proyectodam
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.gabrifermar.proyectodam.databinding.ActivityNewUserBinding
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
@@ -64,7 +61,7 @@ class NewUser : AppCompatActivity() {
                             finish()
                         } else {
                             //pass less than 6 characters
-                            Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.passlength, Toast.LENGTH_LONG).show()
                         }
                     }
                 auth.signOut()

@@ -66,7 +66,6 @@ class Charts : AppCompatActivity() {
         binding.chartsWvWebview.loadUrl("https://aip.enaire.es/AIP")
     }
 
-    //TODO https://vlemon.com/blog/android/android-webview-how-to-download-a-file-using-kotlin download files
     private fun checkWritePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

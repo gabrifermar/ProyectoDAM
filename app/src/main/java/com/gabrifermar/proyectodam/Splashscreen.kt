@@ -30,9 +30,6 @@ class Splashscreen : AppCompatActivity() {
     private val metarlist = mutableListOf<String>()
     private lateinit var binding: SplashscreenBinding
 
-
-    //TODO:arreglar no carga cuando no hay conexion por loadmetarr()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = SplashscreenBinding.inflate(layoutInflater)
@@ -40,6 +37,7 @@ class Splashscreen : AppCompatActivity() {
 
         //variable
         auth = FirebaseAuth.getInstance()
+
 
 
         //Declare animations

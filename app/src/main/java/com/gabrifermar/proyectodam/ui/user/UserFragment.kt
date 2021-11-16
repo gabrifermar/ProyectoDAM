@@ -24,6 +24,7 @@ import com.gabrifermar.proyectodam.databinding.FragmentUsermainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.iid.FirebaseInstanceIdReceiver
@@ -35,9 +36,9 @@ class UserFragment : Fragment() {
 
     private lateinit var viewModel: UserViewModel
     private lateinit var auth: FirebaseAuth
+    private var _binding: FragmentUsermainBinding? = null
     private lateinit var flightpb: ObjectAnimator
     private lateinit var subjectpb: ObjectAnimator
-    private var _binding: FragmentUsermainBinding? = null
 
     private val binding get() = _binding!!
 
@@ -49,6 +50,7 @@ class UserFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
@@ -57,11 +59,38 @@ class UserFragment : Fragment() {
         auth = Firebase.auth
         val db = Firebase.firestore
 
+        subjectpb = ObjectAnimator.ofInt(user_progress_subject, "progress", 75).apply {
+            duration = 1500
+            start()
+            addUpdateListener { updatedAnimation ->
+                user_txt_subjectsprogress.text =
+                    (activity as Usermain).getString(
+                        R.string.progress,
+                        updatedAnimation.animatedValue.toString()
+                    )
+            }
+        }
+
+
+        flightpb= ObjectAnimator.ofInt(user_progress_flights, "progress", 50).apply {
+            duration = 1500
+            start()
+            addUpdateListener { updatedAnimation ->
+                user_txt_flightsprogress.text =
+                    (activity as Usermain).getString(
+                        R.string.progress,
+                        updatedAnimation.animatedValue.toString()
+                    )
+            }
+        }
 
         //listeners
         binding.userCvFlights.setOnClickListener {
             startActivity(Intent(activity, FlightMenu::class.java))
         }
+
+        //user_txt_subjectsprogress.text = (activity as Usermain).getString(R.string.progress, "75")
+        //user_txt_flightsprogress.text = (activity as Usermain).getString(R.string.progress, "50")
 
         //write welcome msg
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -76,36 +105,6 @@ class UserFragment : Fragment() {
             )
         }
 
-        //progress bar animation
-        //TODO: cuando tenga variables con progreso añadirlas
-        subjectpb = ObjectAnimator.ofInt(user_progress_subject, "progress", 75)
-            .apply {
-                duration = 1500
-                start()
-                addUpdateListener { updatedAnimation ->
-                    user_txt_subjectsprogress.text =
-                        (activity as Usermain).getString(
-                            R.string.progress,
-                            updatedAnimation.animatedValue.toString()
-                        )
-                }
-            }
-
-
-        flightpb = ObjectAnimator.ofInt(user_progress_flights, "progress", 50)
-            .apply {
-                duration = 1500
-                start()
-                addUpdateListener { updatedAnimation ->
-                    user_txt_flightsprogress.text =
-                        (activity as Usermain).getString(
-                            R.string.progress,
-                            updatedAnimation.animatedValue.toString()
-                        )
-                }
-            }
-
-
         //write metar
         binding.userTxtMetar.text =
             nonencrypted().getString("metar", getString(R.string.metarerror)).toString()
@@ -118,13 +117,11 @@ class UserFragment : Fragment() {
                 )
 
                 db.collection("users").document(auth.currentUser!!.uid)
-                    .set(data, SetOptions.merge()).addOnFailureListener{
-                        Toast.makeText(activity,"no",Toast.LENGTH_SHORT).show()
+                    .set(data, SetOptions.merge()).addOnFailureListener {
+                        Toast.makeText(activity, "no", Toast.LENGTH_SHORT).show()
                     }
             }
         }
-
-
     }
 
     //non encrypted sharedpref for SDK<23
@@ -147,22 +144,16 @@ class UserFragment : Fragment() {
         return encryptedSharedPreferences
     }
 
-    override fun onPause() {
-        flightpb.end()
-        subjectpb.end()
-        super.onPause()
-    }
-
     override fun onStop() {
-        flightpb.end()
-        subjectpb.end()
         super.onStop()
+        subjectpb.end()
+        flightpb.end()
     }
 
-    override fun onResume() {
-        flightpb.start()
-        subjectpb.start()
-        super.onResume()
+    override fun onPause() {
+        subjectpb.end()
+        flightpb.end()
+        super.onPause()
     }
 
 }

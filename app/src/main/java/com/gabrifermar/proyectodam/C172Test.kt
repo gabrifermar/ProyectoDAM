@@ -130,10 +130,6 @@ class C172Test : AppCompatActivity() {
         }
     }
 
-    private fun showGrade(){
-
-    }
-
     private fun timeEnd() {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle(R.string.timesup)
@@ -193,7 +189,7 @@ class C172Test : AppCompatActivity() {
         }
 
         val intent=Intent(this,Usermain::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 

@@ -16,6 +16,9 @@ import android.os.Build
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 
 
 class Settings : AppCompatActivity() {
@@ -30,6 +33,9 @@ class Settings : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPref = this.getSharedPreferences("mode", Context.MODE_PRIVATE)
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //Dark mode
         settings_btn_darkmode.isChecked = sharedPref.getBoolean("darkmode", false)
@@ -80,6 +86,12 @@ class Settings : AppCompatActivity() {
 
             }
         }
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return true
     }
 
     private fun setLanguage(context: Context, language: String) {

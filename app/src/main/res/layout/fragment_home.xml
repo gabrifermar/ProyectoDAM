@@ -83,11 +83,14 @@
 
         <ImageView
             android:layout_width="140dp"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.2"
-            app:srcCompat="@drawable/mapsimg"
-            android:contentDescription="@string/hall"/>
+            android:background="@drawable/frame"
+            android:clipToOutline="true"
+            android:contentDescription="@string/hall"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/mapsimg" />
 
 
     </LinearLayout>

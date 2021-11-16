@@ -1,8 +1,11 @@
 package com.gabrifermar.proyectodam
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +18,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_usermain.*
 
 class Usermain : AppCompatActivity() {
 
     private lateinit var binding: ActivityUsermainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var auth: FirebaseAuth
-    //private val metarlist = mutableListOf<String>()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +34,7 @@ class Usermain : AppCompatActivity() {
         setContentView(binding.root)
 
         //variable
-        auth= FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
 
         //write test grades to sharedPref
@@ -52,15 +57,14 @@ class Usermain : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
-
     }
 
-    private fun flightprogress(){
-        val sharedPref=getSharedPreferences("user",Context.MODE_PRIVATE)
-        val db= Firebase.firestore
+    private fun flightprogress() {
+        val sharedPref = getSharedPreferences("user", Context.MODE_PRIVATE)
+        val db = Firebase.firestore
         db.collection("users").document(auth.currentUser!!.uid).get().addOnSuccessListener {
             if (it.getDouble("C172grade") != null) {
-                sharedPref.edit().putInt("C172grade",it.getDouble("C172grade")!!.toInt()).apply()
+                sharedPref.edit().putInt("C172grade", it.getDouble("C172grade")!!.toInt()).apply()
             }
         }
     }
@@ -72,14 +76,19 @@ class Usermain : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
+        val userdata = getSharedPreferences("user", Context.MODE_PRIVATE)
+        val userdataencrypted = getSharedPreferences("user_encrypted", Context.MODE_PRIVATE)
+
+        return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(Intent(this, Settings::class.java))
                 true
             }
             R.id.logout -> {
                 auth.signOut()
-                startActivity(Intent(this,Home::class.java))
+                startActivity(Intent(this, Home::class.java))
+                userdata.edit().clear().apply()
+                userdataencrypted.edit().clear().apply()
                 finish()
                 true
             }

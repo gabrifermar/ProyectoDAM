@@ -30,7 +30,7 @@ class NewWaypoint : AppCompatActivity() {
     private fun addwaypoint() {
 
         //variables
-        val auth=Firebase.auth
+        val auth = Firebase.auth
         val db = Firebase.firestore
 
         //check fields not empty
@@ -41,15 +41,13 @@ class NewWaypoint : AppCompatActivity() {
                 db.collection("waypoints").get().addOnSuccessListener() { document ->
 
                     val waypoint = hashMapOf(
-                        "ID" to document.size()+1,
+                        "ID" to document.size() + 1,
                         "lat" to binding.waypointEtLat.text.toString().toDouble(),
                         "lon" to binding.waypointEtLon.text.toString().toDouble()
                     )
 
-                    db.collection("waypoints").get().addOnSuccessListener {
-                        db.collection("waypoints").document(binding.waypointEtName.text.toString())
-                            .set(waypoint)
-                    }
+                    db.collection("waypoints").document(binding.waypointEtName.text.toString())
+                        .set(waypoint)
 
                     Toast.makeText(this, getString(R.string.writesuccess), Toast.LENGTH_SHORT)
                         .show()

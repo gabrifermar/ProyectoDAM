@@ -39,6 +39,7 @@
     <string name="lat">Latitude</string>
     <string name="lon">Longitude</string>
     <string name="add">Add</string>
+    <string name="newC172Question">New C172 Question</string>
 
     <!--User-->
     <string name="welcome">Welcome back %s</string>
@@ -84,6 +85,8 @@
     <string name="filealreadydownloaded">File has already been downloaded into download directory</string>
     <string name="timesup">Time has finished</string>
     <string name="timesupdialog">The time is over for this test</string>
+    <string name="emptyicao">Introduce one ICAO at least</string>
+    <string name="passlength">Password must contain at least 6 characters</string>
 
     <!--Flights-->
     <string name="lock" translatable="false">Lock</string>

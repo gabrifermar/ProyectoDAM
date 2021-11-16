@@ -35,10 +35,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: cambiar nombre de fragmentos en toolbar
-        //(activity as Home).supportActionBar?.title="prueba"
-
-
         //listeners
         binding.homeIbCall.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)

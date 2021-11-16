@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
+import java.lang.IllegalStateException
 import java.net.UnknownHostException
 
 class WeatherReports : AppCompatActivity() {
@@ -263,6 +264,11 @@ class WeatherReports : AppCompatActivity() {
                     Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
                         .show()
                 }
+            } catch (e: com.google.gson.JsonSyntaxException) {
+                runOnUiThread {
+                    Toast.makeText(this@WeatherReports, R.string.emptyicao, Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
@@ -294,7 +300,11 @@ class WeatherReports : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
                         .show()
-                    Log.e("error", e.toString())
+                }
+            } catch (e: com.google.gson.JsonSyntaxException) {
+                runOnUiThread {
+                    Toast.makeText(this@WeatherReports, R.string.emptyicao, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

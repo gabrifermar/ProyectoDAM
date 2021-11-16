@@ -17,6 +17,7 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".ProyectoDAMapp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
@@ -63,6 +64,7 @@
             android:exported="true" />
         <activity
             android:name=".Settings"
+            android:label="Settings"
             android:exported="true" />
         <activity
             android:name=".Home"
@@ -94,6 +96,14 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/cloudicon" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <!--ca-app-pub-3685316937533307~4480951352-->
+
+        <!--prueba: ca-app-pub-3940256099942544~3347511713-->
     </application>
 
 </manifest>
