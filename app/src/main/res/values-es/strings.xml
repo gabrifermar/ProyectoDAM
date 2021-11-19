@@ -68,4 +68,5 @@
     <string name="passlength">La contraseña debe tener 6 caractéres mínimo</string>
     <string name="favourite">Favorito</string>
     <string name="historical">Histórico</string>
+    <string name="remove">Eliminar</string>
 </resources>

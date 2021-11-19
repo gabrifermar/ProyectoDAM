@@ -61,6 +61,7 @@
     <string name="near">Search near</string>
     <string name="favourite">Favourite</string>
     <string name="historical">Historical</string>
+    <string name="remove">Remove</string>
 
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>

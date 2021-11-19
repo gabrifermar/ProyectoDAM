@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gabrifermar.proyectodam.Charts
 import com.gabrifermar.proyectodam.FlightPlanner
-import com.gabrifermar.proyectodam.WeatherReports
+import com.gabrifermar.proyectodam.view.WeatherReports
 import com.gabrifermar.proyectodam.databinding.FragmentUserToolsBinding
 
 class ToolsFragment : Fragment() {

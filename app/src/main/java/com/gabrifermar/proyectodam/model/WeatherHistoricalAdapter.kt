@@ -4,10 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.gabrifermar.proyectodam.ProyectoDAMapp
 import com.gabrifermar.proyectodam.R
 import kotlinx.android.synthetic.main.item_weather_historical.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class WeatherHistoricalAdapter(private val historical: List<String>, private val date: List<String>) :
+class WeatherHistoricalAdapter(
+    private val historical: List<String>,
+    private val date: List<String>
+) :
     RecyclerView.Adapter<WeatherHistoricalAdapter.WeatherHistoricalHolder>() {
 
     class WeatherHistoricalHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -30,6 +37,15 @@ class WeatherHistoricalAdapter(private val historical: List<String>, private val
 
     override fun onBindViewHolder(holder: WeatherHistoricalHolder, position: Int) {
         holder.show(date[position], historical[position])
+
+        //TODO: posible livedata
+
+        val repository = holder.view.context.applicationContext as ProyectoDAMapp
+        holder.view.weather_item_historical_remove.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.repository.delete(holder.view.weather_item_historical_metar.text.toString())
+            }
+        }
     }
 
     override fun getItemCount(): Int {

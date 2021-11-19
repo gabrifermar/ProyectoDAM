@@ -3,27 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="5dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginEnd="5dp"
-    android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/colorOnSecondary" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/weather_item_historical_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginEnd="5dp"
-            android:layout_weight=".1"
             tools:text="date" />
 
         <View
@@ -33,12 +28,29 @@
 
         <TextView
             android:id="@+id/weather_item_historical_metar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:layout_weight=".9"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
             tools:text="data" />
 
+        <ImageView
+            android:id="@+id/weather_item_historical_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="@string/remove"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_remove" />
+
+
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorOnSecondary" />
 
 </LinearLayout>

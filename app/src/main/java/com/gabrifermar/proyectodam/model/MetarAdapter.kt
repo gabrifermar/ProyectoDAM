@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.gabrifermar.proyectodam.ProyectoDAMapp
 import com.gabrifermar.proyectodam.R
 import kotlinx.android.synthetic.main.item_weather.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MetarAdapter(private val metars: List<String>, context: Context) :
     RecyclerView.Adapter<MetarAdapter.MetarHolder>() {
@@ -23,18 +22,21 @@ class MetarAdapter(private val metars: List<String>, context: Context) :
     override fun onBindViewHolder(holder: MetarHolder, position: Int) {
         holder.show(metars[position])
 
+        holder.reset()
+
+        val repository = holder.view.context.applicationContext as ProyectoDAMapp
+
         var selected = false
 
-
         holder.view.weather_item_star.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                selected = if (!selected) {
-                    it.setBackgroundResource(R.drawable.ic_baseline_star_full)
-                    true
-                } else {
-                    it.setBackgroundResource(R.drawable.ic_baseline_star_empty)
-                    false
-                }
+            selected = if (!selected) {
+                it.setBackgroundResource(R.drawable.ic_baseline_star_full)
+                repository.repository.addFav(holder.view.weather_item_metar.text.toString())
+                true
+            } else {
+
+                it.setBackgroundResource(R.drawable.ic_baseline_star_empty)
+                false
             }
         }
     }
@@ -47,6 +49,10 @@ class MetarAdapter(private val metars: List<String>, context: Context) :
 
         fun show(metars: String) {
             view.weather_item_metar.text = metars
+        }
+
+        fun reset() {
+            view.weather_item_star.setBackgroundResource(R.drawable.ic_baseline_star_empty)
         }
     }
 

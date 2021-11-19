@@ -1,4 +1,4 @@
-package com.gabrifermar.proyectodam
+package com.gabrifermar.proyectodam.view
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,8 +18,12 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gabrifermar.proyectodam.API
+import com.gabrifermar.proyectodam.ProyectoDAMapp
+import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherReportsBinding
 import com.gabrifermar.proyectodam.model.MetarAdapter
+import com.gabrifermar.proyectodam.model.Weather
 import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
@@ -30,6 +34,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.UnknownHostException
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class WeatherReports : AppCompatActivity() {
@@ -39,6 +46,7 @@ class WeatherReports : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private lateinit var adapter: MetarAdapter
+    private lateinit var date: String
     private var lat: Double = 0.0
     private var lon: Double = 0.0
     private var metarlist = mutableListOf<String>()
@@ -60,6 +68,12 @@ class WeatherReports : AppCompatActivity() {
 
         //variable
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        } else {
+            Calendar.getInstance()
+            SimpleDateFormat("dd/MM/yyy").format(Date())
+        }
 
         //listeners
         startListeners()
@@ -134,11 +148,11 @@ class WeatherReports : AppCompatActivity() {
         }
 
         binding.weatherBtnHistorical.setOnClickListener {
-            startActivity(Intent(this, WeatherHistorical::class.java))
+            startActivity(Intent(this, WeatherHistorical::class.java).putExtra("mode", 1))
         }
 
         binding.weatherBtnFav.setOnClickListener {
-
+            startActivity(Intent(this, WeatherHistorical::class.java).putExtra("mode", 2))
         }
     }
 
@@ -154,7 +168,7 @@ class WeatherReports : AppCompatActivity() {
                         binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
                         binding.weatherTxtInput.requestFocus()
                     } else if (call.isSuccessful) {
-                        addChip(binding.weatherTxtInput.text.toString().uppercase())
+                        addChip(binding.weatherTxtInput.text.toString().toUpperCase(Locale.ROOT))
                         binding.weatherTxtInput.text.clear()
                     }
                 }
@@ -287,7 +301,7 @@ class WeatherReports : AppCompatActivity() {
                             metarlist.clear()
                             metarlist.addAll(metars)
                             adapter.notifyDataSetChanged()
-                            //addDb(metars, true)
+                            addDb(metars, true)
                         }
                     }
 
@@ -323,50 +337,19 @@ class WeatherReports : AppCompatActivity() {
             }
         }
     }
-/*
+
     private fun addDb(metarlist: List<String>, ismetar: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val room = databaseBuilder(applicationContext, WeatherDB::class.java, "Weather").build()
+            val repository = applicationContext as ProyectoDAMapp
             for (metar in metarlist) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    //check if exist metar in DB
-                    if (!room.weatherDao().isExists(metar)) {
-                        metardb.add(
-                            Weather(
-                                0,
-                                LocalDateTime.now()
-                                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                                metar,
-                                ismetar,
-                                false
-                            )
-                        )
-                    }
-                } else {
-                    if (!room.weatherDao().isExists(metar)) {
-                        metardb.add(
-                            Weather(
-                                0,
-                                SimpleDateFormat.getDateTimeInstance()
-                                    .format(Calendar.getInstance().time),
-                                metar,
-                                ismetar,
-                                false
-                            )
-                        )
-                    }
+                if (!repository.repository.isExists(metar)) {
+                    val weather = Weather(0, date, metar, ismetar, fav = false)
+                    repository.repository.insertone(weather)
                 }
-
-
             }
-
-            room.weatherDao().insert(metardb)
-            metardb.clear()
-
         }
-
     }
-*/
+
 
     private fun gettafcall(): Retrofit {
         return Retrofit.Builder()
@@ -389,6 +372,7 @@ class WeatherReports : AppCompatActivity() {
                         metarlist.clear()
                         metarlist.addAll(tafs)
                         adapter.notifyDataSetChanged()
+                        addDb(metarlist, false)
                     }
                 }
             } catch (e: UnknownHostException) {
