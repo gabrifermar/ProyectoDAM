@@ -1,10 +1,11 @@
-package com.gabrifermar.proyectodam
+package com.gabrifermar.proyectodam.model
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.gabrifermar.proyectodam.R
 import kotlinx.android.synthetic.main.item_flight_planner.view.*
 
 class FlightPlannerAdapter(
@@ -56,8 +57,6 @@ class FlightPlannerAdapter(
         } else {
             holder.show(context, waypoints[position], distances[position], headings[position])
         }
-
-
     }
 
     override fun getItemCount(): Int {

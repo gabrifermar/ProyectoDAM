@@ -1,6 +1,5 @@
 package com.gabrifermar.proyectodam
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -160,7 +159,7 @@ class Login : Fragment() {
     }
 
 
-    internal fun loadmetar(query: String) {
+    private fun loadmetar(query: String) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
                 val call = getmetarcall().create(API::class.java)

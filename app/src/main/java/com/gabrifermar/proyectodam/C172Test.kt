@@ -1,15 +1,16 @@
 package com.gabrifermar.proyectodam
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityC172TestBinding
+import com.gabrifermar.proyectodam.model.FlightTestAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -83,6 +84,7 @@ class C172Test : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun loadTest() {
         //variables
         val sharedPreferences = this.getSharedPreferences("C172Test", Context.MODE_PRIVATE)

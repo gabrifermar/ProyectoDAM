@@ -5,9 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.os.Looper
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.gabrifermar.proyectodam.databinding.SplashscreenBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -18,8 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import java.lang.Exception
 import java.net.UnknownHostException
 import java.util.*
 
@@ -37,8 +34,6 @@ class Splashscreen : AppCompatActivity() {
 
         //variable
         auth = FirebaseAuth.getInstance()
-
-
 
         //Declare animations
         val ttb = AnimationUtils.loadAnimation(this, R.anim.ttb)
@@ -66,7 +61,7 @@ class Splashscreen : AppCompatActivity() {
                 loadmetar()
         }
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             //check if user already logged
             if (auth.currentUser != null) {
                 startActivity(Intent(this, Usermain::class.java))

@@ -2,7 +2,6 @@ package com.gabrifermar.proyectodam
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.gabrifermar.proyectodam.databinding.ActivityNewWaypointBinding
 import com.google.firebase.auth.ktx.auth
@@ -38,7 +37,7 @@ class NewWaypoint : AppCompatActivity() {
             //try catch for writing errors
             try {
                 //count waypoints
-                db.collection("waypoints").get().addOnSuccessListener() { document ->
+                db.collection("waypoints").get().addOnSuccessListener { document ->
 
                     val waypoint = hashMapOf(
                         "ID" to document.size() + 1,

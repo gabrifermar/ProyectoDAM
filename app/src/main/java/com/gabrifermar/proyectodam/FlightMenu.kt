@@ -7,27 +7,18 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import androidx.security.crypto.MasterKeys.*
 import com.gabrifermar.proyectodam.databinding.ActivityFlightMenuBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 class FlightMenu : AppCompatActivity() {
 
     private lateinit var binding: ActivityFlightMenuBinding
-    private lateinit var C172pb: ObjectAnimator
-    private lateinit var P28Rpb: ObjectAnimator
-    private lateinit var P06Tpb: ObjectAnimator
+    private lateinit var c172pb: ObjectAnimator
+    private lateinit var p28rpb: ObjectAnimator
+    private lateinit var p06tpb: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +26,7 @@ class FlightMenu : AppCompatActivity() {
         setContentView(binding.root)
 
         //variables
-        var c172progress = 0
+        val c172progress: Int
         val sharedPref = getSharedPreferences("user", Context.MODE_PRIVATE)
 
         //read content from sharedpref to setup locked content
@@ -74,7 +65,7 @@ class FlightMenu : AppCompatActivity() {
         }
 
         //Progress bar
-        C172pb = ObjectAnimator.ofInt(binding.flightmenuPbC172, "progress", c172progress*10)
+        c172pb = ObjectAnimator.ofInt(binding.flightmenuPbC172, "progress", c172progress * 10)
             .apply {
                 duration = 1500
                 start()
@@ -84,7 +75,7 @@ class FlightMenu : AppCompatActivity() {
                 }
             }
 
-        P28Rpb = ObjectAnimator.ofInt(binding.flightmenuPbP28R, "progress", 50)
+        p28rpb = ObjectAnimator.ofInt(binding.flightmenuPbP28R, "progress", 50)
             .apply {
                 duration = 1500
                 start()
@@ -94,7 +85,7 @@ class FlightMenu : AppCompatActivity() {
                 }
             }
 
-        P06Tpb = ObjectAnimator.ofInt(binding.flightmenuPbP06T, "progress", 50)
+        p06tpb = ObjectAnimator.ofInt(binding.flightmenuPbP06T, "progress", 50)
             .apply {
                 duration = 1500
                 start()
@@ -161,23 +152,23 @@ class FlightMenu : AppCompatActivity() {
     }
 
     override fun onPause() {
-        C172pb.end()
-        P28Rpb.end()
-        P06Tpb.end()
+        c172pb.end()
+        p28rpb.end()
+        p06tpb.end()
         super.onPause()
     }
 
     override fun onStop() {
-        C172pb.end()
-        P28Rpb.end()
-        P06Tpb.end()
+        c172pb.end()
+        p28rpb.end()
+        p06tpb.end()
         super.onStop()
     }
 
     override fun onResume() {
-        C172pb.start()
-        P28Rpb.start()
-        P06Tpb.start()
+        c172pb.start()
+        p28rpb.start()
+        p06tpb.start()
         super.onResume()
     }
 }

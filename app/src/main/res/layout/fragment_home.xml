@@ -87,7 +87,6 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0.2"
             android:background="@drawable/frame"
-            android:clipToOutline="true"
             android:contentDescription="@string/hall"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/mapsimg" />

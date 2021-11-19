@@ -30,7 +30,7 @@ class ToolsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ToolsViewModel::class.java)
+        viewModel = ViewModelProvider(this)[ToolsViewModel::class.java]
 
         //listeners
         binding.userToolsCvWeather.setOnClickListener {

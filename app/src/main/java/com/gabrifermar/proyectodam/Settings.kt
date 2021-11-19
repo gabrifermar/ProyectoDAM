@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,13 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.gabrifermar.proyectodam.databinding.ActivitySettingsBinding
 import kotlinx.android.synthetic.main.activity_settings.*
 import java.util.*
-import android.os.Build
-import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 
 
 class Settings : AppCompatActivity() {

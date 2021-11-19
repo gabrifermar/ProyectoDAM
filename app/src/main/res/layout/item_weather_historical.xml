@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
+    android:layout_marginStart="5dp"
     android:layout_marginTop="3dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginEnd="5dp"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="2dp"
         android:background="?attr/colorOnSecondary" />
 
     <LinearLayout
@@ -20,24 +19,26 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/weather_item_metar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.9"
-            tools:text="RAW metar/taf" />
-
-        <ImageView
-            android:id="@+id/weather_item_star"
+            android:id="@+id/weather_item_historical_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:contentDescription="@string/favourite"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_star_empty" />
+            android:layout_marginEnd="5dp"
+            android:layout_weight=".1"
+            tools:text="date" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorOnSecondary" />
+
+        <TextView
+            android:id="@+id/weather_item_historical_metar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight=".9"
+            tools:text="data" />
 
     </LinearLayout>
-
 
 </LinearLayout>

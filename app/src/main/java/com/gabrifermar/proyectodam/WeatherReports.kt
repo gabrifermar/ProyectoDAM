@@ -7,10 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -19,17 +19,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherReportsBinding
+import com.gabrifermar.proyectodam.model.MetarAdapter
 import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
-import java.lang.IllegalStateException
 import java.net.UnknownHostException
+import java.util.*
 
 class WeatherReports : AppCompatActivity() {
 
@@ -42,13 +43,14 @@ class WeatherReports : AppCompatActivity() {
     private var lon: Double = 0.0
     private var metarlist = mutableListOf<String>()
 
-    //TODO: pte implementar escritura en db para historico posible fav en local
 
+    //TODO: pte implementar escritura en db para historico posible fav en local
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherReportsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         //load chips
         loadIcao()
@@ -60,20 +62,43 @@ class WeatherReports : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         //listeners
+        startListeners()
+
+        locationRequest = LocationRequest.create().apply {
+            interval = 5000
+            fastestInterval = 20000
+            smallestDisplacement = 100f
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            isWaitForAccurateLocation = true
+        }
+
+
+        //update pos
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                p0
+                if (p0.locations.isNotEmpty()) {
+                    lat = String.format("%.2f", p0.lastLocation.latitude).toDouble()
+                    lon = String.format("%.2f", p0.lastLocation.longitude).toDouble()
+                }
+            }
+        }
+
+        //start location
+        startLocationUpdates()
+    }
+
+    private fun startListeners() {
         binding.weatherCgIcao.setOnCheckedChangeListener { _, checkedId ->
             val chip = binding.weatherCgIcao.findViewById<Chip>(checkedId)
             binding.weatherCgIcao.removeView(chip)
         }
 
         binding.weatherBtnAdd.setOnClickListener {
-
-            //TODO: posible comprobacion de ICAO antes de añadir, llamando a la API
-
             if (binding.weatherTxtInput.text.length == 4) {
-                addChip(binding.weatherTxtInput.text.toString().uppercase())
-                binding.weatherTxtInput.text.clear()
+                checkIcao(binding.weatherTxtInput.text.toString())
             } else {
-                binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
                 binding.weatherTxtInput.requestFocus()
             }
         }
@@ -81,10 +106,9 @@ class WeatherReports : AppCompatActivity() {
         binding.weatherTxtInput.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 if (binding.weatherTxtInput.text.length == 4) {
-                    addChip(binding.weatherTxtInput.text.toString().uppercase())
-                    binding.weatherTxtInput.text.clear()
+                    checkIcao(binding.weatherTxtInput.text.toString())
                 } else {
-                    binding.weatherTxtInput.error = resources.getString(R.string.emptyfield)
+                    binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
                     binding.weatherTxtInput.requestFocus()
                 }
                 return@setOnKeyListener true
@@ -109,28 +133,48 @@ class WeatherReports : AppCompatActivity() {
             loadtaf(icaolist().joinToString(separator = ","))
         }
 
-        locationRequest = LocationRequest.create().apply {
-            interval = 5000
-            fastestInterval = 20000
-            smallestDisplacement = 100f
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            isWaitForAccurateLocation = true
+        binding.weatherBtnHistorical.setOnClickListener {
+            startActivity(Intent(this, WeatherHistorical::class.java))
         }
 
+        binding.weatherBtnFav.setOnClickListener {
 
-        //update pos
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult) {
-                p0 ?: return
-                if (p0.locations.isNotEmpty()) {
-                    lat = String.format("%.2f", p0.lastLocation.latitude).toDouble()
-                    lon = String.format("%.2f", p0.lastLocation.longitude).toDouble()
+        }
+    }
+
+
+    private fun checkIcao(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val call = getmetarcall().create(API::class.java)
+                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                val metarcall = call.body()
+                runOnUiThread {
+                    if (metarcall?.results == 0) {
+                        binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
+                        binding.weatherTxtInput.requestFocus()
+                    } else if (call.isSuccessful) {
+                        addChip(binding.weatherTxtInput.text.toString().uppercase())
+                        binding.weatherTxtInput.text.clear()
+                    }
+                }
+            } catch (e: UnknownHostException) {
+                //host error (no internet) and show outside coroutine
+                runOnUiThread {
+                    Toast.makeText(
+                        this@WeatherReports,
+                        R.string.checkinternet,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            } catch (e: com.google.gson.JsonSyntaxException) {
+                runOnUiThread {
+                    Toast.makeText(this@WeatherReports, R.string.emptyicao, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
-
-        startLocationUpdates()
-
     }
 
     private fun icaolist(): List<String> {
@@ -223,6 +267,7 @@ class WeatherReports : AppCompatActivity() {
             .build()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun loadmetar(query: String, mode: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             //try catch for errors
@@ -234,13 +279,15 @@ class WeatherReports : AppCompatActivity() {
                     val metarcall = call.body()
                     runOnUiThread {
                         if (metarcall?.results == 0) {
-                            binding.weatherTxtInput.error = resources.getString(R.string.wrongicao)
+                            binding.weatherTxtInput.error =
+                                resources.getString(R.string.wrongicao)
                             binding.weatherTxtInput.requestFocus()
                         } else if (call.isSuccessful) {
                             val metars = metarcall?.data ?: emptyList()
                             metarlist.clear()
                             metarlist.addAll(metars)
                             adapter.notifyDataSetChanged()
+                            //addDb(metars, true)
                         }
                     }
 
@@ -261,7 +308,11 @@ class WeatherReports : AppCompatActivity() {
             } catch (e: UnknownHostException) {
                 //host error (no internet) and show outside coroutine
                 runOnUiThread {
-                    Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@WeatherReports,
+                        R.string.checkinternet,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             } catch (e: com.google.gson.JsonSyntaxException) {
@@ -272,6 +323,50 @@ class WeatherReports : AppCompatActivity() {
             }
         }
     }
+/*
+    private fun addDb(metarlist: List<String>, ismetar: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val room = databaseBuilder(applicationContext, WeatherDB::class.java, "Weather").build()
+            for (metar in metarlist) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    //check if exist metar in DB
+                    if (!room.weatherDao().isExists(metar)) {
+                        metardb.add(
+                            Weather(
+                                0,
+                                LocalDateTime.now()
+                                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                                metar,
+                                ismetar,
+                                false
+                            )
+                        )
+                    }
+                } else {
+                    if (!room.weatherDao().isExists(metar)) {
+                        metardb.add(
+                            Weather(
+                                0,
+                                SimpleDateFormat.getDateTimeInstance()
+                                    .format(Calendar.getInstance().time),
+                                metar,
+                                ismetar,
+                                false
+                            )
+                        )
+                    }
+                }
+
+
+            }
+
+            room.weatherDao().insert(metardb)
+            metardb.clear()
+
+        }
+
+    }
+*/
 
     private fun gettafcall(): Retrofit {
         return Retrofit.Builder()
@@ -280,6 +375,7 @@ class WeatherReports : AppCompatActivity() {
             .build()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun loadtaf(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             //try catch for errors
@@ -298,7 +394,11 @@ class WeatherReports : AppCompatActivity() {
             } catch (e: UnknownHostException) {
                 //host error (no internet) and show outside coroutine
                 runOnUiThread {
-                    Toast.makeText(this@WeatherReports, R.string.checkinternet, Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@WeatherReports,
+                        R.string.checkinternet,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             } catch (e: com.google.gson.JsonSyntaxException) {
@@ -312,7 +412,7 @@ class WeatherReports : AppCompatActivity() {
 
     private fun initRecycler() {
         binding.weatherRvReports.layoutManager = LinearLayoutManager(this)
-        adapter = MetarAdapter(metarlist)
+        adapter = MetarAdapter(metarlist, this)
         binding.weatherRvReports.adapter = adapter
     }
 
@@ -322,11 +422,13 @@ class WeatherReports : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
+    //save chips
     private fun saveIcao() {
         val sharedPref = this.getSharedPreferences("weather", Context.MODE_PRIVATE)
         sharedPref.edit().putString("ICAO", icaolist().joinToString(separator = ",")).apply()
     }
 
+    //load chips
     private fun loadIcao() {
         val sharedPref = this.getSharedPreferences("weather", Context.MODE_PRIVATE)
         val icaos = sharedPref.getString("ICAO", null)

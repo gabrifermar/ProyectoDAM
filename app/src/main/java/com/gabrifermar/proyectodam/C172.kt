@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.ConnectivityManager.*
@@ -17,32 +16,15 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.os.Environment.*
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.gabrifermar.proyectodam.databinding.ActivityC172Binding
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import java.io.File
-import android.webkit.DownloadListener
-import android.widget.CursorAdapter
-import android.widget.LinearLayout
-import android.widget.RemoteViews
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.net.toUri
-import androidx.core.view.marginEnd
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
-import java.lang.Exception
-import java.net.InetAddress
-import kotlin.reflect.typeOf
 
 class C172 : AppCompatActivity() {
 
@@ -88,6 +70,7 @@ class C172 : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private fun notification() {
 
         val pendingIntent =
@@ -95,7 +78,7 @@ class C172 : AppCompatActivity() {
                 this,
                 0,
                 Intent(DownloadManager.ACTION_VIEW_DOWNLOADS),
-                PendingIntent.FLAG_ONE_SHOT
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -114,8 +97,7 @@ class C172 : AppCompatActivity() {
                 .setContentText("Click to open download directory")
                 .setContentIntent(pendingIntent)
         } else {
-
-            builder = Notification.Builder(this)
+            builder = Notification.Builder(this, "Open download directory")
                 .setSmallIcon(R.drawable.cloudicon)
                 .setContentIntent(pendingIntent)
         }
@@ -125,7 +107,11 @@ class C172 : AppCompatActivity() {
 
     private fun checkFile() {
         val file =
-            File("${getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                File("${getExternalFilesDir(DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
+            } else {
+                File("${getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
+            }
         if (file.exists()) {
             Toast.makeText(this, R.string.filealreadydownloaded, Toast.LENGTH_SHORT).show()
             notification()

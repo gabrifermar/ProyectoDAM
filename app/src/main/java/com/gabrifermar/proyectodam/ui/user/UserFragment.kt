@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,10 +23,7 @@ import com.gabrifermar.proyectodam.databinding.FragmentUsermainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.fragment_usermain.*
@@ -53,7 +49,7 @@ class UserFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         //declare variable
         auth = Firebase.auth
@@ -89,9 +85,6 @@ class UserFragment : Fragment() {
             startActivity(Intent(activity, FlightMenu::class.java))
         }
 
-        //user_txt_subjectsprogress.text = (activity as Usermain).getString(R.string.progress, "75")
-        //user_txt_flightsprogress.text = (activity as Usermain).getString(R.string.progress, "50")
-
         //write welcome msg
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.userTxtUsername.text = (activity as Usermain).getString(
@@ -126,22 +119,20 @@ class UserFragment : Fragment() {
 
     //non encrypted sharedpref for SDK<23
     private fun nonencrypted(): SharedPreferences {
-        val sharedPref = (activity as Usermain).getSharedPreferences("user", Context.MODE_PRIVATE)
-        return sharedPref
+        return (activity as Usermain).getSharedPreferences("user", Context.MODE_PRIVATE)
     }
 
     //encrypted sharedpref
     @SuppressLint("NewApi")
     private fun encrypted(): SharedPreferences {
         val masterKey = getOrCreate(AES256_GCM_SPEC)
-        val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+        return EncryptedSharedPreferences.create(
             "user_encrypted",
             masterKey,
             activity as Usermain,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        return encryptedSharedPreferences
     }
 
     override fun onStop() {

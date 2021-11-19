@@ -1,13 +1,12 @@
-package com.gabrifermar.proyectodam
+package com.gabrifermar.proyectodam.model
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.gabrifermar.proyectodam.R
 import kotlinx.android.synthetic.main.item_test.view.*
 
 class FlightTestAdapter(

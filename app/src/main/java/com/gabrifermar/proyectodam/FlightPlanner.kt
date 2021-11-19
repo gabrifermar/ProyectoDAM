@@ -3,18 +3,16 @@ package com.gabrifermar.proyectodam
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityFlightPlannerBinding
-import com.google.firebase.firestore.CollectionReference
+import com.gabrifermar.proyectodam.model.FlightPlannerAdapter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlin.math.*
 
-class FlightPlanner : AppCompatActivity() {
+class FlightPlanner : AppCompatActivity(){
 
     private lateinit var binding: ActivityFlightPlannerBinding
     private lateinit var random: List<Int>
@@ -58,7 +56,7 @@ class FlightPlanner : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun flightplan() {
+    fun flightplan() {
 
         //variables
         val db = Firebase.firestore
@@ -73,10 +71,9 @@ class FlightPlanner : AppCompatActivity() {
         wpnames.clear()
         distances.clear()
         headings.clear()
-        adapter.notifyDataSetChanged()
 
         //enter db to get waypoints data to calculate
-        db.collection("waypoints").get().addOnSuccessListener() { document ->
+        db.collection("waypoints").get().addOnSuccessListener { document ->
             if (document != null) {
                 //background task for calculations
                 CoroutineScope(Dispatchers.IO).launch {

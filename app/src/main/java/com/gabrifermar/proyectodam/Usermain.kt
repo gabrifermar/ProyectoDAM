@@ -1,11 +1,8 @@
 package com.gabrifermar.proyectodam
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_usermain.*
 
 class Usermain : AppCompatActivity() {
 
@@ -35,7 +31,6 @@ class Usermain : AppCompatActivity() {
 
         //variable
         auth = FirebaseAuth.getInstance()
-
 
         //write test grades to sharedPref
         flightprogress()
@@ -56,9 +51,8 @@ class Usermain : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
     }
-
+//
     private fun flightprogress() {
         val sharedPref = getSharedPreferences("user", Context.MODE_PRIVATE)
         val db = Firebase.firestore
@@ -69,9 +63,8 @@ class Usermain : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.user_menu, menu)
-
         return super.onCreateOptionsMenu(menu)
     }
 

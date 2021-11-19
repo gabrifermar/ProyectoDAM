@@ -6,8 +6,6 @@
 
     <!-- Navigation -->
     <string name="title_activity_home">Home</string>
-    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_title" translatable="false">Android Studio</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
@@ -28,7 +26,6 @@
 
     <!--Admin-->
     <string name="newuser">New User</string>
-    <string name="usermail">Mail (Optional)</string>
     <string name="subjects">Subjects</string>
     <string name="C172" translatable="false">C172</string>
     <string name="P28R" translatable="false">P28R</string>
@@ -62,6 +59,8 @@
     <string name="taf" translatable="false">TAF</string>
     <string name="weatherinfo" translatable="false">ICAO</string>
     <string name="near">Search near</string>
+    <string name="favourite">Favourite</string>
+    <string name="historical">Historical</string>
 
     <!--Code-->
     <string name="fillfields">Fill in the fields</string>
@@ -112,7 +111,6 @@
     <string name="c172test">C172 Test</string>
     <string name="counter" translatable="false">%s:%s</string>
     <string name="submit">Submit</string>
-    <string name="anscounter" translatable="false">%d/15</string>
     <string name="grade" translatable="false">%s/10</string>
 
 

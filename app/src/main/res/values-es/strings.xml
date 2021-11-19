@@ -13,7 +13,6 @@
     <string name="title_activity_home">Inicio</string>
     <string name="design">Diseñado por Gabriel</string>
     <string name="newuser">Nuevo usuario</string>
-    <string name="usermail">Correo (Opcional)</string>
     <string name="subjects">Asignaturas</string>
     <string name="createuser">Crear usuario</string>
     <string name="newwaypoint">Nuevo Waypoint</string>
@@ -67,4 +66,6 @@
     <string name="timesupdialog">El tiempo para este test ha finalizado</string>
     <string name="emptyicao">Introduzca al menos un código OACI</string>
     <string name="passlength">La contraseña debe tener 6 caractéres mínimo</string>
+    <string name="favourite">Favorito</string>
+    <string name="historical">Histórico</string>
 </resources>
