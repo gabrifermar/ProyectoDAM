@@ -26,6 +26,9 @@ interface WeatherDao {
     @Query("UPDATE Weather SET fav = 1 WHERE data = :data")
     suspend fun addFav(data: String)
 
+    @Query("UPDATE Weather SET fav = 0 WHERE data = :data")
+    suspend fun removeFav(data: String)
+
     @Query("SELECT * FROM Weather WHERE metar = 1 and fav = 1 ORDER BY id DESC LIMIT 50")
     suspend fun allMetarFav():List<Weather>
 

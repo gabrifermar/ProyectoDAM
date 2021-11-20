@@ -42,6 +42,12 @@ class WeatherHistoricalAdapter(
 
         val repository = holder.view.context.applicationContext as ProyectoDAMapp
         holder.view.weather_item_historical_remove.setOnClickListener {
+
+when (mode){
+    1 -> //remove from database
+    2 -> //remove from fav
+}
+
             CoroutineScope(Dispatchers.IO).launch {
                 repository.repository.delete(holder.view.weather_item_historical_metar.text.toString())
             }

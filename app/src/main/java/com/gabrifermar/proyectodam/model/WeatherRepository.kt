@@ -51,6 +51,14 @@ class WeatherRepository(private val weatherDao: WeatherDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    fun removeFav(data: String){
+        CoroutineScope(Dispatchers.IO).launch{
+            weatherDao.removeFav(data)
+        }
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun allMetarFav(): List<Weather> {
         return weatherDao.allMetarFav()
     }
