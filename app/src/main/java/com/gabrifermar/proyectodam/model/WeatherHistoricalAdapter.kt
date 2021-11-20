@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class WeatherHistoricalAdapter(
     private val historical: List<String>,
-    private val date: List<String>
+    private val date: List<String>,
+    private val mode: Int
 ) :
     RecyclerView.Adapter<WeatherHistoricalAdapter.WeatherHistoricalHolder>() {
 
@@ -44,8 +45,10 @@ class WeatherHistoricalAdapter(
         holder.view.weather_item_historical_remove.setOnClickListener {
 
 when (mode){
-    1 -> //remove from database
-    2 -> //remove from fav
+    //remove from fav
+    1 -> 
+    //remove from database
+    2 ->
 }
 
             CoroutineScope(Dispatchers.IO).launch {

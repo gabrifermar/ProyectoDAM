@@ -17,6 +17,7 @@ class WeatherHistorical : AppCompatActivity() {
     private lateinit var adapter: WeatherHistoricalAdapter
     private var date = mutableListOf<String>()
     private var data = mutableListOf<String>()
+    private var adaptermode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,7 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread{
                     date.add(metar.date)
                     data.add(metar.data)
+                    adaptermode=1
                     adapter.notifyDataSetChanged()
                 }
             }
@@ -79,6 +81,7 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread{
                     date.add(metar.date)
                     data.add(metar.data)
+                    adaptermode=1
                     adapter.notifyDataSetChanged()
                 }
             }
@@ -98,6 +101,7 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
+                    adaptermode=2
                     adapter.notifyDataSetChanged()
                 }
             }
@@ -118,6 +122,7 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
+                    adaptermode=2
                     adapter.notifyDataSetChanged()
                 }
             }
@@ -127,7 +132,7 @@ class WeatherHistorical : AppCompatActivity() {
 
     private fun initRecycler() {
         binding.weatherRvHistorical.layoutManager = LinearLayoutManager(this)
-        adapter = WeatherHistoricalAdapter(data, date)
+        adapter = WeatherHistoricalAdapter(data, date, adaptermode)
         binding.weatherRvHistorical.adapter = adapter
     }
 }
