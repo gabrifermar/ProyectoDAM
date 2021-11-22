@@ -36,7 +36,12 @@
     <string name="lat">Latitude</string>
     <string name="lon">Longitude</string>
     <string name="add">Add</string>
-    <string name="newC172Question">New C172 Question</string>
+    <string name="newQuestion">New Question</string>
+    <string name="statement">Statement</string>
+    <string name="answer1">Answer 1</string>
+    <string name="answer2">Answer 2</string>
+    <string name="answer3">Answer 3</string>
+    <string name="answer4">Answer 4</string>
 
     <!--User-->
     <string name="welcome">Welcome back %s</string>
@@ -87,6 +92,7 @@
     <string name="timesupdialog">The time is over for this test</string>
     <string name="emptyicao">Introduce one ICAO at least</string>
     <string name="passlength">Password must contain at least 6 characters</string>
+    <string name="wip" translatable="false">Work In Progress</string>
 
     <!--Flights-->
     <string name="lock" translatable="false">Lock</string>
@@ -95,6 +101,21 @@
     <string name="manuals">Manuals</string>
     <string name="tests">Tests</string>
     <string name="start">Start</string>
+
+    <!--Subjects-->
+    <string name="airlaw">Air Law</string>
+    <string name="airframe">Airframe and systems</string>
+    <string name="instrumentation">Instrumentation</string>
+    <string name="massbalance">Mass &amp; Balance</string>
+    <string name="performance">Performance</string>
+    <string name="planning">Flight Planning</string>
+    <string name="human">Human Performance</string>
+    <string name="meteo">Meteorology</string>
+    <string name="nav">General Navigation</string>
+    <string name="radio">Radio Navigation</string>
+    <string name="pop">Operational Procedures</string>
+    <string name="principles">Principles of Flight</string>
+    <string name="comms">Communications</string>
 
     <!--Flight planner-->
     <string name="create">Create</string>

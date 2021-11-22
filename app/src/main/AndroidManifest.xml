@@ -22,6 +22,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
+            android:name=".NewQuestion"
+            android:exported="false" />
+        <activity
+            android:name=".view.SubjectMenu"
+            android:exported="false" />
+        <activity
             android:name=".view.WeatherHistorical"
             android:exported="false" />
         <activity
@@ -36,19 +42,22 @@
             android:exported="false" />
         <activity
             android:name=".C172"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/C172" />
         <activity
             android:name=".FlightPlanner"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Flight planner" />
         <activity
             android:name=".NewWaypoint"
             android:exported="false" />
         <activity
-            android:name=".FlightMenu"
+            android:name=".view.FlightMenu"
             android:exported="false" />
         <activity
             android:name=".Charts"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Charts" />
         <activity
             android:name=".view.WeatherReports"
             android:exported="false"

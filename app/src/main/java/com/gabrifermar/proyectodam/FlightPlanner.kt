@@ -3,6 +3,7 @@ package com.gabrifermar.proyectodam
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.databinding.ActivityFlightPlannerBinding
@@ -12,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlin.math.*
 
-class FlightPlanner : AppCompatActivity(){
+class FlightPlanner : AppCompatActivity() {
 
     private lateinit var binding: ActivityFlightPlannerBinding
     private lateinit var random: List<Int>
@@ -35,6 +36,9 @@ class FlightPlanner : AppCompatActivity(){
         //variables
         random = emptyList()
         binding.flightplannerTvSeekbarvalue.text = 2.toString()
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         binding.flightplannerSbLegselector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -180,8 +184,18 @@ class FlightPlanner : AppCompatActivity(){
 
     private fun initRecycler() {
         binding.flightplannerRvFlightplan.layoutManager = LinearLayoutManager(this)
-        adapter = FlightPlannerAdapter(this,wpnames, distances, headings)
+        adapter = FlightPlannerAdapter(this, wpnames, distances, headings)
         binding.flightplannerRvFlightplan.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 }
 

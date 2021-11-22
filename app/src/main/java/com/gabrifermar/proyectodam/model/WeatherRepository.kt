@@ -3,13 +3,15 @@ package com.gabrifermar.proyectodam.model
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
 import androidx.room.CoroutinesRoom
 import kotlinx.coroutines.*
+import java.util.concurrent.Flow
 import java.util.logging.Handler
 
 class WeatherRepository(private val weatherDao: WeatherDao) {
 
-    //val allMetar: List<Weather> = weatherDao.allMetar()
+    //val allTafFav: LiveData<List<Weather>> = weatherDao.allTafFav()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -51,8 +53,8 @@ class WeatherRepository(private val weatherDao: WeatherDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    fun removeFav(data: String){
-        CoroutineScope(Dispatchers.IO).launch{
+    fun removeFav(data: String) {
+        CoroutineScope(Dispatchers.IO).launch {
             weatherDao.removeFav(data)
         }
     }
@@ -68,6 +70,7 @@ class WeatherRepository(private val weatherDao: WeatherDao) {
     suspend fun allTafFav(): List<Weather> {
         return weatherDao.allTafFav()
     }
+
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

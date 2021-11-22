@@ -20,7 +20,12 @@ class NewWaypoint : AppCompatActivity() {
 
         //variables
 
+        //listeners
+        startListeners()
 
+    }
+
+    private fun startListeners() {
         binding.waypointBtnAdd.setOnClickListener {
             addwaypoint()
         }
@@ -31,6 +36,8 @@ class NewWaypoint : AppCompatActivity() {
         //variables
         val auth = Firebase.auth
         val db = Firebase.firestore
+
+        auth.signInAnonymously()
 
         //check fields not empty
         if (binding.waypointEtName.text.isNotEmpty() && binding.waypointEtLat.text.isNotEmpty() && binding.waypointEtLon.text.isNotEmpty()) {
@@ -63,6 +70,8 @@ class NewWaypoint : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.emptyfield), Toast.LENGTH_SHORT).show()
         }
 
+        auth.currentUser?.delete()
+        auth.signOut()
 
     }
 }

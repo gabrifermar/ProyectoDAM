@@ -30,13 +30,14 @@ interface WeatherDao {
     suspend fun removeFav(data: String)
 
     @Query("SELECT * FROM Weather WHERE metar = 1 and fav = 1 ORDER BY id DESC LIMIT 50")
-    suspend fun allMetarFav():List<Weather>
+    suspend fun allMetarFav(): List<Weather>
 
     @Query("SELECT * FROM Weather WHERE metar = 0 and fav = 1 ORDER BY id DESC LIMIT 50")
-    suspend fun allTafFav():List<Weather>
+    suspend fun allTafFav(): List<Weather>
+    //fun allTafFav(): LiveData<List<Weather>>
 
     @Query("DELETE FROM Weather WHERE data = :data")
-    suspend fun delete(data:String)
+    suspend fun delete(data: String)
 
 //    @Query("SELECT EXISTS(SELECT * FROM Weather WHERE data = :data and fav = 1)")
 //    suspend fun isFav(data: String): Boolean

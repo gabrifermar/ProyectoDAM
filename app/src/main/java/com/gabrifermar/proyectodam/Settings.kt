@@ -25,31 +25,20 @@ class Settings : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPref = this.getSharedPreferences("mode", Context.MODE_PRIVATE)
 
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        //Dark mode
-        settings_btn_darkmode.isChecked = sharedPref.getBoolean("darkmode", false)
+        //setup spinner
+        setupSpinner()
 
-        settings_btn_darkmode.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                sharedPref.edit().putBoolean("darkmode", true).apply()
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                sharedPref.edit().putBoolean("darkmode", false).apply()
-            }
-        }
+        //listeners
+        startListeners()
 
-        //Language
-        val languages =
-            listOf(getString(R.string.select), getString(R.string.en), getString(R.string.es))
+    }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
-
-        binding.settingsSpinnerLanguage.adapter = adapter
+    private fun startListeners() {
+        val sharedPref = this.getSharedPreferences("mode", Context.MODE_PRIVATE)
 
         binding.settingsSpinnerLanguage.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -79,6 +68,27 @@ class Settings : AppCompatActivity() {
 
             }
         }
+
+        binding.settingsBtnDarkmode.isChecked = sharedPref.getBoolean("darkmode", false)
+
+        settings_btn_darkmode.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                sharedPref.edit().putBoolean("darkmode", true).apply()
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                sharedPref.edit().putBoolean("darkmode", false).apply()
+            }
+        }
+    }
+
+    private fun setupSpinner() {
+        val languages =
+            listOf(getString(R.string.select), getString(R.string.en), getString(R.string.es))
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
+
+        binding.settingsSpinnerLanguage.adapter = adapter
     }
 
 

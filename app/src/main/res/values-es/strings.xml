@@ -61,7 +61,6 @@
     <string name="testdialog">Confirme que ha respondido a todas las preguntas. Aquellas no respondidas puntuaran como una errónea</string>
     <string name="checkinternet">Compruebe la conexión a internet</string>
     <string name="filealreadydownloaded">Archivo ya ha sido descargado en la carpeta de descargas</string>
-    <string name="newC172Question">Nueva pregunta C172</string>
     <string name="timesup">El tiempo ha terminado</string>
     <string name="timesupdialog">El tiempo para este test ha finalizado</string>
     <string name="emptyicao">Introduzca al menos un código OACI</string>
@@ -69,4 +68,23 @@
     <string name="favourite">Favorito</string>
     <string name="historical">Histórico</string>
     <string name="remove">Eliminar</string>
+    <string name="airlaw">Derecho</string>
+    <string name="airframe">Sistemas</string>
+    <string name="instrumentation">Instrumentos</string>
+    <string name="meteo">Meteorología</string>
+    <string name="nav">Navegación</string>
+    <string name="comms">Comunicaciones</string>
+    <string name="principles">Principios de vuelo</string>
+    <string name="pop">Principios operacionales</string>
+    <string name="radio">Radio Navegación</string>
+    <string name="massbalance">Carga y centrado</string>
+    <string name="human">Factores Humanos</string>
+    <string name="planning">Planificación de vuelo</string>
+    <string name="performance">Rendimiento</string>
+    <string name="newQuestion">Nueva pregunta</string>
+    <string name="statement">Sentencia</string>
+    <string name="answer1">Respuesta 1</string>
+    <string name="answer2">Respuesta 2</string>
+    <string name="answer3">Respuesta 3</string>
+    <string name="answer4">Respuesta 4</string>
 </resources>

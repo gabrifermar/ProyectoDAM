@@ -1,8 +1,8 @@
 package com.gabrifermar.proyectodam.view
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gabrifermar.proyectodam.ProyectoDAMapp
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherHistoricalBinding
@@ -17,7 +17,8 @@ class WeatherHistorical : AppCompatActivity() {
     private lateinit var adapter: WeatherHistoricalAdapter
     private var date = mutableListOf<String>()
     private var data = mutableListOf<String>()
-    private var adaptermode = 1
+    private var adaptermode = mutableListOf<Int>()
+    private var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,9 @@ class WeatherHistorical : AppCompatActivity() {
 
         //listeners
         startListeners(mode)
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun startListeners(mode: Int) {
@@ -50,50 +54,66 @@ class WeatherHistorical : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun retrieveTafFav() {
         val repository = applicationContext as ProyectoDAMapp
+        val size = date.size
+
+        //reset recyclerview
         date.clear()
         data.clear()
+        adaptermode.clear()
+        adapter.notifyItemRangeRemoved(0, size)
+        index = 0
 
         CoroutineScope(Dispatchers.IO).launch {
-            val metarlist=repository.repository.allTafFav()
-            for (metar in metarlist){
-                runOnUiThread{
+            val metarlist = repository.repository.allTafFav()
+            for (metar in metarlist) {
+                runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
-                    adaptermode=1
-                    adapter.notifyDataSetChanged()
+                    adaptermode.add(1)
+                    adapter.notifyItemInserted(index)
                 }
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun retrieveMetarFav() {
+        //variable
         val repository = applicationContext as ProyectoDAMapp
+        val size = date.size
+
+        //reset recyclerview
         date.clear()
         data.clear()
+        adaptermode.clear()
+        adapter.notifyItemRangeRemoved(0, size)
+        index = 0
 
         CoroutineScope(Dispatchers.IO).launch {
-            val metarlist=repository.repository.allMetarFav()
-            for (metar in metarlist){
-                runOnUiThread{
+            val metarlist = repository.repository.allMetarFav()
+            for (metar in metarlist) {
+                runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
-                    adaptermode=1
-                    adapter.notifyDataSetChanged()
+                    adaptermode.add(1)
+                    adapter.notifyItemInserted(index)
                 }
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun retrieveTaf() {
         //variable
         val repository = applicationContext as ProyectoDAMapp
+        val size = date.size
+
+        //reset recyclerview
         date.clear()
         data.clear()
+        adaptermode.clear()
+        adapter.notifyItemRangeRemoved(0, size)
+        index = 0
 
         CoroutineScope(Dispatchers.IO).launch {
             val metarlist = repository.repository.allTaf()
@@ -101,20 +121,25 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
-                    adaptermode=2
-                    adapter.notifyDataSetChanged()
+                    adaptermode.add(2)
+                    adapter.notifyItemInserted(index)
                 }
             }
 
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun retrieveMetar() {
         //variable
         val repository = applicationContext as ProyectoDAMapp
+        val size = date.size
+
+        //reset recyclerview
         date.clear()
         data.clear()
+        adaptermode.clear()
+        adapter.notifyItemRangeRemoved(0, size)
+        index = 0
 
         CoroutineScope(Dispatchers.IO).launch {
             val metarlist = repository.repository.allMetar()
@@ -122,9 +147,10 @@ class WeatherHistorical : AppCompatActivity() {
                 runOnUiThread {
                     date.add(metar.date)
                     data.add(metar.data)
-                    adaptermode=2
-                    adapter.notifyDataSetChanged()
+                    adaptermode.add(2)
+                    adapter.notifyItemInserted(index)
                 }
+
             }
 
         }
@@ -134,5 +160,15 @@ class WeatherHistorical : AppCompatActivity() {
         binding.weatherRvHistorical.layoutManager = LinearLayoutManager(this)
         adapter = WeatherHistoricalAdapter(data, date, adaptermode)
         binding.weatherRvHistorical.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 }

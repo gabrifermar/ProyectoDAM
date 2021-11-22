@@ -33,9 +33,10 @@
             android:text="@string/newwaypoint" />
 
         <Button
+            android:id="@+id/admin_btn_newquestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/newC172Question" />
+            android:text="@string/newQuestion" />
 
     </LinearLayout>
 

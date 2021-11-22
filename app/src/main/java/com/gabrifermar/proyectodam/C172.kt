@@ -17,6 +17,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment.*
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -47,6 +48,9 @@ class C172 : AppCompatActivity() {
         val db = Firebase.firestore
         val auth = Firebase.auth
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //check for grade
         db.collection("users").document(auth.currentUser!!.uid).get().addOnSuccessListener {
@@ -209,5 +213,15 @@ class C172 : AppCompatActivity() {
             //permitido
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
     }
 }

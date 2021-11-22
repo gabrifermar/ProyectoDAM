@@ -22,23 +22,21 @@ class Admin : AppCompatActivity() {
         auth=Firebase.auth
 
         //listeners
+        startListeners()
+
+    }
+
+    private fun startListeners(){
         binding.adminBtnNewuser.setOnClickListener {
-            auth.currentUser?.delete()
             startActivity(Intent(this,NewUser::class.java))
         }
 
         binding.adminBtnAddwaypoint.setOnClickListener {
             startActivity(Intent(this,NewWaypoint::class.java))
         }
-    }
 
-    override fun onRestart() {
-        super.onRestart()
-        auth.signInAnonymously()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        auth.currentUser?.delete()
+        binding.adminBtnNewquestion.setOnClickListener {
+            startActivity(Intent(this,NewQuestion::class.java))
+        }
     }
 }

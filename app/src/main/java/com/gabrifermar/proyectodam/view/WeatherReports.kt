@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -51,9 +52,7 @@ class WeatherReports : AppCompatActivity() {
     private var lon: Double = 0.0
     private var metarlist = mutableListOf<String>()
 
-
-    //TODO: pte implementar escritura en db para historico posible fav en local
-
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherReportsBinding.inflate(layoutInflater)
@@ -65,6 +64,9 @@ class WeatherReports : AppCompatActivity() {
 
         //start reclycerview
         initRecycler()
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //variable
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -90,7 +92,6 @@ class WeatherReports : AppCompatActivity() {
         //update pos
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
-                p0
                 if (p0.locations.isNotEmpty()) {
                     lat = String.format("%.2f", p0.lastLocation.latitude).toDouble()
                     lon = String.format("%.2f", p0.lastLocation.longitude).toDouble()
@@ -117,7 +118,7 @@ class WeatherReports : AppCompatActivity() {
             }
         }
 
-        binding.weatherTxtInput.setOnKeyListener { v, keyCode, event ->
+        binding.weatherTxtInput.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 if (binding.weatherTxtInput.text.length == 4) {
                     checkIcao(binding.weatherTxtInput.text.toString())
@@ -138,12 +139,12 @@ class WeatherReports : AppCompatActivity() {
 
         binding.weatherBtnMetar.setOnClickListener {
             binding.weatherTxtInput.clearFocus()
-            hideKeyboard(this, binding.weatherTxtInput)
+            hideKeyboard(binding.weatherTxtInput)
             loadmetar(icaolist().joinToString(separator = ","), 1)
         }
 
         binding.weatherBtnTaf.setOnClickListener {
-            hideKeyboard(this, binding.weatherTxtInput)
+            hideKeyboard(binding.weatherTxtInput)
             loadtaf(icaolist().joinToString(separator = ","))
         }
 
@@ -400,7 +401,7 @@ class WeatherReports : AppCompatActivity() {
         binding.weatherRvReports.adapter = adapter
     }
 
-    private fun hideKeyboard(context: Context, v: View) {
+    private fun hideKeyboard(v: View) {
         val inputMethodManager =
             applicationContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
@@ -449,6 +450,12 @@ class WeatherReports : AppCompatActivity() {
         super.onBackPressed()
         saveIcao()
         finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        saveIcao()
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 
 }

@@ -20,7 +20,7 @@ class FlightPlannerTest {
     fun setUp() {
         activityrule.scenario
 
-        onView(withId(R.id.flightplanner_sb_legselector)).perform(click())
+        onView(withId(R.id.flightplanner_btn_generate)).perform(click())
         //onView(withId(R.id.flightplanner_tv_seekbarvalue)).check()
 
     }

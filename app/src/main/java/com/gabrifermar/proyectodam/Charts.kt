@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.webkit.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -20,6 +21,9 @@ class Charts : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChartsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //backarrow
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //refresh webview
         binding.chartsRlRefresh.setOnRefreshListener {
@@ -69,5 +73,10 @@ class Charts : AppCompatActivity() {
             super.onBackPressed()
             finish()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return super.onOptionsItemSelected(item)
     }
 }
