@@ -1,18 +1,11 @@
 package com.gabrifermar.proyectodam.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.gabrifermar.proyectodam.model.Weather
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 class UserViewModel : ViewModel() {
@@ -22,15 +15,15 @@ class UserViewModel : ViewModel() {
     private val auth = Firebase.auth.currentUser
 
     private val _flightProgress = MutableLiveData<Int>()
-    val flightProgress: LiveData<Int> = _flightProgress
+    var flightProgress: LiveData<Int> = _flightProgress
 
     private val _subjectProgress = MutableLiveData<Int>()
     val subjectProgress: LiveData<Int> = _subjectProgress
 
     fun flightProgress() {
-        var c172 = 0.0
-        var p28r = 0.0
-        var p06t = 0.0
+        var c172: Double
+        var p28r: Double
+        var p06t: Double
         db.collection("users").document(auth!!.uid).get().addOnSuccessListener {
             c172 = it.getDouble("C172grade")?.times(10.0) ?: 0.0
             c172 /= 3

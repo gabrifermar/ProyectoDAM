@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".view.fragment.Login">
 
 
     <EditText
@@ -13,11 +13,16 @@
         android:layout_gravity="center"
         android:layout_marginBottom="70dp"
         android:autofillHints="username"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_user"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/user"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         tools:ignore="TextContrastCheck" />
 
     <EditText
@@ -26,11 +31,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:autofillHints="password"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/custom_password"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/pass"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         tools:ignore="TextContrastCheck" />
 
     <ProgressBar

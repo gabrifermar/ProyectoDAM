@@ -14,9 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys.*
-import com.gabrifermar.proyectodam.C172
-import com.gabrifermar.proyectodam.P06T
-import com.gabrifermar.proyectodam.P28R
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityFlightMenuBinding
 import com.gabrifermar.proyectodam.viewmodel.FlightMenuViewModel
@@ -108,7 +105,7 @@ class FlightMenu : AppCompatActivity() {
 
     private fun setupViewModel() {
         viewModel.c172progress()
-        viewModel.progressc172.observe(this@FlightMenu, Observer {
+        viewModel.progressc172.observe(this@FlightMenu, {
             c172pb = ObjectAnimator.ofInt(binding.flightmenuPbC172, "progress", it ?: 0)
                 .apply {
                     duration = 1500
@@ -195,13 +192,6 @@ class FlightMenu : AppCompatActivity() {
         p28rpb.end()
         p06tpb.end()
         super.onStop()
-    }
-
-    override fun onResume() {
-        c172pb.start()
-        p28rpb.start()
-        p06tpb.start()
-        super.onResume()
     }
 
     override fun onBackPressed() {

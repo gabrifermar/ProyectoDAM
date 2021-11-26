@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivitySubjectMenuBinding
@@ -120,7 +119,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun radioProgress() {
-        viewModel.radioProgress.observe(this, Observer {
+        viewModel.radioProgress.observe(this, {
             radiopb = ObjectAnimator.ofInt(binding.subjectmenuPbRadio, "progress", it)
                 .apply {
                     duration = 1500
@@ -136,7 +135,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun principlesProgress() {
-        viewModel.principlesProgress.observe(this, Observer {
+        viewModel.principlesProgress.observe(this, {
             principlespb = ObjectAnimator.ofInt(binding.subjectmenuPbPrinciples, "progress", it)
                 .apply {
                     duration = 1500
@@ -152,7 +151,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun popProgress() {
-        viewModel.popProgress.observe(this, Observer {
+        viewModel.popProgress.observe(this, {
             poppb = ObjectAnimator.ofInt(binding.subjectmenuPbPop, "progress", it)
                 .apply {
                     duration = 1500
@@ -168,7 +167,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun planningProgress() {
-        viewModel.planningProgress.observe(this, Observer {
+        viewModel.planningProgress.observe(this, {
             planningpb = ObjectAnimator.ofInt(binding.subjectmenuPbPlanning, "progress", it)
                 .apply {
                     duration = 1500
@@ -184,7 +183,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun performanceProgress() {
-        viewModel.performanceProgress.observe(this, Observer {
+        viewModel.performanceProgress.observe(this, {
             performancepb = ObjectAnimator.ofInt(binding.subjectmenuPbPerformance, "progress", it)
                 .apply {
                     duration = 1500
@@ -200,7 +199,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun navProgress() {
-        viewModel.navProgress.observe(this, Observer {
+        viewModel.navProgress.observe(this, {
             navpb = ObjectAnimator.ofInt(binding.subjectmenuPbNav, "progress", it)
                 .apply {
                     duration = 1500
@@ -216,7 +215,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun meteoProgress() {
-        viewModel.meteoProgress.observe(this, Observer {
+        viewModel.meteoProgress.observe(this, {
             meteopb = ObjectAnimator.ofInt(binding.subjectmenuPbMeteo, "progress", it)
                 .apply {
                     duration = 1500
@@ -232,7 +231,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun massbalanceProgress() {
-        viewModel.massbalanceProgress.observe(this, Observer {
+        viewModel.massbalanceProgress.observe(this, {
             massbalancepb = ObjectAnimator.ofInt(binding.subjectmenuPbMassBalance, "progress", it)
                 .apply {
                     duration = 1500
@@ -249,7 +248,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun instrumentationProgress() {
-        viewModel.instrumentationProgress.observe(this, Observer {
+        viewModel.instrumentationProgress.observe(this, {
             instrumentationpb =
                 ObjectAnimator.ofInt(binding.subjectmenuPbInstrumentation, "progress", it)
                     .apply {
@@ -267,7 +266,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun humanProgress() {
-        viewModel.humanProgress.observe(this, Observer {
+        viewModel.humanProgress.observe(this, {
             humanpb = ObjectAnimator.ofInt(binding.subjectmenuPbHuman, "progress", it)
                 .apply {
                     duration = 1500
@@ -283,7 +282,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun commsProgress() {
-        viewModel.commsProgress.observe(this, Observer {
+        viewModel.commsProgress.observe(this, {
             commspb = ObjectAnimator.ofInt(binding.subjectmenuPbComms, "progress", it)
                 .apply {
                     duration = 1500
@@ -299,7 +298,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun airframeProgress() {
-        viewModel.airframeProgress.observe(this, Observer {
+        viewModel.airframeProgress.observe(this, {
             airframepb = ObjectAnimator.ofInt(binding.subjectmenuPbAirframe, "progress", it)
                 .apply {
                     duration = 1500
@@ -315,7 +314,7 @@ class SubjectMenu : AppCompatActivity() {
     }
 
     private fun airlawProgress() {
-        viewModel.airlawProgress.observe(this, Observer {
+        viewModel.airlawProgress.observe(this, {
             airlawpb = ObjectAnimator.ofInt(binding.subjectmenuPbAirLaw, "progress", it)
                 .apply {
                     duration = 1500
@@ -392,5 +391,39 @@ class SubjectMenu : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    override fun onPause() {
+        airlawpb.end()
+        airframepb.end()
+        commspb.end()
+        humanpb.end()
+        instrumentationpb.end()
+        massbalancepb.end()
+        meteopb.end()
+        navpb.end()
+        performancepb.end()
+        planningpb.end()
+        poppb.end()
+        principlespb.end()
+        radiopb.end()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        airlawpb.end()
+        airframepb.end()
+        commspb.end()
+        humanpb.end()
+        instrumentationpb.end()
+        massbalancepb.end()
+        meteopb.end()
+        navpb.end()
+        performancepb.end()
+        planningpb.end()
+        poppb.end()
+        principlespb.end()
+        radiopb.end()
+        super.onStop()
     }
 }

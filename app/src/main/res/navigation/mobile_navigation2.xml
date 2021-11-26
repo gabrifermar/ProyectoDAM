@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/fragment_user_tools"
-        android:name="com.gabrifermar.proyectodam.ui.tools.ToolsFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.ToolsFragment"
         android:label="@string/title_tools"
         tools:layout="@layout/fragment_user_tools" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.gabrifermar.proyectodam.ui.notifications.NotificationsFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.gabrifermar.proyectodam.view.UserFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.UserFragment"
         android:label="@string/title_user"
         tools:layout="@layout/fragment_usermain" >
         <action

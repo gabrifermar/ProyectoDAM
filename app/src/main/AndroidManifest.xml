@@ -13,7 +13,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name=".ProyectoDAMapp"
+        android:name=".model.ProyectoDAMapp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
-            android:name=".NewQuestion"
+            android:name=".view.NewNews"
+            android:exported="false" />
+        <activity
+            android:name=".view.NewQuestion"
             android:exported="false" />
         <activity
             android:name=".view.SubjectMenu"
@@ -31,31 +34,31 @@
             android:name=".view.WeatherHistorical"
             android:exported="false" />
         <activity
-            android:name=".C172Test"
+            android:name=".view.C172Test"
             android:exported="false"
             android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
         <activity
-            android:name=".P06T"
+            android:name=".view.P06T"
             android:exported="false" />
         <activity
-            android:name=".P28R"
+            android:name=".view.P28R"
             android:exported="false" />
         <activity
-            android:name=".C172"
+            android:name=".view.C172"
             android:exported="false"
             android:label="@string/C172" />
         <activity
-            android:name=".FlightPlanner"
+            android:name=".view.FlightPlanner"
             android:exported="false"
             android:label="Flight planner" />
         <activity
-            android:name=".NewWaypoint"
+            android:name=".view.NewWaypoint"
             android:exported="false" />
         <activity
             android:name=".view.FlightMenu"
             android:exported="false" />
         <activity
-            android:name=".Charts"
+            android:name=".view.Charts"
             android:exported="false"
             android:label="Charts" />
         <activity
@@ -63,29 +66,29 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".NewUser"
+            android:name=".view.NewUser"
             android:exported="true" />
         <activity
-            android:name=".Usermain"
+            android:name=".view.Usermain"
             android:exported="true"
             android:label="@string/title_activity_usermain"
             android:launchMode="singleTask"
             android:theme="@style/Theme.ProyectoDAM" />
         <activity
-            android:name=".Admin"
+            android:name=".view.Admin"
             android:exported="true" />
         <activity
-            android:name=".Settings"
+            android:name=".view.Settings"
             android:exported="true"
             android:label="Settings" />
         <activity
-            android:name=".Home"
+            android:name=".view.Home"
             android:exported="true"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
         <activity
-            android:name=".Splashscreen"
+            android:name=".view.Splashscreen"
             android:exported="true"
             android:theme="@style/Theme.ProyectoDAM.NoActionBar">
             <intent-filter>
@@ -96,7 +99,7 @@
         </activity>
 
         <service
-            android:name=".FirebaseMessagingService"
+            android:name=".model.FirebaseMessagingService"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedService">

@@ -87,4 +87,10 @@
     <string name="answer2">Respuesta 2</string>
     <string name="answer3">Respuesta 3</string>
     <string name="answer4">Respuesta 4</string>
+    <string name="newnews">Nueva noticia</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="selectimage">Pulse para seleccionar imagen</string>
+    <string name="link">Link (Opcional)</string>
+    <string name="newexist">La noticia ya existe</string>
 </resources>

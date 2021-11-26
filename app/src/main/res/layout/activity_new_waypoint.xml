@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewWaypoint">
+    tools:context=".view.NewWaypoint">
 
     <EditText
         android:id="@+id/waypoint_et_name"

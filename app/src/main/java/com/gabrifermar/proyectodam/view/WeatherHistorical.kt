@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gabrifermar.proyectodam.ProyectoDAMapp
+import com.gabrifermar.proyectodam.model.ProyectoDAMapp
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherHistoricalBinding
-import com.gabrifermar.proyectodam.model.WeatherHistoricalAdapter
+import com.gabrifermar.proyectodam.model.adapter.WeatherHistoricalAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
