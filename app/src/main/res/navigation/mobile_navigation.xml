@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.gabrifermar.proyectodam.ui.home.HomeFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -26,18 +26,18 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.gabrifermar.proyectodam.ui.gallery.GalleryFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.NewsFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.gabrifermar.proyectodam.ui.slideshow.SlideshowFragment"
+        android:name="com.gabrifermar.proyectodam.view.fragment.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.gabrifermar.proyectodam.Login"
-        android:label="fragment_login"
+        android:name="com.gabrifermar.proyectodam.view.fragment.Login"
+        android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

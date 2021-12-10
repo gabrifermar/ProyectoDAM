@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gabrifermar.proyectodam">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
+        android:name=".model.ProyectoDAMapp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,32 +22,73 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
-            android:name=".WeatherReports"
-            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:name=".view.NewNews"
             android:exported="false" />
         <activity
-            android:name=".NewUser"
+            android:name=".view.NewQuestion"
+            android:exported="false" />
+        <activity
+            android:name=".view.SubjectMenu"
+            android:exported="false" />
+        <activity
+            android:name=".view.WeatherHistorical"
+            android:exported="false" />
+        <activity
+            android:name=".view.C172Test"
+            android:exported="false"
+            android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
+        <activity
+            android:name=".view.P06T"
+            android:exported="false" />
+        <activity
+            android:name=".view.P28R"
+            android:exported="false" />
+        <activity
+            android:name=".view.C172"
+            android:exported="false"
+            android:label="@string/C172" />
+        <activity
+            android:name=".view.FlightPlanner"
+            android:exported="false"
+            android:label="Flight planner" />
+        <activity
+            android:name=".view.NewWaypoint"
+            android:exported="false" />
+        <activity
+            android:name=".view.FlightMenu"
+            android:exported="false" />
+        <activity
+            android:name=".view.Charts"
+            android:exported="false"
+            android:label="Charts" />
+        <activity
+            android:name=".view.WeatherReports"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".view.NewUser"
             android:exported="true" />
         <activity
-            android:name=".Usermain"
+            android:name=".view.Usermain"
             android:exported="true"
             android:label="@string/title_activity_usermain"
             android:launchMode="singleTask"
             android:theme="@style/Theme.ProyectoDAM" />
         <activity
-            android:name=".Admin"
+            android:name=".view.Admin"
             android:exported="true" />
         <activity
-            android:name=".Settings"
-            android:exported="true" />
+            android:name=".view.Settings"
+            android:exported="true"
+            android:label="Settings" />
         <activity
-            android:name=".Home"
+            android:name=".view.Home"
             android:exported="true"
             android:label="@string/title_activity_home"
             android:launchMode="singleTask"
             android:theme="@style/Theme.ProyectoDAM.NoActionBar" />
         <activity
-            android:name=".Splashscreen"
+            android:name=".view.Splashscreen"
             android:exported="true"
             android:theme="@style/Theme.ProyectoDAM.NoActionBar">
             <intent-filter>
@@ -48,6 +97,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".model.FirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/cloudicon" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

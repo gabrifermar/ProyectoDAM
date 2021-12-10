@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Admin">
+    tools:context=".view.Admin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,15 +17,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/btnnewuser"
+            android:id="@+id/admin_btn_newuser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/newuser"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="newuser"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/admin_btn_addwaypoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newwaypoint" />
+
+        <Button
+            android:id="@+id/admin_btn_newquestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newQuestion" />
+
+        <Button
+            android:id="@+id/admin_btn_newnews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newnews" />
 
     </LinearLayout>
 

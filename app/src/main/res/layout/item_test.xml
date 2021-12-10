@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_test_statement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="Enunciado de la pregunta" />
+
+    <RadioGroup
+        android:id="@+id/item_test_rg_ans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp">
+
+        <RadioButton
+            android:id="@+id/item_test_ans1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Respuesta 1" />
+
+        <RadioButton
+            android:id="@+id/item_test_ans2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Respuesta 2" />
+
+        <RadioButton
+            android:id="@+id/item_test_ans3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Respuesta 3" />
+
+        <RadioButton
+            android:id="@+id/item_test_ans4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Respuesta 4" />
+
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?attr/colorOnSecondary" />
+
+</LinearLayout>
