@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         //listeners
         binding.homeIbCall.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data=Uri.parse("tel:+34651593430")
+            intent.data=Uri.parse("tel:+34915080359")
             startActivity(intent)
         }
 

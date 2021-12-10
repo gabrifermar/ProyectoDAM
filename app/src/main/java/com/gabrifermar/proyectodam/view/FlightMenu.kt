@@ -7,13 +7,16 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys.*
+import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys.AES256_GCM_SPEC
+import androidx.security.crypto.MasterKeys.getOrCreate
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityFlightMenuBinding
 import com.gabrifermar.proyectodam.viewmodel.FlightMenuViewModel
@@ -43,15 +46,15 @@ class FlightMenu : AppCompatActivity() {
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        //title
+        supportActionBar!!.title=getString(R.string.flights)
+
         //read content from sharedpref to setup locked content
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             encrypted()
         } else {
             nonencrypted()
         }
-
-        //C172 progress
-        //c172progress = sharedPref.getInt("C172grade", 0)
 
         //listeners
         binding.flightmenuCvC172.setOnClickListener {
@@ -122,6 +125,7 @@ class FlightMenu : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun encrypted() {
+
         val masterKey = getOrCreate(AES256_GCM_SPEC)
         val encryptedSharedPreferences = EncryptedSharedPreferences.create(
             "user_encrypted",

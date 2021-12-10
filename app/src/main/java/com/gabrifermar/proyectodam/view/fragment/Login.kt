@@ -79,51 +79,47 @@ class Login : Fragment() {
 
                         db.collection("users").document(auth.currentUser!!.uid).get()
                             .addOnSuccessListener { document ->
-                                if (document != null) {
-
-                                    //check system version to encrypt data, if SDK below 23, it wont encrypt it
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        //create masterkey
-                                        val masterKey =
-                                            getOrCreate(AES256_GCM_SPEC)
-                                        val encryptedSharedPreferences =
-                                            EncryptedSharedPreferences.create(
-                                                "user_encrypted",
-                                                masterKey,
-                                                activity as Home,
-                                                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                                                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                                            )
-                                        encryptedSharedPreferences.edit()
-                                            .putString("username", document.getString("username"))
-                                            .putBoolean("C172", document.getBoolean("C172")!!)
-                                            .putBoolean("P28R", document.getBoolean("P28R")!!)
-                                            .putBoolean("P06T", document.getBoolean("P06T")!!)
-                                            .putBoolean(
-                                                "subjects", document.getBoolean("subjects")!!
-                                            )
-                                            .apply()
-                                    } else {
-                                        val sharedPref =
-                                            (activity as Home).getSharedPreferences(
-                                                "user",
-                                                Context.MODE_PRIVATE
-                                            )
-                                        sharedPref.edit()
-                                            .putString("username", document.getString("username"))
-                                            .putBoolean("C172", document.getBoolean("C172")!!)
-                                            .putBoolean("P28R", document.getBoolean("P28R")!!)
-                                            .putBoolean("P06T", document.getBoolean("P06T")!!)
-                                            .putBoolean(
-                                                "subjects",
-                                                document.getBoolean("subjects")!!
-                                            )
-                                            .apply()
-                                    }
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    //create masterkey
+                                    val masterKey =
+                                        getOrCreate(AES256_GCM_SPEC)
+                                    val encryptedSharedPreferences =
+                                        EncryptedSharedPreferences.create(
+                                            "user_encrypted",
+                                            masterKey,
+                                            activity as Home,
+                                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                                        )
+                                    encryptedSharedPreferences.edit()
+                                        .putString("username", document.getString("username"))
+                                        .putBoolean("C172", document.getBoolean("C172")!!)
+                                        .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                        .putBoolean("P06T", document.getBoolean("P06T")!!)
+                                        .putBoolean(
+                                            "subjects", document.getBoolean("subjects")!!
+                                        )
+                                        .apply()
+                                } else {
+                                    val sharedPref =
+                                        (activity as Home).getSharedPreferences(
+                                            "user",
+                                            Context.MODE_PRIVATE
+                                        )
+                                    sharedPref.edit()
+                                        .putString("username", document.getString("username"))
+                                        .putBoolean("C172", document.getBoolean("C172")!!)
+                                        .putBoolean("P28R", document.getBoolean("P28R")!!)
+                                        .putBoolean("P06T", document.getBoolean("P06T")!!)
+                                        .putBoolean(
+                                            "subjects",
+                                            document.getBoolean("subjects")!!
+                                        )
+                                        .apply()
                                 }
                             }
 
-                        loadmetar("LEVS")
+                        loadmetar()
 
                         //show loading progress bar
                         binding.btnlogin.visibility = View.INVISIBLE
@@ -142,11 +138,14 @@ class Login : Fragment() {
 
                         //admin access
                     } else if (binding.username.text.toString() == "admin" && binding.password.text.toString() == "admin") {
+
                         startActivity(Intent(activity, Admin::class.java))
 
-                        //error
                     } else {
+
+                        //error
                         Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show()
+
                     }
                 }
         } else {
@@ -162,11 +161,11 @@ class Login : Fragment() {
     }
 
 
-    private fun loadmetar(query: String) {
+    private fun loadmetar() {
         try {
             CoroutineScope(Dispatchers.IO).launch {
                 val call = getmetarcall().create(API::class.java)
-                    .getMetar("$query/?x-api-key=d49660ce845e4f3db1fc469256")
+                    .getMetar("LEVS/?x-api-key=d49660ce845e4f3db1fc469256")
                 val levs = call.body()
                 (activity as Home).runOnUiThread {
                     if (call.isSuccessful) {

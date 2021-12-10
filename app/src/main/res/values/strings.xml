@@ -11,8 +11,8 @@
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="settings">Settings</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">News</string>
-    <string name="menu_slideshow" translatable="false">Slideshow</string>
+    <string name="menu_news">News</string>
+    <string name="menu_fleet">Fleet</string>
     <string name="menu_login">Login</string>
     <string name="pass">Password</string>
     <string name="user">Username</string>
@@ -111,7 +111,7 @@
 
     <!--Subjects-->
     <string name="airlaw">Air Law</string>
-    <string name="airframe">Airframe and systems</string>
+    <string name="airframe">Airframes and systems</string>
     <string name="instrumentation">Instrumentation</string>
     <string name="massbalance">Mass &amp; Balance</string>
     <string name="performance">Performance</string>
@@ -123,6 +123,7 @@
     <string name="pop">Operational Procedures</string>
     <string name="principles">Principles of Flight</string>
     <string name="comms">Communications</string>
+    <string name="content">Content</string>
 
     <!--Flight planner-->
     <string name="create">Create</string>

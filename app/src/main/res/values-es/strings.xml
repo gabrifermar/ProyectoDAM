@@ -2,7 +2,6 @@
 <resources>
     <string name="settings">Ajustes</string>
     <string name="menu_home">Inicio</string>
-    <string name="menu_gallery">Noticias</string>
     <string name="pass">Contraseña</string>
     <string name="user">Usuario</string>
     <string name="account">Cuenta</string>
@@ -93,4 +92,7 @@
     <string name="selectimage">Pulse para seleccionar imagen</string>
     <string name="link">Link (Opcional)</string>
     <string name="newexist">La noticia ya existe</string>
+    <string name="content">Contenido</string>
+    <string name="menu_news">Noticias</string>
+    <string name="menu_fleet">Flota</string>
 </resources>

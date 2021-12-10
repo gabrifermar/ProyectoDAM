@@ -16,12 +16,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3685316937533307/7207703961"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent" />
 
-    <!--ca-app-pub-3685316937533307/7207703961-->
-    <!--prueba: ca-app-pub-3940256099942544/6300978111-->
+    <!-- ca-app-pub-3685316937533307/7207703961 -->
+    <!-- prueba: ca-app-pub-3940256099942544/6300978111 -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

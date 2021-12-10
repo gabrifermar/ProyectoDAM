@@ -113,22 +113,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="50dp"
+            android:gravity="center"
             android:layout_marginEnd="50dp">
 
             <Spinner
                 android:id="@+id/admin_newquestion_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="0.5" />
+                />
 
             <Button
                 android:id="@+id/admin_newquestion_btn_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_weight="0.5"
+                android:lines="1"
                 android:text="@string/add" />
 
         </LinearLayout>

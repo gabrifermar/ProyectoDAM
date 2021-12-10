@@ -21,7 +21,7 @@ class NewUser : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityNewUserBinding.inflate(layoutInflater)
+        binding = ActivityNewUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Declare variable and start them
@@ -36,7 +36,7 @@ class NewUser : AppCompatActivity() {
                     binding.txtnewuser.text.toString() + "@hola.com",
                     binding.txtnewpass.text.toString()
                 )
-                    .addOnCompleteListener(this) { task ->
+                    .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
 
                             //Write user config on db if sign up ok
@@ -51,17 +51,36 @@ class NewUser : AppCompatActivity() {
                             db.collection("users").document(auth.currentUser!!.uid)
                                 .set(user, SetOptions.merge())
 
-                            when{ binding.cbnewuser1.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("subjects")}
-                            when{ binding.cbnewuser2.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("C172")}
-                            when{ binding.cbnewuser3.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("P28R")}
-                            when{ binding.cbnewuser4.isChecked -> FirebaseMessaging.getInstance().subscribeToTopic("P06T")}
+                            when {
+                                binding.cbnewuser1.isChecked -> FirebaseMessaging.getInstance()
+                                    .subscribeToTopic("subjects")
+                            }
+                            when {
+                                binding.cbnewuser2.isChecked -> FirebaseMessaging.getInstance()
+                                    .subscribeToTopic("C172")
+                            }
+                            when {
+                                binding.cbnewuser3.isChecked -> FirebaseMessaging.getInstance()
+                                    .subscribeToTopic("P28R")
+                            }
+                            when {
+                                binding.cbnewuser4.isChecked -> FirebaseMessaging.getInstance()
+                                    .subscribeToTopic("P06T")
+                            }
 
-                            Toast.makeText(this,getString(R.string.usercreated),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.usercreated),
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                             finish()
-                        } else {
+                        } else if (binding.txtnewpass.text.length < 6) {
                             //pass less than 6 characters
                             Toast.makeText(this, R.string.passlength, Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 auth.signOut()

@@ -1,6 +1,7 @@
 package com.gabrifermar.proyectodam.view
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -54,6 +55,9 @@ class SubjectMenu : AppCompatActivity() {
 
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        //title
+        supportActionBar!!.title = getString(R.string.subjects)
 
         //listeners
         startListeners()
@@ -331,11 +335,19 @@ class SubjectMenu : AppCompatActivity() {
 
     private fun startListeners() {
         binding.subjectmenuCvAirLaw.setOnClickListener {
-            Toast.makeText(this, R.string.wip, Toast.LENGTH_SHORT).show()
+            startActivity(
+                Intent(this, Subject::class.java)
+                    .putExtra("ref", "airlaw")
+                    .putExtra("title", "Air Law")
+            )
         }
 
         binding.subjectmenuCvAirframe.setOnClickListener {
-            Toast.makeText(this, R.string.wip, Toast.LENGTH_SHORT).show()
+            startActivity(
+                Intent(this, Subject::class.java)
+                    .putExtra("ref", "airframe")
+                    .putExtra("title", "Airframes and systems")
+            )
         }
 
         binding.subjectmenuCvComms.setOnClickListener {

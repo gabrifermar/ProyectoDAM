@@ -67,6 +67,9 @@ class WeatherReports : AppCompatActivity() {
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        //title
+        supportActionBar!!.title=getString(R.string.meteo)
+
         //variable
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
