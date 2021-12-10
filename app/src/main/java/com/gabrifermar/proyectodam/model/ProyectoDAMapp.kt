@@ -11,7 +11,7 @@ class ProyectoDAMapp : Application() {
 
     private val applicationScope = CoroutineScope(SupervisorJob())
 
-    val database by lazy { WeatherDB.getDatabase(this, applicationScope) }
+    private val database by lazy { WeatherDB.getDatabase(this, applicationScope) }
     val repository by lazy { WeatherRepository(database.weatherDao()) }
 
     override fun onCreate() {

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.*
+import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityChartsBinding
 
 class Charts : AppCompatActivity() {
@@ -20,6 +21,9 @@ class Charts : AppCompatActivity() {
 
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        //title
+        supportActionBar!!.title=getString(R.string.charts)
 
         //refresh webview
         binding.chartsRlRefresh.setOnRefreshListener {

@@ -3,14 +3,20 @@ package com.gabrifermar.proyectodam.view
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityFlightPlannerBinding
 import com.gabrifermar.proyectodam.model.adapter.FlightPlannerAdapter
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.nav_header_home.*
 import kotlinx.coroutines.*
+import java.lang.Exception
 import kotlin.math.*
 
 class FlightPlanner : AppCompatActivity() {
@@ -21,7 +27,6 @@ class FlightPlanner : AppCompatActivity() {
     private var wpnames = mutableListOf<String>()
     private var distances = mutableListOf<Double>()
     private var headings = mutableListOf<Int>()
-
 
     //TODO: pte añadir favoritos y guardar en local para tener base de datos SQL, para poder implementar boton de busqueda
 
@@ -39,6 +44,9 @@ class FlightPlanner : AppCompatActivity() {
 
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        //title
+        supportActionBar!!.title=getString(R.string.flightplanner)
 
         binding.flightplannerSbLegselector.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -76,81 +84,86 @@ class FlightPlanner : AppCompatActivity() {
         distances.clear()
         headings.clear()
 
-        //enter db to get waypoints data to calculate
-        db.collection("waypoints").get().addOnSuccessListener { document ->
-            if (document != null) {
-                //background task for calculations
-                CoroutineScope(Dispatchers.IO).launch {
-                    //get random numbers not repeated
-                    do {
-                        random =
-                            (1..binding.flightplannerSbLegselector.progress + 2).map { (1..document.size()).random() }
-                    } while (random.distinct().count() != random.size)
+        try {
 
-                    //loop to get calculations between waypoints
-                    for (i in 0..binding.flightplannerSbLegselector.progress) {
-                        db.collection("waypoints").whereEqualTo("ID", random[i]).get()
-                            .addOnSuccessListener { document1 ->
-                                db.collection("waypoints").whereEqualTo("ID", random[i + 1])
-                                    .get()
-                                    .addOnSuccessListener { document2 ->
+            //enter db to get waypoints data to calculate
+            db.collection("waypoints").get().addOnSuccessListener { document ->
+                if (!document.isEmpty) {
+                    //background task for calculations
+                    CoroutineScope(Dispatchers.IO).launch {
+                        //get random numbers not repeated
+                        do {
+                            random =
+                                (1..binding.flightplannerSbLegselector.progress + 2).map { (1..document.size()).random() }
+                        } while (random.distinct().count() != random.size)
 
-                                        for (a in document1) {
-                                            lat1 = a.getDouble("lat")!!
-                                            lon1 = a.getDouble("lon")!!
-                                            name1 = a.id
+                        //loop to get calculations between waypoints
+                        for (i in 0..binding.flightplannerSbLegselector.progress) {
+                            db.collection("waypoints").whereEqualTo("ID", random[i]).get()
+                                .addOnSuccessListener { document1 ->
+                                    db.collection("waypoints").whereEqualTo("ID", random[i + 1])
+                                        .get().addOnSuccessListener { document2 ->
+
+                                            for (a in document1) {
+                                                lat1 = a.getDouble("lat")!!
+                                                lon1 = a.getDouble("lon")!!
+                                                name1 = a.id
+                                            }
+
+                                            for (b in document2) {
+                                                lat2 = b.getDouble("lat")!!
+                                                lon2 = b.getDouble("lon")!!
+                                                name2 = b.id
+                                            }
+
+                                            val d = distance(
+                                                toRadians(lat1),
+                                                toRadians(lon1),
+                                                toRadians(lat2),
+                                                toRadians(lon2)
+                                            )
+
+                                            var hdg = heading(
+                                                toRadians(lat1),
+                                                toRadians(lon1),
+                                                toRadians(lat2),
+                                                toRadians(lon2)
+                                            )
+
+                                            if (hdg < 0) {
+                                                hdg += 360
+                                            }
+
+                                            if (i == random.size - 2) {
+
+                                                wpnames.add(name1)
+                                                //distances.add(String.format("%.1f", d).toDouble())
+                                                distances.add(d)
+                                                headings.add(hdg.roundToInt())
+                                                wpnames.add(name2)
+                                                distances.add(0.0)
+                                                headings.add(0)
+                                                adapter.notifyDataSetChanged()
+
+                                            } else {
+
+                                                wpnames.add(name1)
+                                                distances.add(d)
+                                                headings.add(hdg.roundToInt())
+                                                adapter.notifyDataSetChanged()
+
+                                            }
                                         }
-
-                                        for (b in document2) {
-                                            lat2 = b.getDouble("lat")!!
-                                            lon2 = b.getDouble("lon")!!
-                                            name2 = b.id
-                                        }
-
-                                        val d = distance(
-                                            toRadians(lat1),
-                                            toRadians(lon1),
-                                            toRadians(lat2),
-                                            toRadians(lon2)
-                                        )
-
-                                        var hdg = heading(
-                                            toRadians(lat1),
-                                            toRadians(lon1),
-                                            toRadians(lat2),
-                                            toRadians(lon2)
-                                        )
-
-                                        if (hdg < 0) {
-                                            hdg += 360
-                                        }
-
-
-                                        if (i == random.size - 2) {
-
-                                            wpnames.add(name1)
-                                            distances.add(String.format("%.1f", d).toDouble())
-                                            headings.add(hdg.roundToInt())
-                                            wpnames.add(name2)
-                                            distances.add(0.0)
-                                            headings.add(0)
-                                            adapter.notifyDataSetChanged()
-
-                                        } else {
-
-                                            wpnames.add(name1)
-                                            distances.add(String.format("%.1f", d).toDouble())
-                                            headings.add(hdg.roundToInt())
-                                            adapter.notifyDataSetChanged()
-
-                                        }
-                                    }
-                            }
-                        //insert delay to let it retrieve data from firebase
-                        delay(100)
+                                }
+                            //insert delay to let it retrieve data from firebase
+                            delay(100)
+                        }
                     }
                 }
             }
+        } catch (e: Exception) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show()
+            Firebase.crashlytics.log(e.toString())
         }
     }
 

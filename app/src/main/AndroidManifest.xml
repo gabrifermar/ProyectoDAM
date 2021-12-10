@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDAM">
         <activity
+            android:name=".view.Subject"
+            android:exported="false" />
+        <activity
             android:name=".view.NewNews"
             android:exported="false" />
         <activity
@@ -50,7 +53,7 @@
         <activity
             android:name=".view.FlightPlanner"
             android:exported="false"
-            android:label="Flight planner" />
+/>
         <activity
             android:name=".view.NewWaypoint"
             android:exported="false" />
@@ -59,8 +62,7 @@
             android:exported="false" />
         <activity
             android:name=".view.Charts"
-            android:exported="false"
-            android:label="Charts" />
+            android:exported="false" />
         <activity
             android:name=".view.WeatherReports"
             android:exported="false"
@@ -114,6 +116,10 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <!-- ca-app-pub-3685316937533307~4480951352 -->
+        <!-- prueba: ca-app-pub-3940256099942544~3347511713 -->
+
     </application>
 
 </manifest>

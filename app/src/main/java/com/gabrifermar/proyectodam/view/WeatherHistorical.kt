@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.model.ProyectoDAMapp
 import com.gabrifermar.proyectodam.databinding.ActivityWeatherHistoricalBinding
 import com.gabrifermar.proyectodam.model.adapter.WeatherHistoricalAdapter
@@ -36,6 +37,13 @@ class WeatherHistorical : AppCompatActivity() {
 
         //backarrow
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        //title
+        if (mode == 1) {
+            supportActionBar!!.title = getString(R.string.historical)
+        } else {
+            supportActionBar!!.title = getString(R.string.favourite)
+        }
     }
 
     private fun startListeners(mode: Int) {

@@ -33,7 +33,6 @@ class MetarAdapter(private val metars: List<String>, context: Context) :
                 repository.repository.addFav(holder.view.weather_item_metar.text.toString())
                 true
             } else {
-
                 it.setBackgroundResource(R.drawable.ic_baseline_star_empty)
                 false
             }

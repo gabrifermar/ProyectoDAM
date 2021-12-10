@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.gabrifermar.proyectodam.model.api.API
 import com.gabrifermar.proyectodam.R
@@ -60,7 +61,7 @@ class Splashscreen : AppCompatActivity() {
 
         //precharge metar into sharedpref for later use
         if (auth.currentUser != null) {
-                loadmetar()
+            loadmetar()
         }
 
         Handler(Looper.getMainLooper()).postDelayed({

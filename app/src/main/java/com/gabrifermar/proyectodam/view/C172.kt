@@ -16,10 +16,16 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.Environment.*
+import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.gabrifermar.proyectodam.R
 import com.gabrifermar.proyectodam.databinding.ActivityC172Binding
@@ -33,7 +39,6 @@ class C172 : AppCompatActivity() {
     /**
      * @param:builder
      * @param:binding
-     *
      */
     private lateinit var binding: ActivityC172Binding
     private lateinit var builder: Notification.Builder
@@ -75,62 +80,56 @@ class C172 : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("InlinedApi")
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun notification() {
 
-        val pendingIntent =
-            PendingIntent.getActivity(
-                this,
-                0,
-                Intent(DownloadManager.ACTION_VIEW_DOWNLOADS),
-                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-            )
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(DownloadManager.ACTION_VIEW_DOWNLOADS),
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel(
-                "Open download directory",
-                "Download",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.GREEN
-            notificationChannel.enableVibration(false)
-            notificationManager.createNotificationChannel(notificationChannel)
+        notificationChannel = NotificationChannel(
+            "Open download directory",
+            "Download",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationChannel.enableLights(true)
+        notificationChannel.lightColor = Color.GREEN
+        notificationChannel.enableVibration(false)
+        notificationManager.createNotificationChannel(notificationChannel)
 
-            builder = Notification.Builder(this, "Open download directory")
-                .setSmallIcon(R.drawable.cloudicon)
-                .setContentText("Click to open download directory")
-                .setContentIntent(pendingIntent)
-        } else {
-            builder = Notification.Builder(this, "Open download directory")
-                .setSmallIcon(R.drawable.cloudicon)
-                .setContentIntent(pendingIntent)
-        }
+        builder = Notification.Builder(this, "Open download directory")
+            .setSmallIcon(R.drawable.cloudicon)
+            .setContentTitle("Open download directory")
+            .setContentText("Click to open download directory")
+            .setContentIntent(pendingIntent)
+
+
         notificationManager.notify(1234, builder.build())
 
     }
 
     private fun checkFile() {
         val file =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                File("${getExternalFilesDir(DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
-            } else {
-                File("${getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
-            }
+            File("${getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)}/Cessna-172N-POH.pdf")
+
         if (file.exists()) {
             Toast.makeText(this, R.string.filealreadydownloaded, Toast.LENGTH_SHORT).show()
-            notification()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notification()
+            }
         } else {
             download()
         }
     }
 
-    @SuppressLint("Range")
     private fun download() {
         val dn: DownloadManager =
             getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val uri =
-            Uri.parse("https://firebasestorage.googleapis.com/v0/b/proyectoaep-d6bc6.appspot.com/o/Cessna-172N-POH.pdf?alt=media&token=30bc84a6-ee3c-4e6c-9ce6-0061ed5ddc11")
+            Uri.parse("https://firebasestorage.googleapis.com/v0/b/proyectoaep-d6bc6.appspot.com/o/POH%2FCessna-172N-POH.pdf?alt=media&token=e7972c76-0b08-4b74-8794-9fc84222b11f")
         val request = DownloadManager.Request(uri)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDestinationInExternalFilesDir(

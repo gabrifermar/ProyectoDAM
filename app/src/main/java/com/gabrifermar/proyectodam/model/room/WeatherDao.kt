@@ -34,7 +34,6 @@ interface WeatherDao {
 
     @Query("SELECT * FROM Weather WHERE metar = 0 and fav = 1 ORDER BY id DESC LIMIT 50")
     suspend fun allTafFav(): List<Weather>
-    //fun allTafFav(): LiveData<List<Weather>>
 
     @Query("DELETE FROM Weather WHERE data = :data")
     suspend fun delete(data: String)
